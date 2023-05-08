@@ -1,24 +1,48 @@
-import logo from './logo.svg';
+import { Box } from '@chakra-ui/react';
 import './App.css';
+import Breadcrumb from './components/Breadcrumb';
+import ReactComponent from './components/RoutComponent';
+import SideBar from './components/SideBar';
+import { useLocalStorageStore } from './modules/store';
+import Login from './pages/Login';
+import { Layout } from 'antd';
+import { useEffectOnDidMountApp } from './modules/hooks';
 
 function App() {
+
+  useEffectOnDidMountApp()
+
+  const token = useLocalStorageStore((store) => store.token)
+
+  // if (!token) return <Login />;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout
+      style={{
+        minHeight: '100vh',
+      }}
+    >
+      <Layout className='brent-bg-color'>
+
+        <SideBar />
+
+        <Layout.Content
+          style={{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'relative',
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Box px={['1', '4']}>
+
+            <Breadcrumb />
+
+            <ReactComponent />
+
+          </Box>
+        </Layout.Content>
+      </Layout>
+    </Layout>
   );
 }
 
