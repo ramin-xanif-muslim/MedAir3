@@ -2,13 +2,16 @@ import { Form, Input, Button, message } from "antd";
 import sendRequest from "../modules/api/sendRequest";
 import React, { useState } from "react";
 import { useLocalStorageStore } from "../modules/store";
-import { Box, Center } from "@chakra-ui/react";
+import { Box, Center, Image } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
     const setToken = useLocalStorageStore((store) => store.setToken)
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const navigate = useNavigate()
 
     const onFinish = async (values) => {
         try {
@@ -18,6 +21,7 @@ const Login = () => {
                 const { token } = result.data
                 localStorage.setItem('token', token)
                 setToken(token)
+                navigate('/calendar')
             } else {
                 message.warning({
                     content: 'Login or password not correct',
@@ -33,49 +37,58 @@ const Login = () => {
     };
 
     return (
-        <Box>
-            <Center>
-                <img alt='medAir' src={'/images/MedAir.jpg'} />
+        <Box h='100vh' bg='black'>
+
+            <Center p='8'>
+                <Image
+                    boxSize='250px'
+                    className='circle'
+                    src='/images/MedAir.jpg'
+                    alt='medAir'
+                />
             </Center>
+
             <Center >
-                <Form
-                    layout="vertical"
-                    initialValues={{
-                        remember: true,
-                    }}
-                    onFinish={onFinish}
-                >
-                    <Form.Item
-                        label="Username"
-                        name="userName"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                <Box p='4' my='2' boxShadow='xl' bg='pink.100' borderRadius='15px' maxWidth='600px'>
+                    <Form
+                        layout="vertical"
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={onFinish}
                     >
-                        <Input />
-                    </Form.Item>
+                        <Form.Item
+                            label="Username"
+                            name="userName"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
 
-                    <Form.Item
-                        label="Password"
-                        name="userPass"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                        <Form.Item
+                            label="Password"
+                            name="userPass"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
 
-                    <Form.Item
-                    >
-                        <Button block loading={isLoading} type="primary" htmlType="submit">
-                            Sign in
-                        </Button>
-                    </Form.Item>
-                </Form>
+                        <Form.Item noStyle
+                        >
+                            <Button block loading={isLoading} type="primary" htmlType="submit">
+                                Sign in
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Box>
             </Center>
         </Box>
     );
