@@ -2,14 +2,17 @@ import { SimpleGrid } from '@chakra-ui/react'
 import { Input, Radio, Select, Form } from 'antd';
 import React, { memo } from 'react'
 import FamilyMembersList from '../FamilyMembersList';
+import { useGlobalContext } from '../../../../../modules/context/index.js';
 
 function BlockForm() {
-    const [form] = Form.useForm();
+
+    const { diseaseHistoryForm } = useGlobalContext()
+
     return (
         <SimpleGrid columns={['1', '2']} gap='1' >
 
             <Form
-                form={form}
+                form={diseaseHistoryForm}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
@@ -81,7 +84,7 @@ function BlockForm() {
 
 
             <Form
-                form={form}
+                form={diseaseHistoryForm}
                 labelWrap
                 labelAlign="right"
                 labelCol={{

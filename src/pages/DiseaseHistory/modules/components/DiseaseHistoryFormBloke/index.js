@@ -1,15 +1,47 @@
 import { SimpleGrid } from '@chakra-ui/react'
-import { Form, Input, InputNumber, Radio, Select, Space } from 'antd'
+import { Button, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
 import React, { memo } from 'react'
+import { useStore } from '../../../../../modules/store';
+import { useGlobalContext } from '../../../../../modules/context/index.js';
 
-function DiseaseHistoryFormBloke() {
-    const [form] = Form.useForm();
+function DiseaseHistoryFormBloke(props) {
+
+    const { selectedRowKey, setSelectedRowKey } = props
+
+    const { diseaseHistoryTableFormBlok } = useGlobalContext()
+
+    const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
+    const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
+
+    const onFinish = (values) => {
+        if (selectedRowKey) {
+            let newData = dataSourceDiseaseHistoryTable.map((i) => {
+                if (i.id === values.id) return values
+                else return i
+            })
+            setDataSourceDiseaseHistoryTable(newData)
+        } else {
+            let id = new Date().getTime()
+            values.id = id
+            values.key = id
+            setDataSourceDiseaseHistoryTable([...dataSourceDiseaseHistoryTable, values])
+        }
+        diseaseHistoryTableFormBlok.resetFields()
+        setSelectedRowKey()
+    }
+
+    const handleClear = () => {
+        diseaseHistoryTableFormBlok.resetFields()
+        setSelectedRowKey()
+    }
 
     return (
         <SimpleGrid columns={['1', '2']} >
 
             <Form
-                form={form}
+                onFinish={onFinish}
+                id='diseaseHistoryFormBloke'
+                form={diseaseHistoryTableFormBlok}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
@@ -22,6 +54,10 @@ function DiseaseHistoryFormBloke() {
                     maxWidth: 600,
                 }}
             >
+
+                <Form.Item hidden name='id'>
+                    <Input />
+                </Form.Item>
 
                 <Form.Item label="Breast" name="complaintBreastType">
                     <Select allowClear>
@@ -53,7 +89,9 @@ function DiseaseHistoryFormBloke() {
             </Form>
 
             <Form
-                form={form}
+                onFinish={onFinish}
+                id='diseaseHistoryFormBloke'
+                form={diseaseHistoryTableFormBlok}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
@@ -145,6 +183,23 @@ function DiseaseHistoryFormBloke() {
                                 );
                             })} */}
                     </Select>
+                </Form.Item>
+
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Space>
+
+                        <Button
+                            form='diseaseHistoryFormBloke'
+                            htmlType='submit'
+                            type="primary"
+                        >
+                            {selectedRowKey ? 'Edit' : 'Add'}
+                        </Button>
+
+                        <Button onClick={handleClear} danger>{selectedRowKey ? "Close" : "Clear"}</Button>
+
+
+                    </Space>
                 </Form.Item>
 
             </Form>

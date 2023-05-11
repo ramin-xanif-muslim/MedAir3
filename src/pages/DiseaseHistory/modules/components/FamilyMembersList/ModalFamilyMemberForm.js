@@ -10,22 +10,40 @@ import {
 } from '@chakra-ui/react'
 import { Button, Form, Input } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+import { deepCopy } from '../../../../../modules/functions/deepCopy'
 
 function ModalFamilyMemberForm(props) {
 
-    const { isOpen, onClose, initialRef, finalRef, title, handleFinish, initialValues } = props
+    const { isOpen, onClose, initialRef, finalRef, title, handleEdit, isEdit, handleAdd, form } = props
 
-    const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-        handleFinish(values)
+
+    const onFinish = () => {
+        try{
+            const values = form.getFieldsValue()
+            const copyValues = deepCopy(values)
+            if (isEdit) {
+                handleEdit(copyValues)
+            }
+            else {
+                handleAdd(copyValues)
+            }
+            form.resetFields()
+        }catch(error) {
+            console.log('%c error','background: red; color: dark', error);
+        }
+    }
+
+    const handleClose = () => {
+        form.resetFields()
+        onClose()
     }
 
     return (
 
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
             initialFocusRef={initialRef}
             finalFocusRef={finalRef}
         >
@@ -49,31 +67,36 @@ function ModalFamilyMemberForm(props) {
                         style={{
                             maxWidth: 600,
                         }}
-                        onFinish={onFinish}
-                        id='familyMembersModalForm'
-                        initialValues={initialValues}
                     >
 
-                        <Form.Item label="Trauma" name="trauma">
+                        <Form.Item hidden name="Id">
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item hidden name="familyMember">
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item label="Trauma" name="familyMemberInjury">
                             <Input
                                 ref={initialRef}
                                 allowClear
                             />
                         </Form.Item>
 
-                        <Form.Item label="Deceased of cancer" name="dead">
+                        <Form.Item label="Deceased of cancer" name="familyMemberDied">
                             <Input
                                 allowClear
                             />
                         </Form.Item>
 
-                        <Form.Item label="Living with cancer" name="alive">
+                        <Form.Item label="Living with cancer" name="familyMemberCurrentCancer">
                             <Input
                                 allowClear
                             />
                         </Form.Item>
 
-                        <Form.Item label="Description" name="description">
+                        <Form.Item label="Description" name="familyMemberDesc">
                             <Input.TextArea
                                 rows={3}
                             />
@@ -84,17 +107,13 @@ function ModalFamilyMemberForm(props) {
                 </ModalBody>
 
                 <ModalFooter>
-                    {/* <Button colorScheme='blue' mr={3} onClick={onClose}>
-                        Close
-                    </Button> */}
                     <Button
-                        htmlType='submit'
-                        form='familyMembersModalForm'
                         type='primary'
                         block
                         icon={<PlusOutlined />}
+                        onClick={onFinish}
                     >
-                        {initialValues ? 'Edit' : 'Add'}
+                        {isEdit ? 'Edit' : 'Add'}
                     </Button>
                 </ModalFooter>
             </ModalContent>

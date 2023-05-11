@@ -1,9 +1,9 @@
 import React, { memo } from 'react'
 import DeleteTableRow from '../../../../../components/DeleteTableRow'
 
-function DeleteDiseaseHistoryTableRow({onClick}) {
+function DeleteDiseaseHistoryTableRow({handleDelete}) {
   return (
-    <DeleteTableRow onClick={onClick}/>
+    <DeleteTableRow onClick={handleDelete}/>
   )
 }
 

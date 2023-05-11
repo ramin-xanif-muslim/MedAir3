@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 // let API_BASE = "http://localhost:8080/api/"
 
@@ -33,7 +34,8 @@ async function sendRequest(url, obj = {}, CRUD = "get") {
       return result;
     }
   } catch (e) {
-    console.log(e);
+    message.error(e.message)
+    console.log('%c error','background: red; color: dark', e);
   }
 }
 

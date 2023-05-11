@@ -1,19 +1,58 @@
 import React, { memo } from 'react'
 import PatientForm from '../PatientForm'
-import { Button, Space } from 'antd'
+import { Button, Form, Space } from 'antd'
+import { useGlobalContext } from '../../modules/context/index.js'
+import { useStore } from '../../modules/store'
 
-const SearchButton = () => {
+const ProfilePatientButton = () => {
+
+    const { personInfoForm, diseaseHistoryForm, patientForm, familyMembersList } = useGlobalContext()
+    
+    const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
+
+    const handleSave = () => {
+        console.log('patientForm', patientForm.getFieldsValue());
+
+        console.log('personInfoForm', personInfoForm.getFieldsValue());
+        
+        console.log('diseaseHistoryForm', diseaseHistoryForm.getFieldsValue());
+
+        console.log('familyMembersList',familyMembersList);
+
+        console.log('dataSourceDiseaseHistoryTable',dataSourceDiseaseHistoryTable);
+    }
+
     return (
-        <Space>
-            <Button type="primary" >Save</Button>
-            <Button danger>Clear</Button>
-        </Space>
+        <Form.Item noStyle>
+
+            <Space>
+                <Button
+                    onClick={handleSave}
+                    form='patientForm'
+                    type="primary"
+                    htmlType='submit'
+                >
+                    Save
+                </Button>
+
+                <Button danger>
+                    Clear
+                </Button>
+            </Space>
+
+        </Form.Item>
     )
 }
 
 function ProfilePatientForm() {
+
+    const { patientForm } = useGlobalContext()
+
     return (
-        <PatientForm button={<SearchButton />} />
+        <PatientForm
+            form={patientForm}
+            button={<ProfilePatientButton />}
+        />
     )
 }
 

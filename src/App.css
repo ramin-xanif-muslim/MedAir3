@@ -23,5 +23,11 @@
 .canvas-draw {
     width: 100%;
     height: 100%;
-  }
-  
+}
+.ant-table-row:hover {
+    cursor: pointer
+}
+
+.ant-table-row-selected {
+    background-color: dodgerblue;
+}

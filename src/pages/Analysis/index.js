@@ -8,7 +8,7 @@ function Analysis() {
 
     return (
         <>
-            <ProfilePatientForm />
+            <ProfilePatientForm  />
 
             <Box p='2' my='2' boxShadow='xl' bg='pink.50' borderRadius='15px'>
 

@@ -1,18 +1,31 @@
-import { Box, Flex, Spacer, useMediaQuery } from '@chakra-ui/react'
-import { Button, Space, Table, Tooltip } from 'antd'
+import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
 import DeleteDiseaseHistoryTableRow from '../DeleteDiseaseHistoryTableRow';
-import { useLocalStorageStore } from '../../../../../modules/store';
+import { useLocalStorageStore, useStore } from '../../../../../modules/store';
 import DiseaseHistoryTableSetting from './DiseaseHistoryTableSetting';
+import { useGlobalContext } from '../../../../../modules/context/index.js';
 
-function DiseaseHistoryTable() {
+function DiseaseHistoryTable(props) {
+
+    const { selectedRowKey, setSelectedRowKey } = props
 
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
     const diseaseHistoryTableSetting = useLocalStorageStore((store) => store.diseaseHistoryTableSetting)
+    
+    const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
+    const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
 
     const visible = (dataIndex, defaultVisible = true) => {
         return diseaseHistoryTableSetting?.find(i => i.dataIndex === dataIndex) ? diseaseHistoryTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
+    }
+
+
+    const { diseaseHistoryTableFormBlok } = useGlobalContext()
+
+    const onRowTable = (record, index) => {
+        diseaseHistoryTableFormBlok.setFieldsValue(record)
     }
 
     const columns = useMemo(() => {
@@ -148,27 +161,24 @@ function DiseaseHistoryTable() {
                 ellipsis: true,
                 align: 'center',
                 render: (value, row, index) => {
+                    const handleDelete = () => {
+                        let newData = dataSourceDiseaseHistoryTable.filter(i => i.id !== row.id)
+                        setDataSourceDiseaseHistoryTable(newData)
+                    }
                     return (
-                        <DeleteDiseaseHistoryTableRow />
+                        <DeleteDiseaseHistoryTableRow handleDelete={handleDelete} />
                     );
                 },
             },
         ];
-    }, [isLargerThan400, diseaseHistoryTableSetting]);
-    
+    }, [isLargerThan400, diseaseHistoryTableSetting, dataSourceDiseaseHistoryTable]);
+
     return (
         <Box display='flex' flexDirection='column'>
 
-            <Flex m='2'>
-                <Space>
-                    <Button type="primary" >Add</Button>
-                    <Button danger>Clear</Button>
-                </Space>
-
-                <Spacer />
-
+            <Box alignSelf='flex-end'>
                 <DiseaseHistoryTableSetting columns={columns} />
-            </Flex>
+            </Box>
 
             <Table
                 size='small'
@@ -178,7 +188,16 @@ function DiseaseHistoryTable() {
                 }}
                 pagination={false}
                 columns={columns.filter(i => i.isVisible === true)}
-                dataSource={[]}
+                dataSource={dataSourceDiseaseHistoryTable}
+                rowClassName={(record, index) =>
+                    selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+                }
+                onRow={(record, index) => ({
+                    onClick: (e) => {
+                        onRowTable(record, index)
+                        setSelectedRowKey(index + 1)
+                    },
+                })}
             />
 
         </Box>

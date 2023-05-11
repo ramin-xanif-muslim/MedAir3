@@ -1,12 +1,17 @@
-import { Table, Tooltip } from 'antd'
+import { Select, Table, Tooltip, message } from 'antd'
 import moment from 'moment';
-import React, { memo, useMemo } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import { useLocalStorageStore } from '../../../../../modules/store';
 import DeleteCalendarTableRow from '../DeleteCalendarTableRow'
 import CalendarTableSetting from './CalendarTableSetting';
+import sendRequest from '../../../../../modules/api/sendRequest';
 
-function CalendarsTable() {
+function CalendarsTable(props) {
+
+  const { dataSource, onRowTable, refetch } = props
+
+  const [selectedRowKey, setSelectedRowKey] = useState();
 
   const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
@@ -153,32 +158,62 @@ function CalendarsTable() {
         ellipsis: true,
         width: isLargerThan400 ? false : 150,
         render: (value, row, index) => {
+
+          const onSelect = async (val) => {
+            try {
+              const { id } = row;
+              const sendObj = {
+                id: id,
+                status: val,
+              };
+              let res = await sendRequest("visittable", sendObj, "post");
+              if (res?.data) {
+                message.success('Status changed.')
+              } else message.warning('Something went wrong')
+            } catch (error) {
+              console.log('%c error', 'background: red; color: dark', error);
+            }
+          };
+
           return (
-            <div
+            <Box m='0.5'
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
               }}
             >
-              {/* <SelectStatus
-              value={value}
-              row={row}
-              updatePage={() => updatePage(row)}
-            /> */}
-            </div>
+              <Select
+                onSelect={onSelect}
+                defaultValue={value}
+                allowClear
+                style={{ width: "100%" }}
+              >
+                <Select.Option value="unsolved">Unsolved</Select.Option>
+                <Select.Option value="approved">Approved</Select.Option>
+              </Select>
+            </Box>
           );
         },
       },
       {
         title: "Delete",
         dataIndex: "delete",
+        width: 50,
         key: "delete",
         isVisible: visible('delete'),
         ellipsis: true,
         align: 'center',
         render: (value, row, index) => {
+          const handleDelete = async () => {
+            let Id = row.Id;
+            let res = await sendRequest("visits/" + Id, {}, "delete");
+            if (res?.data) {
+              message.success('Status changed.')
+              refetch()
+            } else message.warning('Something went wrong')
+          }
           return (
-            <DeleteCalendarTableRow />
+            <DeleteCalendarTableRow handleDelete={handleDelete} />
           );
         },
       },
@@ -200,7 +235,16 @@ function CalendarsTable() {
         }}
         pagination={false}
         columns={columns.filter(i => i.isVisible === true)}
-        dataSource={[{ as: 'as' }]}
+        dataSource={dataSource || []}
+        rowClassName={(record, index) =>
+          selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+        }
+        onRow={(record, index) => ({
+          onClick: (e) => {
+            onRowTable?.(record, index)
+            setSelectedRowKey(index)
+          },
+        })}
       />
 
     </Box>

@@ -14,7 +14,7 @@ function App() {
 
   const token = useLocalStorageStore((store) => store.token)
 
-  // if (!token) return <Login />;
+  if (!token) return <Login />;
 
   return (
     <Layout
@@ -33,9 +33,9 @@ function App() {
             position: 'relative',
           }}
         >
-          <Box px={['1', '4']}>
+          <Box p={['1', '4']}>
 
-            <Breadcrumb />
+            {/* <Breadcrumb /> */}
 
             <ReactComponent />
 

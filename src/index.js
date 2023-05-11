@@ -7,12 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ErrorBoundary } from "./pages/Error";
+import { AppProvider } from './modules/context/index.js';
 
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             refetchOnMount: true,
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: true,
         },
     },
 });
@@ -23,9 +24,11 @@ root.render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <ErrorBoundary>
-                    <ChakraProvider>
-                        <App />
-                    </ChakraProvider>
+                    <AppProvider>
+                        <ChakraProvider>
+                            <App />
+                        </ChakraProvider>
+                    </AppProvider>
                 </ErrorBoundary>
             </BrowserRouter>
         </QueryClientProvider>

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import {
     UserOutlined,
     CalendarOutlined,
@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from 'antd';
 import { Center, Image } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorageStore, useStore } from '../../modules/store';
 import { correctBreadcrumbItems } from '../../modules/functions';
 
@@ -20,6 +20,7 @@ function getItem(label, key, icon, children) {
         label,
     };
 }
+const profileSubMenus = ['person_info','disease_history','visits','analysis','treatment']
 const items = [
     getItem('Calendar', 'calendar', <CalendarOutlined />),
     getItem('Search', 'search', <FileSearchOutlined />),
@@ -42,6 +43,7 @@ const items = [
 function SideBar() {
 
     const [collapsed, setCollapsed] = useState(false);
+    const [selectedKey, setSelectedKey] = useState(null);
 
     const navigate = useNavigate()
 
@@ -66,6 +68,13 @@ function SideBar() {
         navigate(`/${navLink}`)
     }
 
+    const location = useLocation()
+
+    useEffect(() => {
+        const link = location?.pathname.slice(1)
+        setSelectedKey(link)
+    },[location?.pathname])
+
 
     return (
         <Layout.Sider
@@ -86,7 +95,7 @@ function SideBar() {
                 onSelect={onSelect}
                 theme="dark" mode="inline"
                 items={items}
-
+                selectedKeys={[selectedKey]}
             />
 
         </Layout.Sider>

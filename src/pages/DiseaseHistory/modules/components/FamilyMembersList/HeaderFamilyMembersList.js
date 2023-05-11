@@ -3,7 +3,6 @@ import { familyMembersSelectOptions } from '../../../../../modules/consts'
 import { Button, Form, Select, Space } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { useDisclosure } from '@chakra-ui/react'
-import { deepCopy } from '../../../../../modules/functions/deepCopy'
 import ModalFamilyMemberForm from './ModalFamilyMemberForm'
 
 function HeaderFamilyMembersList({ setList }) {
@@ -14,10 +13,13 @@ function HeaderFamilyMembersList({ setList }) {
 
     const [selectedMember, setSelectedMember] = useState()
 
+    const [form] = Form.useForm();
+
     const handleAdd = (memberData) => {
-        const copyData = deepCopy(memberData)
-        copyData.text = selectedMember
-        setList(prev => [...prev, copyData])
+        memberData.familyMember = selectedMember
+        let id = new Date().getTime()
+        memberData.Id = id
+        setList(prev => [...prev, memberData])
         onClose()
     }
 
@@ -42,7 +44,7 @@ function HeaderFamilyMembersList({ setList }) {
                     >
                         {familyMembersSelectOptions.map(i => {
                             return (
-                                <Select.Option value={i}>{i}</Select.Option>
+                                <Select.Option key={i} value={i}>{i}</Select.Option>
                             )
                         })}
                     </Select>
@@ -56,7 +58,8 @@ function HeaderFamilyMembersList({ setList }) {
                 initialRef={initialRef}
                 finalRef={finalRef}
                 title={selectedMember}
-                handleFinish={handleAdd}
+                handleAdd={handleAdd}
+                form={form}
             />
         </>
     )
