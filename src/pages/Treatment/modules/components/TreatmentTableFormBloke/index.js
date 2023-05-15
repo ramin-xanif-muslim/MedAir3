@@ -1,13 +1,48 @@
 import React, { memo, useState } from 'react'
-import { DatePicker, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
+import { Button, DatePicker, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
 import { SimpleGrid } from '@chakra-ui/react'
-import moment from 'moment';
+import { useStore } from '../../../../../modules/store';
+import dayjs from 'dayjs';
 
-function TreatmentTableFormBloke() {
+function TreatmentTableFormBloke(props) {
 
-    const [form] = Form.useForm();
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
     const [isBenign, setIsBenign] = useState(false)
+
+    const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
+    const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
+
+    const onFinish = (values) => {
+        try {
+            if (selectedRowKey) {
+                let newData = dataSourceTreatmentTable.map((i) => {
+                    if (i.id === values.id) {
+                        values.treatmentDate = dayjs(values.treatmentDate).format('YYYY-MM-DD HH:mm')
+                        return { ...values }
+
+                    }
+                    else return i
+                })
+                setDataSourceTreatmentTable(newData)
+            } else {
+                let id = new Date().getTime()
+                values.id = id
+                values.key = id
+                values.treatmentDate = dayjs(values.treatmentDate).format('YYYY-MM-DD HH:mm')
+                setDataSourceTreatmentTable([...dataSourceTreatmentTable, values])
+            }
+            form.resetFields()
+            setSelectedRowKey()
+        } catch (error) {
+            console.log('%c error', 'background: red; color: dark', error);
+        }
+    }
+
+    const handleClear = () => {
+        form.resetFields()
+        setSelectedRowKey()
+    }
 
     const onFieldsChange = ([{ name, value }]) => {
         const nameFormInput = name && name[0]
@@ -19,6 +54,8 @@ function TreatmentTableFormBloke() {
         <SimpleGrid columns={['1', '2']} gap='1' >
 
             <Form
+                onFinish={onFinish}
+                id='treatmentTableFormBlok'
                 form={form}
                 labelWrap
                 labelAlign="right"
@@ -33,10 +70,15 @@ function TreatmentTableFormBloke() {
                 }}
             >
 
+                <Form.Item hidden name='id'>
+                    <Input />
+                </Form.Item>
+
                 <Form.Item label="Date" name="treatmentDate">
                     <DatePicker
                         format="YYYY-MM-DD HH:mm"
-                        defaultValue={moment()}
+                        defaultValue={dayjs()}
+                        showTime
                     />
                 </Form.Item>
 
@@ -143,6 +185,8 @@ function TreatmentTableFormBloke() {
             </Form>
 
             <Form
+                onFinish={onFinish}
+                id='treatmentTableFormBlok'
                 form={form}
                 labelWrap
                 labelAlign="right"
@@ -355,6 +399,23 @@ function TreatmentTableFormBloke() {
                                 <Input.TextArea showCount maxLength={3000} rows={3} />
                             </Form.Item>
                         ) : ''}
+                </Form.Item>
+
+                <Form.Item>
+                    <Space>
+
+                        <Button
+                            form='treatmentTableFormBlok'
+                            htmlType='submit'
+                            type="primary"
+                        >
+                            {selectedRowKey ? 'Edit' : 'Add'}
+                        </Button>
+
+                        <Button onClick={handleClear} danger>{selectedRowKey ? "Close" : "Clear"}</Button>
+
+
+                    </Space>
                 </Form.Item>
 
             </Form>

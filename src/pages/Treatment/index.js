@@ -1,12 +1,18 @@
 import { Box } from '@chakra-ui/react'
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import ProfilePatientForm from '../../components/ProfilePatientForm'
 import TreatmentFormBloke from './modules/components/TreatmentFormBloke'
 import TreatmentTableFormBloke from './modules/components/TreatmentTableFormBloke'
 import TreatmentTable from './modules/components/TreatmentTable'
 import TreatmentMedicationsTable from './modules/components/TreatmentMedicationsTable'
+import { Form } from 'antd'
 
 function Treatment() {
+
+  const [selectedRowKey, setSelectedRowKey] = useState();
+
+  const [form] = Form.useForm()
+
   return (
     <>
       <ProfilePatientForm />
@@ -19,13 +25,17 @@ function Treatment() {
 
       <Box p='2' my='2' boxShadow='xl' bg='pink.50' borderRadius='15px'>
 
-        <TreatmentTableFormBloke />
+        <Box p='2' my='2' border='1px solid pink' borderRadius='15px' bg={selectedRowKey ? 'blue.50' : ''}>
 
-      </Box>
+          <TreatmentTableFormBloke selectedRowKey={selectedRowKey} setSelectedRowKey={setSelectedRowKey} form={form} />
 
-      <Box p='2' my='2' boxShadow='xl' bg='pink.50' borderRadius='15px'>
+        </Box>
 
-        <TreatmentTable />
+        <Box p='2' my='2' border='1px solid pink' borderRadius='15px'>
+
+          <TreatmentTable selectedRowKey={selectedRowKey} setSelectedRowKey={setSelectedRowKey} form={form} />
+
+        </Box>
 
       </Box>
 

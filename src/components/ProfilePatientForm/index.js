@@ -6,13 +6,15 @@ import { useStore } from '../../modules/store'
 
 const ProfilePatientButton = () => {
 
-    const { personInfoForm, diseaseHistoryForm, patientForm, familyMembersList } = useGlobalContext()
+    const { personInfoForm, diseaseHistoryForm, patientForm, familyMembersList, treatmentHistoryForm } = useGlobalContext()
     
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const savedDrawingCanvas = useStore((store) => store.savedDrawingCanvas)
     const descriptionsCanvas = useStore((store) => store.descriptionsCanvas)
     const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
+    const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
+    const recipeList = useStore((store) => store.recipeList)
 
     const handleSave = () => {
 
@@ -21,6 +23,8 @@ const ProfilePatientButton = () => {
         console.log('personInfoForm', personInfoForm.getFieldsValue());
         
         console.log('diseaseHistoryForm', diseaseHistoryForm.getFieldsValue());
+
+        console.log('treatmentHistoryForm', treatmentHistoryForm.getFieldsValue());
 
         console.log('familyMembersList',familyMembersList);
 
@@ -33,6 +37,10 @@ const ProfilePatientButton = () => {
         console.log('dataSourceVisitTable',dataSourceVisitTable);
 
         console.log('dataSourceAnalysisTable',dataSourceAnalysisTable);
+
+        console.log('dataSourceTreatmentTable',dataSourceTreatmentTable);
+
+        console.log('recipeList',recipeList);
         
     }
 

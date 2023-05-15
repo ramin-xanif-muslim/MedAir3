@@ -16,6 +16,13 @@ let store = (set) => ({
     setTreatmentTableTableSetting: (item) => set(() => ({treatmentTableTableSetting: item})),
     treatmentMedicationsTableSetting: [],
     setTreatmentMedicationsTableSetting: (item) => set(() => ({treatmentMedicationsTableSetting: item})),
+
+    managersTabs: [],
+    setManagersTabs: (item) => set(() => ({managersTabs: item})),
+    managersPlaces: [],
+    setManagersPlaces: (item) => set(() => ({managersPlaces: item})),
+    pathologistsList: [],
+    setPathologistsList: (item) => set(() => ({pathologistsList: item})),
 });
 
 store = devtools(store);

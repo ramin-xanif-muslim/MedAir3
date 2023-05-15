@@ -18,6 +18,10 @@ let store = (set) => ({
     setDataSourceVisitTable: (item) => set(() => ({ dataSourceVisitTable: item })),
     dataSourceAnalysisTable: [],
     setDataSourceAnalysisTable: (item) => set(() => ({ dataSourceAnalysisTable: item })),
+    dataSourceTreatmentTable: [],
+    setDataSourceTreatmentTable: (item) => set(() => ({ dataSourceTreatmentTable: item })),
+    recipeList: [],
+    setRecipeList: (item) => set(() => ({ recipeList: item })),
 });
 
 export const useStore = create(store);

@@ -1,18 +1,30 @@
-import { Box, Flex, Spacer, useMediaQuery } from '@chakra-ui/react'
-import { Button, Space, Table, Tooltip } from 'antd'
+import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
 import DeleteTreatmentTableRow from '../DeleteTreatmentTableRow';
-import { useLocalStorageStore } from '../../../../../modules/store';
+import { useLocalStorageStore, useStore } from '../../../../../modules/store';
 import TreatmentTableTableSetting from './TreatmentTableTableSetting';
+import dayjs from 'dayjs';
 
-function TreatmentTable() {
+function TreatmentTable(props) {
+
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
     const treatmentTableTableSetting = useLocalStorageStore((store) => store.treatmentTableTableSetting)
 
+    const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
+    const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
+
     const visible = (dataIndex, defaultVisible = true) => {
         return treatmentTableTableSetting?.find(i => i.dataIndex === dataIndex) ? treatmentTableTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
+    }
+
+    const onRowTable = (record, index) => {
+        const copy = { ...record };
+        copy.treatmentDate = dayjs(record.treatmentDate)
+        form.setFieldsValue(copy)
     }
 
     const columns = useMemo(() => {
@@ -180,32 +192,30 @@ function TreatmentTable() {
             {
                 title: "Delete",
                 dataIndex: "delete",
+                width: 50,
                 key: "delete",
                 isVisible: visible('delete'),
                 ellipsis: true,
                 align: 'center',
                 render: (value, row, index) => {
+                    const handleDelete = () => {
+                        let newData = dataSourceTreatmentTable.filter(i => i.id !== row.id)
+                        setDataSourceTreatmentTable(newData)
+                    }
                     return (
-                        <DeleteTreatmentTableRow />
+                        <DeleteTreatmentTableRow handleDelete={handleDelete} />
                     );
                 },
             },
         ];
-    }, [isLargerThan400, treatmentTableTableSetting]);
+    }, [isLargerThan400, treatmentTableTableSetting, dataSourceTreatmentTable]);
 
     return (
         <Box display='flex' flexDirection='column'>
 
-            <Flex m='2'>
-                <Space>
-                    <Button type="primary" >Add</Button>
-                    <Button danger>Clear</Button>
-                </Space>
-
-                <Spacer />
-
+            <Box alignSelf='flex-end'>
                 <TreatmentTableTableSetting columns={columns} />
-            </Flex>
+            </Box>
 
             <Table
                 size='small'
@@ -215,7 +225,16 @@ function TreatmentTable() {
                 }}
                 pagination={false}
                 columns={columns.filter(i => i.isVisible === true)}
-                dataSource={[]}
+                dataSource={dataSourceTreatmentTable}
+                rowClassName={(record, index) =>
+                    selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+                }
+                onRow={(record, index) => ({
+                    onClick: (e) => {
+                        onRowTable(record, index)
+                        setSelectedRowKey(index + 1)
+                    },
+                })}
             />
 
         </Box>

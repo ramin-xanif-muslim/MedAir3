@@ -152,6 +152,7 @@ function DiseaseHistoryTable(props) {
             {
                 title: "Delete",
                 dataIndex: "delete",
+                width: 50,
                 key: "delete",
                 isVisible: visible('delete'),
                 ellipsis: true,

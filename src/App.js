@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import './App.css';
-import Breadcrumb from './components/Breadcrumb';
 import ReactComponent from './components/RoutComponent';
 import SideBar from './components/SideBar';
 import { useLocalStorageStore } from './modules/store';

@@ -23,7 +23,6 @@ function AnalysisTable(props) {
 
     const onRowTable = (record, index) => {
         const copy = { ...record };
-        copy.visitDate = dayjs(record.visitDate)
         form.setFieldsValue(copy)
     }
 

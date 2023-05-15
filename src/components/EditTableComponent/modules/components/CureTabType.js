@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 
 const { Option } = Select;
 
-const CureTabType = ({dataIndex,title,inputRef, save}) => {
+const CureTabType = ({ dataIndex, title, inputRef, save }) => {
 
     const onBlur = () => {
         let inputType = 'select'
@@ -16,12 +16,6 @@ const CureTabType = ({dataIndex,title,inputRef, save}) => {
                 margin: 0,
             }}
             name={dataIndex}
-            rules={[
-                {
-                    required: true,
-                    message: `Please enter the valid ${title.toLowerCase()}...`,
-                },
-            ]}
         >
             <Select
                 allowClear
@@ -29,9 +23,9 @@ const CureTabType = ({dataIndex,title,inputRef, save}) => {
                 lazyLoad
                 onBlur={onBlur}
             >
-                            <Option value="Tablet">Tablet</Option>
-                            <Option value="Ampoule">Ampoule</Option>
-                            <Option value="Drops">Drops</Option>
+                <Option value="Tablet">Tablet</Option>
+                <Option value="Ampoule">Ampoule</Option>
+                <Option value="Drops">Drops</Option>
             </Select>
         </Form.Item>
     );

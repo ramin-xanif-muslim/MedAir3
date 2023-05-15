@@ -1,15 +1,17 @@
 import React, { memo, useMemo, useState } from 'react'
 import EditTableComponent from '../../../../../components/EditTableComponent'
-import { useLocalStorageStore } from '../../../../../modules/store';
+import { useLocalStorageStore, useStore } from '../../../../../modules/store';
 import { Button, Tooltip } from 'antd';
 import DeleteTreatmentMedicationsTableRow from '../DeleteTreatmentMedicationsTableRow';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
 import TreatmentMedicationsTableSetting from './TreatmentMedicationsTableSetting';
 import { PlusOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs';
 
 function TreatmentMedicationsTable() {
 
-    const [list, setList] = useState([])
+    const recipeList = useStore((store) => store.recipeList)
+    const setRecipeList = useStore((store) => store.setRecipeList)
 
 
     const treatmentMedicationsTableSetting = useLocalStorageStore((store) => store.treatmentMedicationsTableSetting)
@@ -22,9 +24,9 @@ function TreatmentMedicationsTable() {
         return [
             {
                 title: "Date",
-                dataIndex: "treatmentDate",
-                key: "treatmentDate",
-                isVisible: visible('treatmentDate'),
+                dataIndex: "date",
+                key: "date",
+                isVisible: visible('date'),
                 ellipsis: true,
                 editable: true,
                 width: 200,
@@ -95,18 +97,32 @@ function TreatmentMedicationsTable() {
             {
                 title: "Delete",
                 dataIndex: "delete",
+                width: 50,
                 key: "delete",
                 isVisible: visible('delete'),
                 ellipsis: true,
                 align: 'center',
                 render: (value, row, index) => {
+                    const handleDelete = () => {
+                        let newData = recipeList.filter(i => i.Id !== row.Id)
+                        setRecipeList(newData)
+                    }
                     return (
-                        <DeleteTreatmentMedicationsTableRow />
+                        <DeleteTreatmentMedicationsTableRow handleDelete={handleDelete} />
                     );
                 },
             },
         ];
-    }, [treatmentMedicationsTableSetting]);
+    }, [treatmentMedicationsTableSetting, recipeList]);
+
+
+    const onClickNewRecipe = () => {
+        let key = new Date().getTime()
+        let Id = new Date().getTime()
+        let newData = { key, Id, date: dayjs().format("DD-MM-YYYY") };
+        setRecipeList([...recipeList, newData]);
+    };
+
     return (
         <Box display='flex' flexDirection='column'>
 
@@ -119,12 +135,14 @@ function TreatmentMedicationsTable() {
             </Flex>
 
             <EditTableComponent
-                dataSource={list}
-                setDataSource={setList}
+                dataSource={recipeList}
+                setDataSource={setRecipeList}
                 defaultColumns={columns.filter(i => i.isVisible === true)}
             />
 
-            <Button block icon={<PlusOutlined />} onClick={() => setList(prev => [...prev, {}])}  >New medications</Button>
+            <Button block icon={<PlusOutlined />} onClick={onClickNewRecipe}>
+                New medications
+            </Button>
 
         </Box>
     )

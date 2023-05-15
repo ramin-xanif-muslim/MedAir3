@@ -1,8 +1,8 @@
-import { useNavigateOnRefresh } from "./useNavigateOnRefresh"
+import useFetchData from "./useFetchData"
 
 export function useEffectOnDidMountApp() {
-
-    useNavigateOnRefresh()
+    
+    useFetchData()
 
     return ''
 }

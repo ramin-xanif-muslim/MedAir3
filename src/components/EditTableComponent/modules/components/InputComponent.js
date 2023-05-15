@@ -1,20 +1,10 @@
 import { Form, Input } from 'antd';
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 
-const InputComponent = ({dataIndex, title, inputRef, save}) => {
-    const required = useMemo(() => {
-        if(dataIndex === 'cureTabUsing') return false
-        else return true
-    },[dataIndex])
+const InputComponent = ({ dataIndex, title, inputRef, save }) => {
     return (
         <Form.Item
             name={dataIndex}
-            rules={[
-                {
-                    required: required,
-                    message: `Please enter the valid ${title.toLowerCase()}...`,
-                },
-            ]}
         >
             <Input ref={inputRef} onPressEnter={save} onBlur={save} />
         </Form.Item>

@@ -1,18 +1,19 @@
 import React, { memo } from 'react'
 import { Form, Input } from 'antd'
 import { SimpleGrid } from '@chakra-ui/react'
+import { useGlobalContext } from '../../../../../modules/context/index.js'
 
 
 function TreatmentFormBloke() {
 
-    const [form] = Form.useForm();
+    const { treatmentHistoryForm } = useGlobalContext()
 
     return (
 
         <SimpleGrid columns={['1', '2']} gap='1' >
 
             <Form
-                form={form}
+                form={treatmentHistoryForm}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
@@ -37,7 +38,7 @@ function TreatmentFormBloke() {
             </Form>
 
             <Form
-                form={form}
+                form={treatmentHistoryForm}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
