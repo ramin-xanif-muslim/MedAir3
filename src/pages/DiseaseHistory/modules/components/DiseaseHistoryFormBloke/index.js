@@ -2,13 +2,10 @@ import { SimpleGrid } from '@chakra-ui/react'
 import { Button, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
 import React, { memo } from 'react'
 import { useStore } from '../../../../../modules/store';
-import { useGlobalContext } from '../../../../../modules/context/index.js';
 
 function DiseaseHistoryFormBloke(props) {
 
-    const { selectedRowKey, setSelectedRowKey } = props
-
-    const { diseaseHistoryTableFormBlok } = useGlobalContext()
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
@@ -26,12 +23,12 @@ function DiseaseHistoryFormBloke(props) {
             values.key = id
             setDataSourceDiseaseHistoryTable([...dataSourceDiseaseHistoryTable, values])
         }
-        diseaseHistoryTableFormBlok.resetFields()
+        form.resetFields()
         setSelectedRowKey()
     }
 
     const handleClear = () => {
-        diseaseHistoryTableFormBlok.resetFields()
+        form.resetFields()
         setSelectedRowKey()
     }
 
@@ -41,7 +38,7 @@ function DiseaseHistoryFormBloke(props) {
             <Form
                 onFinish={onFinish}
                 id='diseaseHistoryFormBloke'
-                form={diseaseHistoryTableFormBlok}
+                form={form}
                 labelWrap
                 labelAlign="right"
                 labelCol={{
@@ -83,7 +80,7 @@ function DiseaseHistoryFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label="Complaints" name="complaintDescription">
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
             </Form>
@@ -91,7 +88,7 @@ function DiseaseHistoryFormBloke(props) {
             <Form
                 onFinish={onFinish}
                 id='diseaseHistoryFormBloke'
-                form={diseaseHistoryTableFormBlok}
+                form={form}
                 labelWrap
                 labelAlign="right"
                 labelCol={{

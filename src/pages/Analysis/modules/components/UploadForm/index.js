@@ -1,13 +1,11 @@
-import { Button, Form, Image, Input, Upload } from "antd";
-import TextArea from "antd/lib/input/TextArea";
+import { Button, Image, Upload } from "antd";
 import React, { memo, useEffect, useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-import { deepCopy } from "../../../../../modules/functions/deepCopy";
+import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import sendRequest from "../../../../../modules/api/sendRequest";
+import { Box, Flex } from "@chakra-ui/react";
 
-let selectedRowTable
 
-const UploadForm = ({ form }) => {
+const UploadForm = ({ form, selectedRowKey }) => {
 
     const [imageUrl, setImageUrl] = useState();
     const [imagePdfUrl, setImagePdfUrl] = useState();
@@ -17,29 +15,24 @@ const UploadForm = ({ form }) => {
             const lastDotIndex = url.lastIndexOf(".");
             const result = url.substring(lastDotIndex + 1);
             if (result === 'pdf') {
+                setImageUrl(null)
                 setImagePdfUrl(url)
             } else {
+                setImagePdfUrl(null)
                 setImageUrl(url)
             }
         }
     }
 
     useEffect(() => {
-        const url = selectedRowTable?.analyzesContentUrl
-        showImage(url)
-    }, [selectedRowTable?.analyzesContentUrl])
-
-    const onChange = (e) => {
-        try {
-            const { fileList: newFileList } = e;
-            if (newFileList && newFileList[0]?.name) {
-                let analyzesContentName = newFileList[0]?.name
-                form.setFieldsValue({ analyzesContentName })
-            }
-        } catch (error) {
-            console.log('%c error', 'background: red; color: dark', error);
+        if (selectedRowKey) {
+            const url = form.getFieldsValue().analyzesContentUrl
+            showImage(url)
+        } else {
+            setImageUrl(null)
+            setImagePdfUrl(null)
         }
-    };
+    }, [selectedRowKey])
 
     const beforeUpload = async (file) => {
         const formData = new FormData();
@@ -47,9 +40,10 @@ const UploadForm = ({ form }) => {
 
         let res = await sendRequest("analysesImage", formData, "post");
         if (res?.data) {
-          const url = res.data
-          showImage(url)
-          form.setFieldsValue({ analyzesContentUrl: res.data });
+            const url = res.data
+            showImage(url)
+            form.setFieldsValue({ analyzesContentName: file.name });
+            form.setFieldsValue({ analyzesContentUrl: res.data });
         }
         return false;
     };
@@ -58,6 +52,7 @@ const UploadForm = ({ form }) => {
         try {
             setImageUrl(null)
             setImagePdfUrl(null)
+            form.setFieldsValue({ analyzesContentName: '', analyzesContentUrl: '' })
         } catch (error) {
             console.log('%c error', 'background: red; color: dark', error);
         }
@@ -67,22 +62,36 @@ const UploadForm = ({ form }) => {
         <>
             {
                 imageUrl ? (
-                    <div style={{ display: 'flex' }}>
+
+                    <Flex gap='1' m='3'>
+
                         <Image width={200} src={imageUrl} />
-                        <div onClick={handleDeleteImg} style={{ cursor: 'pointer', marginLeft: '5px' }}>X</div>
-                    </div>
+
+                        <Box onClick={handleDeleteImg} _hover={{ color: 'red' }} ml='-1' cursor='pointer' >
+                            <CloseCircleOutlined />
+                        </Box>
+
+                    </Flex>
+
                 ) : imagePdfUrl ? (
-                    <div style={{ display: 'flex' }}>
-                        <embed src={imagePdfUrl} type="application/pdf" width="100%" height="600px"
+
+                    <Flex gap='1' m='3'>
+
+                        <embed src={imagePdfUrl} type="application/pdf" width="100%" height="600px" 
                         />
-                        <div onClick={handleDeleteImg} style={{ cursor: 'pointer', marginLeft: '5px' }}>X</div>
-                    </div>
+
+                        <Box onClick={handleDeleteImg} _hover={{ color: 'red' }} ml='-1' cursor='pointer' >
+                            <CloseCircleOutlined />
+                        </Box>
+
+                    </Flex>
+
                 ) : (
+
                     <Upload
                         accept=".png,.pdf,.jpeg,.jpg"
                         listType="picture"
                         beforeUpload={beforeUpload}
-                        onChange={onChange}
                     >
                         {!imageUrl ? (
                             <Button icon={<UploadOutlined />}>Upload</Button>
@@ -90,6 +99,7 @@ const UploadForm = ({ form }) => {
                             ""
                         )}
                     </Upload>
+
                 )}
         </>
     );

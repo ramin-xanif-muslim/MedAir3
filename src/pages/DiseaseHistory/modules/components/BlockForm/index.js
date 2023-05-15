@@ -27,15 +27,15 @@ function BlockForm() {
             >
 
                 <Form.Item label="Allergies" name="allergyAvailability">
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
                 <Form.Item label="Receved treatement" name="medicationTaken">
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
                 <Form.Item label="Initial diagnosis" name="preliminaryDiagnosis">
-                    <Input.TextArea allowClear rows={3} />
+                    <Input.TextArea showCount maxLength={3000} allowClear rows={3} />
                 </Form.Item>
 
                 <Form.Item label="Received traumas" name="receivedTraumas">
@@ -54,7 +54,7 @@ function BlockForm() {
                     {({ getFieldValue }) =>
                         getFieldValue('receivedTraumas') === 1 ? (
                             <Form.Item label="Description" name="ownInjuryReason">
-                                <Input.TextArea />
+                                <Input.TextArea showCount maxLength={3000} />
                             </Form.Item>
                         ) : ''}
                 </Form.Item>

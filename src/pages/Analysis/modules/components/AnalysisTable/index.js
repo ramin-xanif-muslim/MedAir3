@@ -1,18 +1,30 @@
-import { Box, Flex, Spacer, useMediaQuery } from '@chakra-ui/react'
-import { Button, Space, Table, Tooltip } from 'antd'
+import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
-import { useLocalStorageStore } from '../../../../../modules/store'
+import { useLocalStorageStore, useStore } from '../../../../../modules/store'
 import DeleteAnalysisTableRow from '../DeleteAnalysisTableRow'
 import AnalysisTableSetting from './AnalysisTableSetting'
+import dayjs from 'dayjs'
 
-function AnalysisTable() {
+function AnalysisTable(props) {
+
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
     const analysisTableSetting = useLocalStorageStore((store) => store.diseaseHistoryTableSetting)
 
+    const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
+    const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
+
     const visible = (dataIndex, defaultVisible = true) => {
         return analysisTableSetting?.find(i => i.dataIndex === dataIndex) ? analysisTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
+    }
+
+    const onRowTable = (record, index) => {
+        const copy = { ...record };
+        copy.visitDate = dayjs(record.visitDate)
+        form.setFieldsValue(copy)
     }
 
     const columns = useMemo(() => {
@@ -90,41 +102,47 @@ function AnalysisTable() {
                 ellipsis: true,
                 align: 'center',
                 render: (value, row, index) => {
+                    const handleDelete = () => {
+                        let newData = dataSourceAnalysisTable.filter(i => i.id !== row.id)
+                        setDataSourceAnalysisTable(newData)
+                    }
                     return (
-                        <DeleteAnalysisTableRow />
+                        <DeleteAnalysisTableRow handleDelete={handleDelete} />
                     );
                 },
             },
         ];
-    }, [isLargerThan400, analysisTableSetting]);
+    }, [isLargerThan400, analysisTableSetting, dataSourceAnalysisTable]);
 
-  return (
-    <Box display='flex' flexDirection='column'>
+    return (
+        <Box display='flex' flexDirection='column'>
 
-        <Flex m='2'>
-            <Space>
-                <Button type="primary" >Add</Button>
-                <Button danger>Clear</Button>
-            </Space>
+            <Box alignSelf='flex-end'>
+                <AnalysisTableSetting columns={columns} />
+            </Box>
 
-            <Spacer />
+            <Table
+                size='small'
+                bordered
+                scroll={{
+                    x: window.innerHeight
+                }}
+                pagination={false}
+                columns={columns.filter(i => i.isVisible === true)}
+                dataSource={dataSourceAnalysisTable}
+                rowClassName={(record, index) =>
+                    selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+                }
+                onRow={(record, index) => ({
+                    onClick: (e) => {
+                        onRowTable(record, index)
+                        setSelectedRowKey(index + 1)
+                    },
+                })}
+            />
 
-            <AnalysisTableSetting columns={columns} />
-        </Flex>
-
-        <Table
-            size='small'
-            bordered
-            scroll={{
-                x: window.innerHeight
-            }}
-            pagination={false}
-            columns={columns.filter(i => i.isVisible === true)}
-            dataSource={[]}
-        />
-
-    </Box>
-  )
+        </Box>
+    )
 }
 
 export default memo(AnalysisTable)

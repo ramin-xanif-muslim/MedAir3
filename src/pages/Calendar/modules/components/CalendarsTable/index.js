@@ -168,7 +168,7 @@ function CalendarsTable(props) {
               };
               let res = await sendRequest("visittable", sendObj, "post");
               if (res?.data) {
-                message.success('Status changed.')
+                message.success('Status changed')
               } else message.warning('Something went wrong')
             } catch (error) {
               console.log('%c error', 'background: red; color: dark', error);
@@ -205,12 +205,17 @@ function CalendarsTable(props) {
         align: 'center',
         render: (value, row, index) => {
           const handleDelete = async () => {
-            let Id = row.Id;
+            message.loading()
+            console.log('row',row);
+            let Id = row.id;
             let res = await sendRequest("visits/" + Id, {}, "delete");
             if (res?.data) {
-              message.success('Status changed.')
+              message.success()
               refetch()
-            } else message.warning('Something went wrong')
+            } else {
+              message.warning('Something went wrong')
+            }
+            return true
           }
           return (
             <DeleteCalendarTableRow handleDelete={handleDelete} />

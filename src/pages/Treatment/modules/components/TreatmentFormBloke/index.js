@@ -31,7 +31,7 @@ function TreatmentFormBloke() {
                 </Form.Item>
 
                 <Form.Item label="Description" name="treatmentDesc">
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
             </Form>
@@ -56,11 +56,11 @@ function TreatmentFormBloke() {
                 </Form.Item>
 
                 <Form.Item label="Recommendation" name="recommendation">
-                    <Input.TextArea />
+                    <Input.TextArea showCount maxLength={3000} />
                 </Form.Item>
 
                 <Form.Item label="Advise" name="advise">
-                    <Input.TextArea />
+                    <Input.TextArea showCount maxLength={3000} />
                 </Form.Item>
 
             </Form>

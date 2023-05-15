@@ -17,7 +17,6 @@ export const AppProvider = ({ children }) => {
     const [personInfoForm] = Form.useForm(); //vite
     const [diseaseHistoryForm] = Form.useForm(); //morby
     
-    const [diseaseHistoryTableFormBlok] = Form.useForm(); //morby
 
     const [inPatientCollapse, setInPatientCollapse] = useState(true);
     const [familyMembersList, setFamilyMembersList] = useState([])
@@ -28,8 +27,6 @@ export const AppProvider = ({ children }) => {
         searchPatientForm,
         patientForm,
         
-        diseaseHistoryTableFormBlok,
-
         inPatientCollapse, setInPatientCollapse,
         familyMembersList, setFamilyMembersList,
     };

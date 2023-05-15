@@ -44,14 +44,14 @@ function TreatmentTableFormBloke() {
                     label="Urgent Histology"
                     name="histologyUrgent"
                 >
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
                 <Form.Item
                     label="Histology Final"
                     name="histologyFinal"
                 >
-                    <Input.TextArea rows={3} />
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
                 </Form.Item>
 
                 {isBenign ? '' : (
@@ -352,7 +352,7 @@ function TreatmentTableFormBloke() {
                     {({ getFieldValue }) =>
                         getFieldValue('treatmentTypeName') ? (
                             <Form.Item label="Description" name="treatmentTypeDesc">
-                                <Input.TextArea rows={3} />
+                                <Input.TextArea showCount maxLength={3000} rows={3} />
                             </Form.Item>
                         ) : ''}
                 </Form.Item>

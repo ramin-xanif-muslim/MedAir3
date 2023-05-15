@@ -4,11 +4,10 @@ import React, { memo, useMemo } from 'react'
 import DeleteDiseaseHistoryTableRow from '../DeleteDiseaseHistoryTableRow';
 import { useLocalStorageStore, useStore } from '../../../../../modules/store';
 import DiseaseHistoryTableSetting from './DiseaseHistoryTableSetting';
-import { useGlobalContext } from '../../../../../modules/context/index.js';
 
 function DiseaseHistoryTable(props) {
 
-    const { selectedRowKey, setSelectedRowKey } = props
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
@@ -21,11 +20,8 @@ function DiseaseHistoryTable(props) {
         return diseaseHistoryTableSetting?.find(i => i.dataIndex === dataIndex) ? diseaseHistoryTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
     }
 
-
-    const { diseaseHistoryTableFormBlok } = useGlobalContext()
-
     const onRowTable = (record, index) => {
-        diseaseHistoryTableFormBlok.setFieldsValue(record)
+        form.setFieldsValue(record)
     }
 
     const columns = useMemo(() => {

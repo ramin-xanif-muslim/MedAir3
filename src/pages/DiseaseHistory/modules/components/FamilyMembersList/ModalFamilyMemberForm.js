@@ -19,7 +19,7 @@ function ModalFamilyMemberForm(props) {
 
 
     const onFinish = () => {
-        try{
+        try {
             const values = form.getFieldsValue()
             const copyValues = deepCopy(values)
             if (isEdit) {
@@ -29,8 +29,8 @@ function ModalFamilyMemberForm(props) {
                 handleAdd(copyValues)
             }
             form.resetFields()
-        }catch(error) {
-            console.log('%c error','background: red; color: dark', error);
+        } catch (error) {
+            console.log('%c error', 'background: red; color: dark', error);
         }
     }
 
@@ -97,7 +97,7 @@ function ModalFamilyMemberForm(props) {
                         </Form.Item>
 
                         <Form.Item label="Description" name="familyMemberDesc">
-                            <Input.TextArea
+                            <Input.TextArea showCount maxLength={3000}
                                 rows={3}
                             />
                         </Form.Item>

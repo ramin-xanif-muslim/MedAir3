@@ -1,186 +1,248 @@
 import React, { memo } from 'react'
-import { Checkbox, DatePicker, Form, Input, Radio, Select } from 'antd'
+import { Button, Checkbox, DatePicker, Form, Input, Radio, Select, Space } from 'antd'
 import { SimpleGrid } from '@chakra-ui/react'
-import moment from 'moment';
+import { useStore } from '../../../../../modules/store';
+import dayjs from 'dayjs';
 
 const managersPlaces = []
 
-function VisitsFormBloke() {
+function VisitsFormBloke(props) {
 
-    const [form] = Form.useForm();
+    const { selectedRowKey, setSelectedRowKey, form } = props
 
-  return (
+    const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
+    const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
 
-    <SimpleGrid columns={['1', '2']} gap='1' >
+    const onFinish = (values) => {
+        try {
+            if (selectedRowKey) {
+                let newData = dataSourceVisitTable.map((i) => {
+                    if (i.id === values.id) {
+                        values.visitDate = dayjs(values.visitDate).format('YYYY-MM-DD HH:mm')
+                        return { ...values }
 
-        <Form
-            form={form}
-            labelWrap
-            labelAlign="right"
-            labelCol={{
-                span: 8,
-            }}
-            wrapperCol={{
-                span: 16,
-            }}
-            style={{
-                maxWidth: 600,
-            }}
-        >
+                    }
+                    else return i
+                })
+                setDataSourceVisitTable(newData)
+            } else {
+                let id = new Date().getTime()
+                values.id = id
+                values.key = id
+                values.visitDate = dayjs(values.visitDate).format('YYYY-MM-DD HH:mm')
+                setDataSourceVisitTable([...dataSourceVisitTable, values])
+            }
+            form.resetFields()
+            setSelectedRowKey()
+        } catch (error) {
+            console.log('%c error', 'background: red; color: dark', error);
+        }
+    }
 
-            <Form.Item label='Date' name="visitDate">
-                <DatePicker
-                    format="YYYY-MM-DD HH:mm"
-                    defaultValue={moment()}
-                    showTime
-                />
-            </Form.Item>
+    const handleClear = () => {
+        form.resetFields()
+        setSelectedRowKey()
+    }
 
-            <Form.Item label="Address" name="placeName">
-                <Select allowClear>
-                    {managersPlaces.map((i) => {
-                        let val =
-                            i.placeName +
-                            " " +
-                            i.placeCity +
-                            " " +
-                            i.placeCountry;
-                        return <Select.Option value={val}>{val}</Select.Option>;
-                    })}
-                </Select>
-            </Form.Item>
 
-            <Form.Item label="Status" name="status">
-                <Select allowClear >
-                    <Select.Option value="Unsolved">Unsolved</Select.Option>
-                    <Select.Option value="Approved">Approved</Select.Option>
-                </Select>
-            </Form.Item>
+    return (
 
-            <Form.Item label={"Reception Type"} name="visitType">
-                <Select
-                    allowClear
-                    defaultValue='Face to face'
-                >
-                    <Select.Option value="Face to face">Face to face</Select.Option>
-                    <Select.Option value="By phone">By phone</Select.Option>
-                    <Select.Option value="By chat">By chat</Select.Option>
-                </Select>
-            </Form.Item>
+        <SimpleGrid columns={['1', '2']} gap='1' >
 
-            <Form.Item label={"Visit reason"} name="visitReason">
-                <Select
-                    allowClear
-                >
-                    <Select.Option value="Inspection">Inspection</Select.Option>
-                    <Select.Option value="Treatment">Treatment</Select.Option>
-                    <Select.Option value="Operation">Operation</Select.Option>
-                    <Select.Option value="Control">Control</Select.Option>
-                    <Select.Option value="Aesthetics">Aesthetics</Select.Option>
-                    <Select.Option value="Prophylactic">Prophylactic</Select.Option>
-                </Select>
-            </Form.Item>
-
-            <Form.Item
-                label={"Description"}
-                name="visitDesc"
+            <Form
+                onFinish={onFinish}
+                id='visitTableFormBlok'
+                form={form}
+                labelWrap
+                labelAlign="right"
+                labelCol={{
+                    span: 8,
+                }}
+                wrapperCol={{
+                    span: 16,
+                }}
+                style={{
+                    maxWidth: 600,
+                }}
             >
-                <Input.TextArea rows={3} />
-            </Form.Item>
 
-        </Form>
+                <Form.Item hidden name='id'>
+                    <Input />
+                </Form.Item>
 
-        <Form
-            form={form}
-            labelWrap
-            labelAlign="right"
-            labelCol={{
-                span: 8,
-            }}
-            wrapperCol={{
-                span: 16,
-            }}
-            style={{
-                maxWidth: 600,
-            }}
-        >
-            <Form.Item
-                noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.visitReason !== currentValues.visitReason}
+                <Form.Item label='Date' name="visitDate">
+                    <DatePicker
+                        format="YYYY-MM-DD HH:mm"
+                        defaultValue={dayjs()}
+                        showTime
+                    />
+                </Form.Item>
+
+                <Form.Item label="Address" name="placeName">
+                    <Select allowClear>
+                        {managersPlaces.map((i) => {
+                            let val =
+                                i.placeName +
+                                " " +
+                                i.placeCity +
+                                " " +
+                                i.placeCountry;
+                            return <Select.Option value={val}>{val}</Select.Option>;
+                        })}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item label="Status" name="status">
+                    <Select allowClear >
+                        <Select.Option value="Unsolved">Unsolved</Select.Option>
+                        <Select.Option value="Approved">Approved</Select.Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item label={"Reception Type"} name="visitType">
+                    <Select
+                        allowClear
+                        defaultValue='Face to face'
+                    >
+                        <Select.Option value="Face to face">Face to face</Select.Option>
+                        <Select.Option value="By phone">By phone</Select.Option>
+                        <Select.Option value="By chat">By chat</Select.Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item label={"Visit reason"} name="visitReason">
+                    <Select
+                        allowClear
+                    >
+                        <Select.Option value="Inspection">Inspection</Select.Option>
+                        <Select.Option value="Treatment">Treatment</Select.Option>
+                        <Select.Option value="Operation">Operation</Select.Option>
+                        <Select.Option value="Control">Control</Select.Option>
+                        <Select.Option value="Aesthetics">Aesthetics</Select.Option>
+                        <Select.Option value="Prophylactic">Prophylactic</Select.Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    label={"Description"}
+                    name="visitDesc"
+                >
+                    <Input.TextArea showCount maxLength={3000} rows={3} />
+                </Form.Item>
+
+            </Form>
+
+            <Form
+                onFinish={onFinish}
+                id='visitTableFormBlok'
+                form={form}
+                labelWrap
+                labelAlign="right"
+                labelCol={{
+                    span: 8,
+                }}
+                wrapperCol={{
+                    span: 16,
+                }}
+                style={{
+                    maxWidth: 600,
+                }}
             >
-                {({ getFieldValue }) =>
-                    getFieldValue('visitReason') === 'Prophylactic' ? (
-                        <>
-                            <Form.Item name='Prophylactic'>
-                                <Radio.Group
+                <Form.Item
+                    noStyle
+                    shouldUpdate={(prevValues, currentValues) => prevValues.visitReason !== currentValues.visitReason}
+                >
+                    {({ getFieldValue }) =>
+                        getFieldValue('visitReason') === 'Prophylactic' ? (
+                            <>
+                                <Form.Item name='Prophylactic'>
+                                    <Radio.Group
+                                    >
+                                        <Radio.Button value="Maligant">Maligant</Radio.Button>
+                                        <Radio.Button value="Benign">Benign</Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+
+                                <Form.Item
+                                    noStyle
+                                    shouldUpdate={(prevValues, currentValues) => prevValues.Prophylactic !== currentValues.Prophylactic}
                                 >
-                                    <Radio.Button value="Maligant">Maligant</Radio.Button>
-                                    <Radio.Button value="Benign">Benign</Radio.Button>
-                                </Radio.Group>
-                            </Form.Item>
+                                    {({ getFieldValue }) =>
+                                        getFieldValue('Prophylactic') === 'Maligant' ? (
+                                            <>
 
-                            <Form.Item
-                                noStyle
-                                shouldUpdate={(prevValues, currentValues) => prevValues.Prophylactic !== currentValues.Prophylactic}
-                            >
-                                {({ getFieldValue }) =>
-                                    getFieldValue('Prophylactic') === 'Maligant' ? (
-                                        <>
+                                                <Form.Item label="USM"  >
+                                                    <Form.Item
+                                                        valuePropName="checked" noStyle name="usm">
+                                                        <Checkbox />
+                                                    </Form.Item>
+                                                    <Form.Item noStyle name="usmDescription">
+                                                        <Input.TextArea showCount maxLength={3000} />
+                                                    </Form.Item>
+                                                </Form.Item>
 
-                                            <Form.Item label="USM"  >
-                                                <Form.Item noStyle name="usm">
-                                                    <Checkbox />
+                                                <Form.Item label="Blood"  >
+                                                    <Form.Item noStyle name="blood">
+                                                        <Checkbox />
+                                                    </Form.Item>
+                                                    <Form.Item noStyle name="bloodDescription">
+                                                        <Input.TextArea showCount maxLength={3000} />
+                                                    </Form.Item>
                                                 </Form.Item>
-                                                <Form.Item noStyle name="usmDescription">
-                                                    <Input.TextArea />
+
+                                                <Form.Item label="Lungs"  >
+                                                    <Form.Item noStyle name="lungs">
+                                                        <Checkbox />
+                                                    </Form.Item>
+                                                    <Form.Item noStyle name="lungsDescription">
+                                                        <Input.TextArea showCount maxLength={3000} />
+                                                    </Form.Item>
                                                 </Form.Item>
+
+                                                <Form.Item label="Reason"  >
+                                                    <Form.Item noStyle name="reason">
+                                                        <Checkbox />
+                                                    </Form.Item>
+                                                    <Form.Item noStyle name="reasonDescription">
+                                                        <Input.TextArea showCount maxLength={3000} />
+                                                    </Form.Item>
+                                                </Form.Item>
+
+                                            </>
+                                        ) : (
+                                            <Form.Item label="Description" name="benignDescription" >
+                                                <Input.TextArea showCount maxLength={3000} />
                                             </Form.Item>
+                                        )}
 
-                                            <Form.Item label="Blood"  >
-                                                <Form.Item noStyle name="blood">
-                                                    <Checkbox />
-                                                </Form.Item>
-                                                <Form.Item noStyle name="bloodDescription">
-                                                    <Input.TextArea />
-                                                </Form.Item>
-                                            </Form.Item>
+                                </Form.Item>
 
-                                            <Form.Item label="Lungs"  >
-                                                <Form.Item noStyle name="lungs">
-                                                    <Checkbox />
-                                                </Form.Item>
-                                                <Form.Item noStyle name="lungsDescription">
-                                                    <Input.TextArea />
-                                                </Form.Item>
-                                            </Form.Item>
+                            </>
+                        ) : ''}
 
-                                            <Form.Item label="Reason"  >
-                                                <Form.Item noStyle name="reason">
-                                                    <Checkbox />
-                                                </Form.Item>
-                                                <Form.Item noStyle name="reasonDescription">
-                                                    <Input.TextArea />
-                                                </Form.Item>
-                                            </Form.Item>
+                </Form.Item>
 
-                                        </>
-                                    ) : (
-                                        <Form.Item label="Description" name="benignDescription" >
-                                            <Input.TextArea />
-                                        </Form.Item>
-                                    )}
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Space>
 
-                            </Form.Item>
+                        <Button
+                            form='visitTableFormBlok'
+                            htmlType='submit'
+                            type="primary"
+                        >
+                            {selectedRowKey ? 'Edit' : 'Add'}
+                        </Button>
 
-                        </>
-                    ) : ''}
+                        <Button onClick={handleClear} danger>{selectedRowKey ? "Close" : "Clear"}</Button>
 
-            </Form.Item>
 
-        </Form>
+                    </Space>
+                </Form.Item>
 
-    </SimpleGrid>
-  )
+            </Form>
+
+        </SimpleGrid>
+    )
 }
 
 export default memo(VisitsFormBloke)
