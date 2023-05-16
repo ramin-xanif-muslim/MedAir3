@@ -119,6 +119,8 @@ function CanvasComponent({ image, imageName }) {
         refCanvas.current.undo();
     };
 
+    console.log('savedDrawingCanvas',savedDrawingCanvas);
+
     return (
         <Box bg='pink.100' p='1' borderRadius='10px'>
 

@@ -6,10 +6,11 @@ import { useLocalStorageStore } from '../../../../../modules/store';
 import DeleteCalendarTableRow from '../DeleteCalendarTableRow'
 import CalendarTableSetting from './CalendarTableSetting';
 import sendRequest from '../../../../../modules/api/sendRequest';
+import { useOnRowTable } from '../../../../../modules/hooks/useOnRowTable';
 
 function CalendarsTable(props) {
 
-  const { dataSource, onRowTable, refetch } = props
+  const { dataSource, refetch } = props
 
   const [selectedRowKey, setSelectedRowKey] = useState();
 
@@ -206,7 +207,7 @@ function CalendarsTable(props) {
         render: (value, row, index) => {
           const handleDelete = async () => {
             message.loading()
-            console.log('row',row);
+            console.log('row', row);
             let Id = row.id;
             let res = await sendRequest("visits/" + Id, {}, "delete");
             if (res?.data) {
@@ -225,6 +226,8 @@ function CalendarsTable(props) {
     ];
   }, [isLargerThan400, calendarTableSetting])
 
+  const { onRowTable, isLoading } = useOnRowTable()
+
   return (
     <Box display='flex' flexDirection='column'>
 
@@ -233,6 +236,7 @@ function CalendarsTable(props) {
       </Box>
 
       <Table
+        loading={isLoading}
         size='small'
         bordered
         scroll={{

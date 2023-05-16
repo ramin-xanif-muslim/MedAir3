@@ -5,7 +5,7 @@ import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
 import { useGlobalContext } from "../../modules/context/index.js";
 import { MaskedInput } from "antd-mask-input";
 
-function PatientForm({ button, form }) {
+function PatientForm({ button, form, readOnly=false }) {
 
     const [isLargerThan600] = useMediaQuery('(min-width: 600px)')
 
@@ -22,20 +22,20 @@ function PatientForm({ button, form }) {
                     label="Name"
                 >
                     <Space.Compact>
-                    
+
                         <Form.Item
                             noStyle
                             key="patientName"
                             name="patientName"
                         >
-                            <Input placeholder="Name" />
+                            <Input readOnly={readOnly} placeholder="Name" />
                         </Form.Item>
 
                         <Form.Item
                             name="patientId"
                             noStyle
                         >
-                            <InputNumber addonBefore='№' placeholder="Patient №" />
+                            <InputNumber readOnly={readOnly} addonBefore='№' placeholder="Patient №" />
                         </Form.Item>
 
                         <Button
@@ -55,15 +55,16 @@ function PatientForm({ button, form }) {
                     >
 
                         <Form.Item key="patientSurName" name="patientSurName" label="Suriname">
-                            <Input placeholder="Suriname" />
+                            <Input readOnly={readOnly} placeholder="Suriname" />
                         </Form.Item>
 
                         <Form.Item key="phoneNumber" name="phoneNumber" label="Phone number">
-                        <MaskedInput
-                            allowClear
-                            style={{ width: "130px" }}
-                            mask={"000 000 00 00"}
-                        />
+                            <Input readOnly={readOnly} placeholder="Phone number" />
+                            {/* <MaskedInput
+                                allowClear
+                                style={{ width: "130px" }}
+                                mask={"000 000 00 00"}
+                            /> */}
                         </Form.Item>
 
                     </Form>

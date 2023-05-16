@@ -1,32 +1,130 @@
 import moment from "moment";
 import { useNavigate } from "react-router";
 import sendRequest from "../api/sendRequest";
+import { useGlobalContext } from "../context/index.js";
+import { useStore } from "../store";
+import { useState } from "react";
 
 export const useOnRowTable = () => {
 
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { personInfoForm, diseaseHistoryForm, patientForm, setFamilyMembersList, treatmentHistoryForm } = useGlobalContext()
+
   const navigate = useNavigate();
+
+  const fetchPersonInfo = async (id) => {
+    try{
+      let res = await sendRequest("vite/" + id, {}, "get")
+      if(res?.data) {
+        console.log('res?.fetchPersonInfo',res?.data);
+        res.data.birthDate = res.data.birthDate ? moment(res.data.birthDate) : null
+        personInfoForm.setFieldsValue(res.data)
+        patientForm.setFieldsValue(res.data)
+      }
+    }catch(error) {
+      console.log('%c error','background: red; color: dark', error);
+    }
+  }
+
+  const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
+  const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
+  const setDescriptionsCanvas = useStore((store) => store.setDescriptionsCanvas)
+
+  const fetchDiseaseHistory = async (id) => {
+    try{
+      let res = await sendRequest("morby/" + id, {}, "get")
+      if(res?.data) {
+        console.log('res?.fetchDiseaseHistory',res?.data);
+        diseaseHistoryForm.setFieldsValue(res.data)
+        setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
+        setFamilyMembersList(res.data.familyMembersList)
+        setSavedDrawingCanvas(res.data.deseaseImagesList)
+        if (res.data.deseaseImagesList?.deseaseImageDesc) {
+          let descCanvas = JSON.parse(
+            res.data.deseaseImagesList.deseaseImageDesc
+          );
+          setDescriptionsCanvas(descCanvas);
+        }
+      }
+    }catch(error) {
+      console.log('%c error','background: red; color: dark', error);
+    }
+  }
+
+  const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
+
+  const fetchVisits = async (id) => {
+    try{
+      let res = await sendRequest("visits/patientId/" + id, {}, "get")
+      if(res?.data) {
+        console.log('res?.fetchVisits',res?.data);
+        setDataSourceVisitTable(res.data)
+      }
+    }catch(error) {
+      console.log('%c error','background: red; color: dark', error);
+    }
+  }
+
+  const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
+
+  const fetchAnalyses = async (id) => {
+    try{
+      let res = await sendRequest("analyses/" + id, {}, "get")
+      if(res?.data) {
+        console.log('res?.fetchAnalyses',res?.data);
+        setDataSourceAnalysisTable(res.data)
+      }
+    }catch(error) {
+      console.log('%c error','background: red; color: dark', error);
+    }
+  }
+
+  const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
+  const setRecipeList = useStore((store) => store.setRecipeList)
+
+  const fetchTreatment = async (id) => {
+    try{
+      let res = await sendRequest("treatment/" + id, {}, "get")
+      if(res?.data) {
+        console.log('res?.fetchTreatment',res?.data);
+        treatmentHistoryForm.setFieldsValue(res.data)
+
+        const treatmentDynamics = res.data.treatmentDynamics;
+        setDataSourceTreatmentTable(treatmentDynamics)
+        
+        const recipeList = res.data.recipeList;
+        setRecipeList(recipeList)
+      }
+    }catch(error) {
+      console.log('%c error','background: red; color: dark', error);
+    }
+  }
 
   const fetchData = (id) => {
     try {
+      setIsLoading(true)
       Promise.all([
-        sendRequest("vite/" + id, {}, "get"),
-        // getMorby(id),
-        // getVizit(id),
-        // getTreatment(id),
-        // getAnalyses(id),
-      ]);
+        fetchPersonInfo(id),
+        fetchDiseaseHistory(id),
+        fetchVisits(id),
+        fetchAnalyses(id),
+        fetchTreatment(id),
+      ]).then(data => {
+        setIsLoading(false)
+        navigate("/person_info")
+      })
     } catch (err) {
     }
   };
 
 
-  const onRowTable = async (record) => {
+  const onRowTable = (record) => {
     try {
-      await fetchData(record.patientId);
-      navigate("/profile");
+      fetchData(record.patientId)
     } catch (error) {
       console.log('%c error', 'background: red; color: dark', error.message);
     }
   };
-  return { onRowTable };
+  return { onRowTable, isLoading };
 };

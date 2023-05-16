@@ -23,6 +23,7 @@ export const AppProvider = ({ children }) => {
     const [familyMembersList, setFamilyMembersList] = useState([])
 
     const values = {
+        treatmentHistoryForm,
         diseaseHistoryForm,
         personInfoForm,
         searchPatientForm,

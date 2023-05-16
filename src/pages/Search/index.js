@@ -1,12 +1,16 @@
 import React, { memo } from "react";
 import { Empty } from "antd";
 import { Table } from "antd";
-import moment from "moment";
 import PatientFormCalendar from "./modules/components/PatientFormCalendar";
 import { Box } from "@chakra-ui/react";
+import { useStore } from "../../modules/store";
+import dayjs from "dayjs";
+import { useOnRowTable } from "../../modules/hooks/useOnRowTable";
 
 const Search = () => {
-    
+
+    const dataSourceSearchTable = useStore((store) => store.dataSourceSearchTable)
+
     const columns = [
         {
             title: "Name",
@@ -28,7 +32,8 @@ const Search = () => {
             dataIndex: "birthDate",
             key: "birthDate",
             render: (value, row, index) => {
-                return moment(value).format("DD-MM-YYYY");
+                if (!value) return ''
+                return dayjs(value).format("DD-MM-YYYY");
             },
         },
         {
@@ -37,12 +42,18 @@ const Search = () => {
             key: "birthPlace",
         },
     ];
-    
+
+    const { onRowTable, isLoading } = useOnRowTable()
+
     return (
         <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
+
             <PatientFormCalendar />
+
             <Box mt='2'>
+
                 <Table
+                    loading={isLoading}
                     size='small'
                     bordered
                     pagination={false}
@@ -58,8 +69,14 @@ const Search = () => {
                         ),
                     }}
                     columns={columns}
+                    dataSource={dataSourceSearchTable}
+                    onRow={(record, index) => ({
+                        onClick: (e) => onRowTable(record, index),
+                    })}
                 />
+
             </Box>
+
         </Box>
     );
 };

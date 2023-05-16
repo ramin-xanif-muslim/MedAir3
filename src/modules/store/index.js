@@ -22,6 +22,8 @@ let store = (set) => ({
     setDataSourceTreatmentTable: (item) => set(() => ({ dataSourceTreatmentTable: item })),
     recipeList: [],
     setRecipeList: (item) => set(() => ({ recipeList: item })),
+    dataSourceSearchTable: [],
+    setDataSourceSearchTable: (item) => set(() => ({ dataSourceSearchTable: item })),
 });
 
 export const useStore = create(store);

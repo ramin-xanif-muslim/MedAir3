@@ -182,7 +182,8 @@ function VisitsFormBloke(props) {
                                                 </Form.Item>
 
                                                 <Form.Item label="Blood"  >
-                                                    <Form.Item noStyle name="blood">
+                                                    <Form.Item noStyle name="blood"
+                                                        valuePropName="checked">
                                                         <Checkbox />
                                                     </Form.Item>
                                                     <Form.Item noStyle name="bloodDescription">
@@ -191,7 +192,8 @@ function VisitsFormBloke(props) {
                                                 </Form.Item>
 
                                                 <Form.Item label="Lungs"  >
-                                                    <Form.Item noStyle name="lungs">
+                                                    <Form.Item noStyle name="lungs"
+                                                        valuePropName="checked">
                                                         <Checkbox />
                                                     </Form.Item>
                                                     <Form.Item noStyle name="lungsDescription">
@@ -200,7 +202,8 @@ function VisitsFormBloke(props) {
                                                 </Form.Item>
 
                                                 <Form.Item label="Reason"  >
-                                                    <Form.Item noStyle name="reason">
+                                                    <Form.Item noStyle name="reason"
+                                                        valuePropName="checked">
                                                         <Checkbox />
                                                     </Form.Item>
                                                     <Form.Item noStyle name="reasonDescription">
