@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useLocalStorageStore } from "../modules/store";
 import { Box, Center, Image } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import logo from '../modules/images/MedAir.jpg'
 
 const Login = () => {
 
@@ -43,7 +44,7 @@ const Login = () => {
                 <Image
                     boxSize='250px'
                     className='circle'
-                    src='../modules/images/MedAir.jpg'
+                    src={logo}
                     // src='/images/MedAir.jpg'
                     alt='medAir'
                 />

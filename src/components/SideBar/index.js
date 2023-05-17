@@ -11,6 +11,7 @@ import { Center, Image } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorageStore, useStore } from '../../modules/store';
 import { correctBreadcrumbItems } from '../../modules/functions';
+import logo from '../../modules/images/MedAir.jpg'
 
 function getItem(label, key, icon, children) {
     return {
@@ -54,7 +55,7 @@ function SideBar() {
     const logOut = () => {
         setToken(null)
         localStorage.clear()
-        window.location.reload();
+        // window.location.reload();
         navigate('/calendar')
     }
 
@@ -87,7 +88,7 @@ function SideBar() {
             <Center>
                 <Image
                     className='circle'
-                    src='../../modules/images/MedAir.jpg'
+                    src={logo}
                     // src='/images/MedAir.jpg'
                     alt='medAir'
                 />
