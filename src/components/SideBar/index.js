@@ -21,6 +21,7 @@ function getItem(label, key, icon, children) {
     };
 }
 const profileSubMenus = ['person_info','disease_history','visits','analysis','treatment']
+
 const items = [
     getItem('Calendar', 'calendar', <CalendarOutlined />),
     getItem('Search', 'search', <FileSearchOutlined />),
@@ -86,7 +87,8 @@ function SideBar() {
             <Center>
                 <Image
                     className='circle'
-                    src='/images/MedAir.jpg'
+                    src='../../modules/images/MedAir.jpg'
+                    // src='/images/MedAir.jpg'
                     alt='medAir'
                 />
             </Center>

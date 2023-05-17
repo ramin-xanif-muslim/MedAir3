@@ -17,7 +17,6 @@ export const AppProvider = ({ children }) => {
     const [personInfoForm] = Form.useForm(); //vite
     const [diseaseHistoryForm] = Form.useForm(); //morby
     const [treatmentHistoryForm] = Form.useForm(); //treatment
-    
 
     const [inPatientCollapse, setInPatientCollapse] = useState(true);
     const [familyMembersList, setFamilyMembersList] = useState([])

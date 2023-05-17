@@ -2,7 +2,8 @@ import { Grid, GridItem } from '@chakra-ui/react'
 import React, { memo } from 'react'
 import Canvas from './Canvas'
 
-const image = '/images/deseaseImage1Data.png'
+// const image = '/images/deseaseImage1Data.png'
+const image = '../../../../../modules/images/man.png'
 
 function BlockCanvas() {
 

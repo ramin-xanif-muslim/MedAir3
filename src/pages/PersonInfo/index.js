@@ -32,12 +32,13 @@ function PersonInfo() {
                     }}
                 >
                     <Form.Item label="Birth date" name="birthDate">
-                        <DatePicker />
+                        <DatePicker allowClear />
                     </Form.Item>
 
                     <Form.Item label="Birth place" name="birthPlace">
                         <Input />
                     </Form.Item>
+
                     <Form.Item name="phoneNumber" label="Phone Number">
                         <MaskedInput
                             allowClear
@@ -45,6 +46,7 @@ function PersonInfo() {
                             mask={"000 000 00 00"}
                         />
                     </Form.Item>
+
                     <Form.Item label="Sex" name="gender">
                         <Select
                             allowClear

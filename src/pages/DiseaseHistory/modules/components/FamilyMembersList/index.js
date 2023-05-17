@@ -47,7 +47,7 @@ function FamilyMembersList() {
 
             <List
                 size="small"
-                header={<HeaderFamilyMembersList setList={setFamilyMembersList} />}
+                header={<HeaderFamilyMembersList />}
                 bordered
                 dataSource={familyMembersList}
                 renderItem={(item, index) => {

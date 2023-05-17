@@ -3,62 +3,9 @@ import PatientForm from '../PatientForm'
 import { Button, Form, Space, message } from 'antd'
 import { useGlobalContext } from '../../modules/context/index.js'
 import { useStore } from '../../modules/store'
-import sendRequest from '../../modules/api/sendRequest'
+import { fetchPatientId, postAnalyses, postMorby, postPersonInfo, postTreatment, postVisit } from '../../modules/api'
 
 
-const messageOnSave = (res, nameFunc) => {
-    if (res && typeof res !== "string") {
-        message.success({
-            content: nameFunc + " saved",
-            key: nameFunc + "_save",
-            duration: 2,
-        });
-    } else {
-        message.error({
-            content: nameFunc + " don't saved",
-            key: nameFunc + "_save",
-            duration: 2,
-        });
-    }
-};
-
-const fetchPatientId = async () => {
-    try {
-        let res = await sendRequest("patientid", {}, "get");
-        return res.data;
-    } catch (e) {
-        message.error({
-            content: e,
-            key: "doc_save",
-            duration: 2,
-        });
-    }
-};
-
-const postPersonInfo = async (obj) => {
-    let res = await sendRequest("vite", obj, "post");
-    messageOnSave(res, "Person Info");
-};
-
-const postMorby = async (obj) => {
-    let res = await sendRequest("morby", obj, "post");
-    messageOnSave(res, "Disease History");
-};
-
-const postVisit = async (obj) => {
-    let res = await sendRequest("visits", obj, "post");
-    messageOnSave(res, "Visit");
-};
-
-const postAnalyses = async (obj) => {
-    let res = await sendRequest("analyses", obj, "post");
-    messageOnSave(res, "Analyses");
-};
-
-const postTreatment = async (obj) => {
-    let res = await sendRequest("treatment", obj, "post");
-    messageOnSave(res, "Treatment");
-};
 
 const ProfilePatientButton = () => {
 

@@ -1,9 +1,9 @@
-import moment from "moment";
 import { useNavigate } from "react-router";
 import sendRequest from "../api/sendRequest";
 import { useGlobalContext } from "../context/index.js";
 import { useStore } from "../store";
 import { useState } from "react";
+import dayjs from "dayjs";
 
 export const useOnRowTable = () => {
 
@@ -18,7 +18,7 @@ export const useOnRowTable = () => {
       let res = await sendRequest("vite/" + id, {}, "get")
       if(res?.data) {
         console.log('res?.fetchPersonInfo',res?.data);
-        res.data.birthDate = res.data.birthDate ? moment(res.data.birthDate) : null
+        res.data.birthDate = res.data.birthDate ? dayjs(res.data.birthDate) : null
         personInfoForm.setFieldsValue(res.data)
         patientForm.setFieldsValue(res.data)
       }

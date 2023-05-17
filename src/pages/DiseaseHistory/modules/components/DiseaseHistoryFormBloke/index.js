@@ -2,6 +2,7 @@ import { SimpleGrid } from '@chakra-ui/react'
 import { Button, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
 import React, { memo } from 'react'
 import { useStore } from '../../../../../modules/store';
+import { PathologistSelectInput } from '../../../../../components/SelectInputs';
 
 function DiseaseHistoryFormBloke(props) {
 
@@ -171,15 +172,7 @@ function DiseaseHistoryFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label="Pathologist" name="pathologist">
-                    <Select allowClear>
-                        {/* {pathologistsList.map((i) => {
-                                return (
-                                    <Select.Option value={i.pathologistName}>
-                                        {i.pathologistName}
-                                    </Select.Option>
-                                );
-                            })} */}
-                    </Select>
+                    <PathologistSelectInput />
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

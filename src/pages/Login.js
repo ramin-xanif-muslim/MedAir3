@@ -43,7 +43,8 @@ const Login = () => {
                 <Image
                     boxSize='250px'
                     className='circle'
-                    src='/images/MedAir.jpg'
+                    src='../modules/images/MedAir.jpg'
+                    // src='/images/MedAir.jpg'
                     alt='medAir'
                 />
             </Center>

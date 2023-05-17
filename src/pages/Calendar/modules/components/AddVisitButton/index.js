@@ -1,24 +1,43 @@
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import {
     Button,
     useDisclosure,
 } from '@chakra-ui/react'
 import { Form, Input, DatePicker, Select, Modal, Button as AntdButton } from 'antd'
 import { MaskedInput } from "antd-mask-input";
-import moment from 'moment/moment';
+import dayjs from 'dayjs';
+import { handleAddVisit } from '../../../../../modules/api';
 
-function AddVisitButton() {
+function AddVisitButton({refetch}) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-        console.log('values', values);
+    const onFinish = async (values) => {
+        setIsLoading(true)
+        const sendObj = values
+        sendObj.visitDate =
+            dayjs(values.visitDate).format("YYYY-MM-DD HH:mm");
+
+            setIsLoading(false)
+        await handleAddVisit({ sendObj })
+        form.resetFields()
+        refetch()
+        onClose()
     }
 
     return (
         <>
-            <Button size='sm' colorScheme='blue' onClick={onOpen}>Add visit</Button>
+            <Button
+                size='sm'
+                colorScheme='blue'
+                onClick={onOpen}
+            >
+                Add visit
+            </Button>
+
             <Modal
                 footer={[
                     <AntdButton key='1' onClick={onClose}>Cancel</AntdButton>,
@@ -27,6 +46,7 @@ function AddVisitButton() {
                         type="primary"
                         htmlType="submit"
                         form="visitModalForm"
+                        loading={isLoading}
                     >
                         Add
                     </AntdButton>
@@ -37,9 +57,6 @@ function AddVisitButton() {
                 <Form
                     form={form}
                     onFinish={onFinish}
-                    initialValues={{
-                        visitDate: moment()
-                    }}
                     id="visitModalForm"
                     labelAlign='left'
                     labelCol={{
@@ -69,6 +86,7 @@ function AddVisitButton() {
                             showTime
                             allowClear
                             format={"YYYY-MM-DD HH:mm"}
+                            defaultValue={dayjs()}
                         />
                     </Form.Item>
                     <Form.Item label="Mobile Number" name="phoneNumber">
