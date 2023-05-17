@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/MedAir3/static/css/main.10af6b91.css",
-    "main.js": "/MedAir3/static/js/main.65571cf6.js",
+    "main.js": "/MedAir3/static/js/main.950d0153.js",
     "static/js/867.9a6fe22d.chunk.js": "/MedAir3/static/js/867.9a6fe22d.chunk.js",
     "static/js/155.5ec3cce4.chunk.js": "/MedAir3/static/js/155.5ec3cce4.chunk.js",
     "static/js/174.a36d09b6.chunk.js": "/MedAir3/static/js/174.a36d09b6.chunk.js",
-    "static/js/742.a962318b.chunk.js": "/MedAir3/static/js/742.a962318b.chunk.js",
+    "static/js/794.f8a58371.chunk.js": "/MedAir3/static/js/794.f8a58371.chunk.js",
     "static/js/196.3d1edc5f.chunk.js": "/MedAir3/static/js/196.3d1edc5f.chunk.js",
     "static/js/838.20a8e48e.chunk.js": "/MedAir3/static/js/838.20a8e48e.chunk.js",
     "static/js/762.a741fdf0.chunk.js": "/MedAir3/static/js/762.a741fdf0.chunk.js",
@@ -13,7 +13,7 @@
     "static/js/375.3b4b00ec.chunk.js": "/MedAir3/static/js/375.3b4b00ec.chunk.js",
     "static/js/854.33363260.chunk.js": "/MedAir3/static/js/854.33363260.chunk.js",
     "static/js/787.ada8c475.chunk.js": "/MedAir3/static/js/787.ada8c475.chunk.js",
-    "static/js/837.d43e1c64.chunk.js": "/MedAir3/static/js/837.d43e1c64.chunk.js",
+    "static/js/520.2e2c4b5f.chunk.js": "/MedAir3/static/js/520.2e2c4b5f.chunk.js",
     "static/js/278.91d74cca.chunk.js": "/MedAir3/static/js/278.91d74cca.chunk.js",
     "static/js/793.232fc5e6.chunk.js": "/MedAir3/static/js/793.232fc5e6.chunk.js",
     "static/js/852.39fc8244.chunk.js": "/MedAir3/static/js/852.39fc8244.chunk.js",
@@ -24,13 +24,14 @@
     "static/js/489.78a599fc.chunk.js": "/MedAir3/static/js/489.78a599fc.chunk.js",
     "static/js/21.e3412cac.chunk.js": "/MedAir3/static/js/21.e3412cac.chunk.js",
     "static/js/890.f2bf9aaa.chunk.js": "/MedAir3/static/js/890.f2bf9aaa.chunk.js",
+    "static/media/man.png": "/MedAir3/static/media/man.c013c9ece0d53d52029a.png",
     "index.html": "/MedAir3/index.html",
     "main.10af6b91.css.map": "/MedAir3/static/css/main.10af6b91.css.map",
-    "main.65571cf6.js.map": "/MedAir3/static/js/main.65571cf6.js.map",
+    "main.950d0153.js.map": "/MedAir3/static/js/main.950d0153.js.map",
     "867.9a6fe22d.chunk.js.map": "/MedAir3/static/js/867.9a6fe22d.chunk.js.map",
     "155.5ec3cce4.chunk.js.map": "/MedAir3/static/js/155.5ec3cce4.chunk.js.map",
     "174.a36d09b6.chunk.js.map": "/MedAir3/static/js/174.a36d09b6.chunk.js.map",
-    "742.a962318b.chunk.js.map": "/MedAir3/static/js/742.a962318b.chunk.js.map",
+    "794.f8a58371.chunk.js.map": "/MedAir3/static/js/794.f8a58371.chunk.js.map",
     "196.3d1edc5f.chunk.js.map": "/MedAir3/static/js/196.3d1edc5f.chunk.js.map",
     "838.20a8e48e.chunk.js.map": "/MedAir3/static/js/838.20a8e48e.chunk.js.map",
     "762.a741fdf0.chunk.js.map": "/MedAir3/static/js/762.a741fdf0.chunk.js.map",
@@ -38,7 +39,7 @@
     "375.3b4b00ec.chunk.js.map": "/MedAir3/static/js/375.3b4b00ec.chunk.js.map",
     "854.33363260.chunk.js.map": "/MedAir3/static/js/854.33363260.chunk.js.map",
     "787.ada8c475.chunk.js.map": "/MedAir3/static/js/787.ada8c475.chunk.js.map",
-    "837.d43e1c64.chunk.js.map": "/MedAir3/static/js/837.d43e1c64.chunk.js.map",
+    "520.2e2c4b5f.chunk.js.map": "/MedAir3/static/js/520.2e2c4b5f.chunk.js.map",
     "278.91d74cca.chunk.js.map": "/MedAir3/static/js/278.91d74cca.chunk.js.map",
     "793.232fc5e6.chunk.js.map": "/MedAir3/static/js/793.232fc5e6.chunk.js.map",
     "852.39fc8244.chunk.js.map": "/MedAir3/static/js/852.39fc8244.chunk.js.map",
@@ -52,6 +53,6 @@
   },
   "entrypoints": [
     "static/css/main.10af6b91.css",
-    "static/js/main.65571cf6.js"
+    "static/js/main.950d0153.js"
   ]
 }
