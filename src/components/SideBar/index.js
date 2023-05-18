@@ -89,7 +89,6 @@ function SideBar() {
                 <Image
                     className='circle'
                     src={logo}
-                    // src='/images/MedAir.jpg'
                     alt='medAir'
                 />
             </Center>
