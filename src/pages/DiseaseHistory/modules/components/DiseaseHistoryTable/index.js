@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react'
 import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
 import DeleteDiseaseHistoryTableRow from '../DeleteDiseaseHistoryTableRow';
@@ -12,7 +12,7 @@ function DiseaseHistoryTable(props) {
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
     const diseaseHistoryTableSetting = useLocalStorageStore((store) => store.diseaseHistoryTableSetting)
-    
+
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
 
@@ -21,7 +21,13 @@ function DiseaseHistoryTable(props) {
     }
 
     const onRowTable = (record, index) => {
-        form.setFieldsValue(record)
+        const { erN, prN } = record
+        let initialForm = {
+            ...record,
+            ihkEr: erN ? 1 : 2,
+            ihkPr: prN ? 1 : 2,
+        }
+        form.setFieldsValue(initialForm)
     }
 
     const columns = useMemo(() => {
@@ -67,48 +73,43 @@ function DiseaseHistoryTable(props) {
             },
             {
                 title: "ER",
-                dataIndex: "ihkEr",
-                key: "ihkEr",
-                isVisible: visible('ihkEr'),
-                ellipsis: true,
-                render: (value) => {
-                    if (value === 1) {
-                        return "Pozitiv";
-                    } else if (value === 2) {
-                        return "Negativ";
-                    }
-                },
-            },
-            {
-                title: "ER N",
                 dataIndex: "erN",
                 key: "erN",
                 isVisible: visible('erN'),
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
-            },
-            {
-                title: "PR",
-                dataIndex: "ihkPr",
-                key: "ihkPr",
-                isVisible: visible('ihkPr'),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
                 render: (value) => {
-                    if (value === 1) {
-                        return "Pozitiv";
-                    } else if (value === 2) {
-                        return "Negativ";
+                    if (value) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>Positive</Box>
+                                <Box ml='2' color='blue.400' fontWeight='semibold'>{value}</Box>
+                            </Flex>
+                        )
+                    } else {
+                        return "Negative";
                     }
                 },
             },
             {
-                title: "PR N",
+                title: "PR",
                 dataIndex: "prN",
                 key: "prN",
                 isVisible: visible('prN'),
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
+                render: (value) => {
+                    if (value) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>Positive</Box>
+                                <Box ml='2' color='blue.400' fontWeight='semibold'>{value}</Box>
+                            </Flex>
+                        )
+                    } else {
+                        return "Negative";
+                    }
+                },
             },
             {
                 title: "HER2",
@@ -117,24 +118,25 @@ function DiseaseHistoryTable(props) {
                 isVisible: visible('her2'),
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
-                render: (value) => (
-                    <Tooltip placement="topLeft" title={value}>
-                        {value}
-                    </Tooltip>
-                ),
-            },
-            {
-                title: "HER2 FT",
-                dataIndex: "her2FT",
-                key: "her2FT",
-                isVisible: visible('her2FT'),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
-                render: (value) => (
-                    <Tooltip placement="topLeft" title={value}>
-                        {value}
-                    </Tooltip>
-                ),
+                render: (value, row) => {
+                    if (+value === 2) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>{value}</Box>
+                                <Flex>
+                                    <Box>FT:</Box>
+                                    <Box ml='2' color='blue.400' fontWeight='semibold'>{row.her2FT}</Box>
+                                </Flex>
+                            </Flex>
+                        )
+                    } else {
+                        return (
+                            <Tooltip placement="topLeft" title={value}>
+                                {value}
+                            </Tooltip>
+                        )
+                    }
+                },
             },
             {
                 title: "K67",

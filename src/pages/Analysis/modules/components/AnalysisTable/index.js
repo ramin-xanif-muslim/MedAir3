@@ -22,8 +22,12 @@ function AnalysisTable(props) {
     }
 
     const onRowTable = (record, index) => {
-        const copy = { ...record };
-        form.setFieldsValue(copy)
+        const { analyzesType, analyzesSubType, date } = record
+        form.setFieldsValue({
+            ...record,
+            date: dayjs(date),
+            analyzesSubType: analyzesType === "Other healthcare area" ? "" : analyzesSubType
+        })
     }
 
     const columns = useMemo(() => {
@@ -95,11 +99,12 @@ function AnalysisTable(props) {
             },
             {
                 title: "Delete",
+                width: 50,
+                align: 'center',
                 dataIndex: "delete",
                 key: "delete",
                 isVisible: visible('delete'),
                 ellipsis: true,
-                align: 'center',
                 render: (value, row, index) => {
                     const handleDelete = () => {
                         let newData = dataSourceAnalysisTable.filter(i => i.id !== row.id)

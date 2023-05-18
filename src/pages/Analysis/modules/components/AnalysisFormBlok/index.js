@@ -1,8 +1,10 @@
-import React, { memo } from 'react'
-import { Button, Form, Input, Select, Space } from 'antd'
+import React, { memo, useState } from 'react'
+import { Button, DatePicker, Form, Input, Select, Space, message } from 'antd'
 import { SimpleGrid } from '@chakra-ui/react'
 import UploadForm from '../UploadForm';
 import { useStore } from '../../../../../modules/store';
+import dayjs from 'dayjs';
+import sendRequest from '../../../../../modules/api/sendRequest';
 
 const breastSelectOpnions = [
     "USM",
@@ -27,29 +29,47 @@ const other = [
     "PET-MRI",
 ];
 
+const fetchAnalysisId = async () => {
+  let res = await sendRequest('analysid')
+  if (res?.data) {
+    message.success()
+    return res.data
+  } else return 0
+}
+
 function AnalysisFormBlok(props) {
 
     const { selectedRowKey, setSelectedRowKey, form } = props
 
+    const [isLoading, setIsLoading] = useState(false)
+
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
     const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         try {
             if (selectedRowKey) {
                 let newData = dataSourceAnalysisTable.map((i) => {
                     if (i.id === values.id) {
-                        return { ...values }
+                        const { date } = values
+                        return { 
+                            ...values,
+                            date: dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
+                         }
 
                     }
                     else return i
                 })
                 setDataSourceAnalysisTable(newData)
             } else {
-                let id = new Date().getTime()
-                values.id = id
-                values.key = id
+                setIsLoading(true)
+                let analyzesId = await fetchAnalysisId()
+                values.analyzesId = analyzesId
+                values.id = analyzesId
+                values.key = analyzesId
+                values.date = dayjs().format('YYYY-MM-DD HH:mm:ss')
                 setDataSourceAnalysisTable([...dataSourceAnalysisTable, values])
+                setIsLoading(false)
             }
             form.resetFields()
             setSelectedRowKey()
@@ -88,10 +108,13 @@ function AnalysisFormBlok(props) {
                     <Input />
                 </Form.Item>
 
+                <Form.Item hidden name='date'>
+                    <DatePicker />
+                </Form.Item>
+
                 <Form.Item label='Analyzes type' name="analyzesType">
                     <Select
                         allowClear
-                        defaultValue="Breast"
                     >
                         <Select.Option value="Breast">Breast</Select.Option>
                         <Select.Option value="Other analysis">Other analysis</Select.Option>
@@ -184,6 +207,7 @@ function AnalysisFormBlok(props) {
                             form='analysisTableFormBlok'
                             htmlType='submit'
                             type="primary"
+                            loading={isLoading}
                         >
                             {selectedRowKey ? 'Edit' : 'Add'}
                         </Button>
@@ -198,10 +222,16 @@ function AnalysisFormBlok(props) {
                     noStyle
                     shouldUpdate={(prevValues, currentValues) => prevValues.analyzesSubType !== currentValues.analyzesSubType}
                 >
-                    {({ getFieldValue }) =>
-                        getFieldValue('analyzesSubType') ? (
-                            <UploadForm form={form} selectedRowKey={selectedRowKey} />
-                        ) : ''}
+                    {({ getFieldValue }) => {
+                        let isShow = getFieldValue('analyzesSubType')
+
+                        if (isShow) {
+                            return (
+                                <UploadForm form={form} selectedRowKey={selectedRowKey} />
+                            )
+                        } else return ''
+                    }
+                    }
                 </Form.Item>
 
             </Form>

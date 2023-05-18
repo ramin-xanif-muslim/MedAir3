@@ -125,3 +125,9 @@ export const fetchPathologistsPlace = async () => {
         return res.data
     }
 };
+export const fetchManagersPlace = async () => {
+    let res = await sendRequest("managers/places");
+    if (res?.data) {
+        return res.data
+    }
+};

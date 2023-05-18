@@ -6,6 +6,7 @@ import { useLocalStorageStore } from './modules/store';
 import Login from './pages/Login';
 import { Layout } from 'antd';
 import { useEffectOnDidMountApp } from './modules/hooks';
+import { ErrorBoundary } from './pages/Error';
 
 function App() {
 
@@ -36,7 +37,9 @@ function App() {
 
             {/* <Breadcrumb /> */}
 
-            <ReactComponent />
+            <ErrorBoundary>
+              <ReactComponent />
+            </ErrorBoundary>
 
           </Box>
         </Layout.Content>

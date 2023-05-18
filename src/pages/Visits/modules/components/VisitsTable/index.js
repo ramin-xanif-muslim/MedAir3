@@ -13,7 +13,7 @@ function VisitsTable(props) {
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
     const visitsTableSetting = useLocalStorageStore((store) => store.diseaseHistoryTableSetting)
-    
+
     const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
     const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
 
@@ -22,9 +22,25 @@ function VisitsTable(props) {
     }
 
     const onRowTable = (record, index) => {
-        const copy = { ...record };
-        copy.visitDate = dayjs(record.visitDate)
-        form.setFieldsValue(copy)
+        const {
+            visitDate,
+            benignDescription,
+            usmDescription,
+            bloodDescription,
+            lungsDescription,
+            reasonDescription,
+        } = record
+
+        let newData = {
+            ...record,
+            usm: usmDescription ? true : false,
+            blood: bloodDescription ? true : false,
+            lungs: lungsDescription ? true : false,
+            reason: reasonDescription ? true : false,
+            visitDate: dayjs(visitDate),
+            Prophylactic: benignDescription ? "Benign" : "Maligant",
+        }
+        form.setFieldsValue(newData)
     }
 
     const columns = useMemo(() => {

@@ -14,13 +14,14 @@ const verificationToken = async (url) => {
     try {
       let token = localStorage.getItem("token");
       let res = await axios.get(API_BASE + "token/" + token);
-      if (res.data === "ok") {
+      if (res?.data === "ok") {
         return "ok";
-      }else if(res.data === "no"){
+      }else if(res?.data === "no"){
         localStorage.clear()
         // window.location.reload();
        }
     } catch {
+      message.error("ERROR: Verification Token ")
       console.log("err in verificationToken");
     }
   }

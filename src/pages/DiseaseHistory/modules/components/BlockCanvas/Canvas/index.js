@@ -119,8 +119,6 @@ function CanvasComponent({ image, imageName }) {
         refCanvas.current.undo();
     };
 
-    console.log('savedDrawingCanvas',savedDrawingCanvas);
-
     return (
         <Box bg='pink.100' p='1' borderRadius='10px'>
 
@@ -165,7 +163,7 @@ function CanvasComponent({ image, imageName }) {
                 </Space.Compact>
 
                 <Form.Item label='Description' name='description'>
-                    <Input.TextArea showCount maxLength={3000}
+                    <Input.TextArea disabled={disableSaveBtn} showCount maxLength={3000}
                         onChange={onChangeDescription}
                     />
                 </Form.Item>
@@ -189,7 +187,7 @@ function CanvasComponent({ image, imageName }) {
                     onChange={onChangeCanvas}
                     disabled={disableCanvas}
                     brushRadius={brushRadius}
-                    saveData={savedDrawingCanvas[imageName] || ""
+                    saveData={savedDrawingCanvas ? savedDrawingCanvas[imageName] : ""
                     }
                 />
             </Box>

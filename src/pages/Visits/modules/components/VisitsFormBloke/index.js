@@ -1,10 +1,11 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Button, Checkbox, DatePicker, Form, Input, Radio, Select, Space } from 'antd'
 import { SimpleGrid } from '@chakra-ui/react'
-import { useStore } from '../../../../../modules/store';
+import { useLocalStorageStore, useStore } from '../../../../../modules/store';
 import dayjs from 'dayjs';
+import { useQuery } from 'react-query';
+import { fetchManagersPlace } from '../../../../../modules/api';
 
-const managersPlaces = []
 
 function VisitsFormBloke(props) {
 
@@ -44,6 +45,17 @@ function VisitsFormBloke(props) {
         setSelectedRowKey()
     }
 
+    const managersPlaces = useLocalStorageStore(store => store.managersPlaces);
+    const setManagersPlaces = useLocalStorageStore(store => store.setManagersPlaces);
+
+    const { data, isFetching } = useQuery(["managers/places"], fetchManagersPlace)
+
+    useEffect(() => {
+        if (!isFetching && data) {
+            setManagersPlaces(data)
+        }
+    }, [isFetching])
+
 
     return (
 
@@ -78,7 +90,7 @@ function VisitsFormBloke(props) {
                     />
                 </Form.Item>
 
-                <Form.Item label="Address" name="placeName">
+                <Form.Item label="Address" name="placeName" >
                     <Select allowClear>
                         {managersPlaces.map((i) => {
                             let val =
@@ -152,76 +164,81 @@ function VisitsFormBloke(props) {
                     noStyle
                     shouldUpdate={(prevValues, currentValues) => prevValues.visitReason !== currentValues.visitReason}
                 >
-                    {({ getFieldValue }) =>
-                        getFieldValue('visitReason') === 'Prophylactic' ? (
-                            <>
-                                <Form.Item name='Prophylactic'>
-                                    <Radio.Group
+                    {({ getFieldValue }) => {
+                        if (getFieldValue('visitReason') === 'Prophylactic') {
+
+                            return (
+                                <>
+                                    <Form.Item name='Prophylactic'>
+                                        <Radio.Group>
+                                            <Radio.Button value="Maligant">Maligant</Radio.Button>
+                                            <Radio.Button value="Benign">Benign</Radio.Button>
+                                        </Radio.Group>
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        noStyle
+                                        shouldUpdate={(prevValues, currentValues) => prevValues.Prophylactic !== currentValues.Prophylactic}
                                     >
-                                        <Radio.Button value="Maligant">Maligant</Radio.Button>
-                                        <Radio.Button value="Benign">Benign</Radio.Button>
-                                    </Radio.Group>
-                                </Form.Item>
+                                        {({ getFieldValue }) =>
+                                            getFieldValue('Prophylactic') === 'Maligant' ? (
+                                                <>
 
-                                <Form.Item
-                                    noStyle
-                                    shouldUpdate={(prevValues, currentValues) => prevValues.Prophylactic !== currentValues.Prophylactic}
-                                >
-                                    {({ getFieldValue }) =>
-                                        getFieldValue('Prophylactic') === 'Maligant' ? (
-                                            <>
+                                                    <Form.Item label="USM"  >
+                                                        <Form.Item
+                                                            valuePropName="checked" noStyle name="usm">
+                                                            <Checkbox />
+                                                        </Form.Item>
+                                                        <Form.Item noStyle name="usmDescription">
+                                                            <Input.TextArea showCount maxLength={3000} />
+                                                        </Form.Item>
+                                                    </Form.Item>
 
-                                                <Form.Item label="USM"  >
-                                                    <Form.Item
-                                                        valuePropName="checked" noStyle name="usm">
-                                                        <Checkbox />
+                                                    <Form.Item label="Blood"  >
+                                                        <Form.Item noStyle name="blood"
+                                                            valuePropName="checked">
+                                                            <Checkbox />
+                                                        </Form.Item>
+                                                        <Form.Item noStyle name="bloodDescription">
+                                                            <Input.TextArea showCount maxLength={3000} />
+                                                        </Form.Item>
                                                     </Form.Item>
-                                                    <Form.Item noStyle name="usmDescription">
-                                                        <Input.TextArea showCount maxLength={3000} />
+
+                                                    <Form.Item label="Lungs"  >
+                                                        <Form.Item noStyle name="lungs"
+                                                            valuePropName="checked">
+                                                            <Checkbox />
+                                                        </Form.Item>
+                                                        <Form.Item noStyle name="lungsDescription">
+                                                            <Input.TextArea showCount maxLength={3000} />
+                                                        </Form.Item>
                                                     </Form.Item>
+
+                                                    <Form.Item label="Reason"  >
+                                                        <Form.Item noStyle name="reason"
+                                                            valuePropName="checked">
+                                                            <Checkbox />
+                                                        </Form.Item>
+                                                        <Form.Item noStyle name="reasonDescription">
+                                                            <Input.TextArea showCount maxLength={3000} />
+                                                        </Form.Item>
+                                                    </Form.Item>
+
+                                                </>
+                                            ) : (
+                                                <Form.Item label="Description" name="benignDescription" >
+                                                    <Input.TextArea showCount maxLength={3000} />
                                                 </Form.Item>
+                                            )}
 
-                                                <Form.Item label="Blood"  >
-                                                    <Form.Item noStyle name="blood"
-                                                        valuePropName="checked">
-                                                        <Checkbox />
-                                                    </Form.Item>
-                                                    <Form.Item noStyle name="bloodDescription">
-                                                        <Input.TextArea showCount maxLength={3000} />
-                                                    </Form.Item>
-                                                </Form.Item>
+                                    </Form.Item>
 
-                                                <Form.Item label="Lungs"  >
-                                                    <Form.Item noStyle name="lungs"
-                                                        valuePropName="checked">
-                                                        <Checkbox />
-                                                    </Form.Item>
-                                                    <Form.Item noStyle name="lungsDescription">
-                                                        <Input.TextArea showCount maxLength={3000} />
-                                                    </Form.Item>
-                                                </Form.Item>
+                                </>
 
-                                                <Form.Item label="Reason"  >
-                                                    <Form.Item noStyle name="reason"
-                                                        valuePropName="checked">
-                                                        <Checkbox />
-                                                    </Form.Item>
-                                                    <Form.Item noStyle name="reasonDescription">
-                                                        <Input.TextArea showCount maxLength={3000} />
-                                                    </Form.Item>
-                                                </Form.Item>
-
-                                            </>
-                                        ) : (
-                                            <Form.Item label="Description" name="benignDescription" >
-                                                <Input.TextArea showCount maxLength={3000} />
-                                            </Form.Item>
-                                        )}
-
-                                </Form.Item>
-
-                            </>
-                        ) : ''}
+                            )
+                        } else return ''
+                    }
+                    }
 
                 </Form.Item>
 

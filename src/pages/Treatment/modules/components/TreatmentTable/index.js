@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react'
 import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
 import DeleteTreatmentTableRow from '../DeleteTreatmentTableRow';
@@ -22,9 +22,30 @@ function TreatmentTable(props) {
     }
 
     const onRowTable = (record, index) => {
-        const copy = { ...record };
-        copy.treatmentDate = dayjs(record.treatmentDate)
-        form.setFieldsValue(copy)
+        const {
+            treatmentDate,
+            erN,
+            prN,
+            SLNB,
+            slnbReactive,
+            slnbMts,
+            axillaDesection,
+            axillaDesectionReactive,
+            axillaDesectionMts,
+        } = record
+
+        const SLNB_Value = SLNB ? SLNB : slnbReactive || slnbMts ? 1 : 2 
+
+        const axillaDesectionValue = axillaDesection ? axillaDesection : axillaDesectionReactive || axillaDesectionMts ? 1 : 2 
+
+        form.setFieldsValue({
+            ...record,
+            SLNB: SLNB_Value,
+            axillaDesection: axillaDesectionValue,
+            treatmentDate: dayjs(treatmentDate),
+            ihkEr: erN ? 1 : 2,
+            ihkPr: prN ? 1 : 2,
+        })
     }
 
     const columns = useMemo(() => {
@@ -112,20 +133,17 @@ function TreatmentTable(props) {
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 render: (value) => {
-                    if (value === 1) {
-                        return "Pozitiv";
-                    } else if (value === 2) {
-                        return "Negativ";
+                    if (value) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>Positive</Box>
+                                <Box ml='2' color='blue.400' fontWeight='semibold'>{value}</Box>
+                            </Flex>
+                        )
+                    } else {
+                        return "Negative";
                     }
                 },
-            },
-            {
-                title: "ER N",
-                dataIndex: "erN",
-                key: "erN",
-                isVisible: visible('erN'),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
             },
             {
                 title: "PR",
@@ -135,20 +153,17 @@ function TreatmentTable(props) {
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 render: (value) => {
-                    if (value === 1) {
-                        return "Pozitiv";
-                    } else if (value === 2) {
-                        return "Negativ";
+                    if (value) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>Positive</Box>
+                                <Box ml='2' color='blue.400' fontWeight='semibold'>{value}</Box>
+                            </Flex>
+                        )
+                    } else {
+                        return "Negative";
                     }
                 },
-            },
-            {
-                title: "PR N",
-                dataIndex: "prN",
-                key: "prN",
-                isVisible: visible('prN'),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
             },
             {
                 title: "HER2",
@@ -157,24 +172,25 @@ function TreatmentTable(props) {
                 isVisible: visible('her2'),
                 ellipsis: true,
                 width: isLargerThan400 ? false : 150,
-                render: (value) => (
-                    <Tooltip placement="topLeft" title={value}>
-                        {value}
-                    </Tooltip>
-                ),
-            },
-            {
-                title: "HER2 FT",
-                dataIndex: "her2FT",
-                key: "her2FT",
-                isVisible: visible('her2FT'),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
-                render: (value) => (
-                    <Tooltip placement="topLeft" title={value}>
-                        {value}
-                    </Tooltip>
-                ),
+                render: (value, row) => {
+                    if (+value === 2) {
+                        return (
+                            <Flex justifyContent='space-between' pr='2' >
+                                <Box>{value}</Box>
+                                <Flex>
+                                    <Box>FT:</Box>
+                                    <Box ml='2' color='blue.400' fontWeight='semibold'>{row.her2FT}</Box>
+                                </Flex>
+                            </Flex>
+                        )
+                    } else {
+                        return (
+                            <Tooltip placement="topLeft" title={value}>
+                                {value}
+                            </Tooltip>
+                        )
+                    }
+                },
             },
             {
                 title: "K67",

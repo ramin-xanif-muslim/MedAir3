@@ -106,7 +106,7 @@ function DiseaseHistoryFormBloke(props) {
                 <Form.Item label="ER" >
                     <Form.Item noStyle name="ihkEr">
                         <Radio.Group>
-                            <Space direction="horizontal">
+                            <Space direction="vertical">
                                 <Radio value={1}>Positive</Radio>
                                 <Radio value={2}>Negative</Radio>
                             </Space>
@@ -116,19 +116,22 @@ function DiseaseHistoryFormBloke(props) {
                         noStyle
                         shouldUpdate={(prevValues, currentValues) => prevValues.ihkEr !== currentValues.ihkEr}
                     >
-                        {({ getFieldValue }) =>
-                            getFieldValue('ihkEr') === 1 ? (
-                                <Form.Item noStyle name="erN">
-                                    <InputNumber size='small' />
-                                </Form.Item>
-                            ) : ''}
+                        {({ getFieldValue }) => {
+                            if (getFieldValue('ihkEr') === 1) {
+                                return (
+                                    <Form.Item noStyle name="erN">
+                                        <InputNumber />
+                                    </Form.Item>
+                                )
+                            } else return ''
+                        }}
                     </Form.Item>
                 </Form.Item>
 
                 <Form.Item label="PR" >
                     <Form.Item noStyle name="ihkPr">
                         <Radio.Group>
-                            <Space direction="horizontal">
+                            <Space direction="vertical">
                                 <Radio value={1}>Positive</Radio>
                                 <Radio value={2}>Negative</Radio>
                             </Space>
@@ -138,33 +141,43 @@ function DiseaseHistoryFormBloke(props) {
                         noStyle
                         shouldUpdate={(prevValues, currentValues) => prevValues.ihkPr !== currentValues.ihkPr}
                     >
-                        {({ getFieldValue }) =>
-                            getFieldValue('ihkPr') === 1 ? (
-                                <Form.Item noStyle name="prN">
-                                    <InputNumber size='small' />
-                                </Form.Item>
-                            ) : ''}
+                        {({ getFieldValue }) => {
+                            if (getFieldValue('ihkPr') === 1) {
+                                return (
+                                    <Form.Item noStyle name="prN">
+                                        <InputNumber />
+                                    </Form.Item>
+                                )
+                            } else return ''
+                        }}
                     </Form.Item>
                 </Form.Item>
 
-                <Form.Item label="HER2" name="her2">
-                    <InputNumber
-                        min={0}
-                        max={3}
-                        defaultValue={0}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    noStyle
-                    shouldUpdate={(prevValues, currentValues) => prevValues.her2 !== currentValues.her2}
-                >
-                    {({ getFieldValue }) =>
-                        getFieldValue('her2') === 2 ? (
-                            <Form.Item label="FT" name="her2FT">
-                                <InputNumber />
-                            </Form.Item>
-                        ) : ''}
+                <Form.Item label="HER2" >
+                    <Form.Item noStyle name="her2">
+                        <InputNumber
+                            min={0}
+                            max={3}
+                            defaultValue={0}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        noStyle
+                        shouldUpdate={(prevValues, currentValues) => prevValues.her2 !== currentValues.her2}
+                    >
+                        {({ getFieldValue }) => {
+                            if (getFieldValue('her2') === 2) {
+                                return (
+                                    <Form.Item noStyle name="her2FT">
+                                        <InputNumber addonBefore="FT" />
+                                    </Form.Item>
+                                )
+                            } else {
+                                form.setFieldValue?.({her2FT:''})
+                                return ''
+                            }
+                        }}
+                    </Form.Item>
                 </Form.Item>
 
                 <Form.Item label="K67" name="k67">

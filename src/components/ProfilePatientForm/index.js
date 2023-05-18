@@ -5,6 +5,7 @@ import { useStore } from '../../modules/store'
 import { fetchPatientId, postAnalyses, postMorby, postPersonInfo, postTreatment, postVisit } from '../../modules/api'
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
 import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
+import dayjs from 'dayjs'
 // import { MaskedInput } from "antd-mask-input";
 
 
@@ -32,11 +33,75 @@ function ProfilePatientForm() {
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
     const recipeList = useStore((store) => store.recipeList)
 
+    const savePersonInfo = (patientId) => {
+            const {
+                patientName,
+                patientSurName,
+                patientPatronymic,
+            } = patientForm.getFieldsValue()
+
+            let { birthDate, alkogol, smoke } = personInfoForm.getFieldsValue()
+
+
+            const sendObj = {
+                ...personInfoForm.getFieldsValue(),
+                birthDate: dayjs(birthDate).format('YYYY-MM-DD'),
+                alkogol: alkogol ? 1 : 0,
+                smoke: smoke ? 1 : 0,
+                patientName,
+                patientSurName,
+                patientPatronymic,
+                patientId,
+            };
+
+            postPersonInfo(sendObj);
+    }
+
+    const saveMorby = (patientId) => {
+            savedDrawingCanvas.deseaseImageDesc =
+                JSON.stringify(descriptionsCanvas);
+
+            const sendObj = {
+                ...diseaseHistoryForm.getFieldsValue(),
+                patientId,
+                familyMembersList,
+                deseaseImagesList: savedDrawingCanvas,
+                deseaseHistoryDynamicsList: dataSourceDiseaseHistoryTable,
+            };
+            postMorby(sendObj);
+    }
+
+    const saveVisit = (patientId) => {
+            const sendObj = {
+                patientVisitsList: dataSourceVisitTable,
+                patientId
+            };
+            postVisit(sendObj);
+    }
+
+    const saveAnalyses = (patientId) => {
+            const sendObj = {
+                analyzesMediaList: dataSourceAnalysisTable,
+                patientId
+            };
+            postAnalyses(sendObj);
+    }
+
+    const saveTreatment = (patientId) => {
+            const sendObj = {
+                ...treatmentHistoryForm.getFieldsValue(),
+                patientId,
+                treatmentDynamics: dataSourceTreatmentTable,
+                recipeList,
+            };
+            postTreatment(sendObj);
+    }
+
     const handleSave = async () => {
         setIsLoading(true)
         setTimeout(() => {
             setIsLoading(false)
-        },1000)
+        }, 1000)
 
         let id = patientForm.getFieldsValue().patientId;
         let patientId;
@@ -46,88 +111,16 @@ function ProfilePatientForm() {
             patientId = await fetchPatientId();
         }
         if (patientId) {
-            if (Object.keys(personInfoForm.getFieldsValue()).length) {
-                const {
-                    patientName,
-                    patientSurName,
-                    patientPatronymic,
-                    patientId,
-                } = patientForm.getFieldsValue()
-
-                const sendObj = {
-                    ...personInfoForm.getFieldsValue(),
-                    patientName,
-                    patientSurName,
-                    patientPatronymic,
-                    patientId,
-                };
-
-                postPersonInfo(sendObj);
-            }
-            // if (Object.keys(diseaseHistoryForm.getFieldsValue()).length) {
-            //     savedDrawingCanvas.deseaseImageDesc =
-            //         JSON.stringify(descriptionsCanvas);
-
-            //     const sendObj = {
-            //         ...diseaseHistoryForm.getFieldsValue(),
-            //         patientId,
-            //         familyMembersList,
-            //         deseaseImagesList: savedDrawingCanvas,
-            //         deseaseHistoryDynamicsList: dataSourceDiseaseHistoryTable,
-            //     };
-            //     postMorby(sendObj);
-            // }
-            // if (dataSourceVisitTable) {
-            //     const sendObj = {
-            //         patientVisitsList: dataSourceVisitTable,
-            //         patientId
-            //     };
-            //     postVisit(sendObj);
-            // }
-            // if (dataSourceAnalysisTable) {
-            //     const sendObj = {
-            //         analyzesMediaList: dataSourceAnalysisTable,
-            //         patientId
-            //     };
-            //     postAnalyses(sendObj);
-            // }
-            // if (dataSourceAnalysisTable) {
-            //     const sendObj = {
-            //         ...treatmentHistoryForm.getFieldsValue(),
-            //         patientId,
-            //         treatmentDynamics: dataSourceTreatmentTable,
-            //         recipeList,
-            //     };
-            //     postTreatment(sendObj);
-            // }
+            Promise.all([
+                savePersonInfo(patientId),
+                saveMorby(patientId),
+                saveVisit(patientId),
+                saveAnalyses(patientId),
+                saveTreatment(patientId),
+            ])
         }
-        
-
-        //patient
-        console.log('patientForm', patientForm.getFieldsValue());
-
-        //vite
-        console.log('personInfoForm', personInfoForm.getFieldsValue());
-
-        //morby  
-        console.log('diseaseHistoryForm', diseaseHistoryForm.getFieldsValue());
-        console.log('dataSourceDiseaseHistoryTable', dataSourceDiseaseHistoryTable);
-        console.log('familyMembersList', familyMembersList);
-        console.log('savedDrawingCanvas', savedDrawingCanvas);
-        console.log('descriptionsCanvas', descriptionsCanvas);
-
-        //visits
-        console.log('dataSourceVisitTable', dataSourceVisitTable);
-
-        //analyses
-        console.log('dataSourceAnalysisTable', dataSourceAnalysisTable);
-
-        //treatment
-        console.log('treatmentHistoryForm', treatmentHistoryForm.getFieldsValue());
-        console.log('dataSourceTreatmentTable', dataSourceTreatmentTable);
-        console.log('recipeList', recipeList);
     }
-    
+
 
     return (
         <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
@@ -154,7 +147,7 @@ function ProfilePatientForm() {
                             name="patientId"
                             noStyle
                         >
-                            <InputNumber addonBefore='№' placeholder="Patient №" />
+                            <InputNumber readOnly addonBefore='№' placeholder="Patient №" />
                         </Form.Item>
 
                         <Button
@@ -169,8 +162,6 @@ function ProfilePatientForm() {
 
                 <Collapse in={inPatientCollapse} animateOpacity>
                     <Form
-                        id='patientForm'
-                        onFinish={handleSave}
                         form={patientForm}
                         layout={isLargerThan600 ? "inline" : "vertical"}
                     >

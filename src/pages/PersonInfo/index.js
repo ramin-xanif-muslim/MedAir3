@@ -3,7 +3,6 @@ import { Checkbox, DatePicker, Form, Input, InputNumber, Rate, Select } from "an
 import { SimpleGrid } from '@chakra-ui/react';
 import ProfilePatientForm from '../../components/ProfilePatientForm';
 import { useGlobalContext } from '../../modules/context/index.js';
-import { MaskedInput } from "antd-mask-input";
 
 const OPTIONS = ["0-6", "6-12", "12-24", "24+"];
 
@@ -30,6 +29,9 @@ function PersonInfo() {
                     style={{
                         maxWidth: 600,
                     }}
+                    initialValues={{
+                        gender: 'Female',
+                    }}
                 >
                     <Form.Item label="Birth date" name="birthDate">
                         <DatePicker allowClear />
@@ -40,11 +42,7 @@ function PersonInfo() {
                     </Form.Item>
 
                     <Form.Item name="phoneNumber" label="Phone Number">
-                        <MaskedInput
-                            allowClear
-                            style={{ width: "130px" }}
-                            mask={"000 000 00 00"}
-                        />
+                        <Input type='number' />
                     </Form.Item>
 
                     <Form.Item label="Sex" name="gender">

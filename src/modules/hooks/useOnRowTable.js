@@ -37,9 +37,10 @@ export const useOnRowTable = () => {
       if(res?.data) {
         console.log('res?.fetchDiseaseHistory',res?.data);
         diseaseHistoryForm.setFieldsValue(res.data)
+        res?.data.deseaseHistoryDynamicsList.forEach(i => i.id = i.patientsComplaintsId)
         setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
         setFamilyMembersList(res.data.familyMembersList)
-        setSavedDrawingCanvas(res.data.deseaseImagesList)
+        setSavedDrawingCanvas(res.data?.deseaseImagesList || {})
         if (res.data.deseaseImagesList?.deseaseImageDesc) {
           let descCanvas = JSON.parse(
             res.data.deseaseImagesList.deseaseImageDesc
@@ -59,6 +60,7 @@ export const useOnRowTable = () => {
       let res = await sendRequest("visits/patientId/" + id, {}, "get")
       if(res?.data) {
         console.log('res?.fetchVisits',res?.data);
+        res.data.forEach(i => i.id = i.visitId)
         setDataSourceVisitTable(res.data)
       }
     }catch(error) {
@@ -73,6 +75,7 @@ export const useOnRowTable = () => {
       let res = await sendRequest("analyses/" + id, {}, "get")
       if(res?.data) {
         console.log('res?.fetchAnalyses',res?.data);
+        res.data.forEach(i => i.id = i.analyzesId)
         setDataSourceAnalysisTable(res.data)
       }
     }catch(error) {
@@ -90,10 +93,12 @@ export const useOnRowTable = () => {
         console.log('res?.fetchTreatment',res?.data);
         treatmentHistoryForm.setFieldsValue(res.data)
 
-        const treatmentDynamics = res.data.treatmentDynamics;
+        const { treatmentDynamics, recipeList } = res.data
+
+        treatmentDynamics.forEach(i => i.id = i.treatmentId)
         setDataSourceTreatmentTable(treatmentDynamics)
         
-        const recipeList = res.data.recipeList;
+        recipeList.forEach(i => i.id = i.recipeId)
         setRecipeList(recipeList)
       }
     }catch(error) {
@@ -106,10 +111,10 @@ export const useOnRowTable = () => {
       setIsLoading(true)
       Promise.all([
         fetchPersonInfo(id),
-        // fetchDiseaseHistory(id),
-        // fetchVisits(id),
-        // fetchAnalyses(id),
-        // fetchTreatment(id),
+        fetchDiseaseHistory(id),
+        fetchVisits(id),
+        fetchAnalyses(id),
+        fetchTreatment(id),
       ]).then(data => {
         setIsLoading(false)
         navigate("/person_info")
