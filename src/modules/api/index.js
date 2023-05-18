@@ -34,6 +34,7 @@ export const fetchPatientId = async () => {
 export const postPersonInfo = async (obj) => {
     let res = await sendRequest("vite", obj, "post");
     messageOnSave(res, "Person Info");
+    return res
 };
 
 export const postMorby = async (obj) => {

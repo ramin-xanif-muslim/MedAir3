@@ -48,7 +48,10 @@ const Search = () => {
     return (
         <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 
-            <PatientFormCalendar />
+            <Box boxShadow='xl' p='2' bg='pink.50' borderRadius='15px' >
+                <PatientFormCalendar />
+            </Box>
+
 
             <Box mt='2'>
 

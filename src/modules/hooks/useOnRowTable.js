@@ -106,10 +106,10 @@ export const useOnRowTable = () => {
       setIsLoading(true)
       Promise.all([
         fetchPersonInfo(id),
-        fetchDiseaseHistory(id),
-        fetchVisits(id),
-        fetchAnalyses(id),
-        fetchTreatment(id),
+        // fetchDiseaseHistory(id),
+        // fetchVisits(id),
+        // fetchAnalyses(id),
+        // fetchTreatment(id),
       ]).then(data => {
         setIsLoading(false)
         navigate("/person_info")

@@ -10,7 +10,7 @@ import { useOnRowTable } from '../../../../../modules/hooks/useOnRowTable';
 
 function CalendarsTable(props) {
 
-  const { dataSource, refetch } = props
+  const { dataSource, refetch, isLoadingOnSelectCalendar } = props
 
   const [selectedRowKey, setSelectedRowKey] = useState();
 
@@ -236,7 +236,7 @@ function CalendarsTable(props) {
       </Box>
 
       <Table
-        loading={isLoading}
+        loading={isLoading || isLoadingOnSelectCalendar}
         size='small'
         bordered
         scroll={{

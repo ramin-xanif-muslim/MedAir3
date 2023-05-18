@@ -19,7 +19,7 @@ function Calendar() {
     if (res?.data) return res.data
   };
 
-  const { data, refetch } = useQuery(['calendarPage', selectedDate], () => fetchDataTable())
+  const { data, refetch, isLoading } = useQuery(['calendarPage', selectedDate], () => fetchDataTable())
 
 
   const cellRender = (value) => {
@@ -45,6 +45,7 @@ function Calendar() {
 
       <Box>
         <CalendarsTable
+          isLoadingOnSelectCalendar={isLoading}
           dataSource={data}
         />
       </Box>
