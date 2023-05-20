@@ -10,7 +10,7 @@ import { ErrorBoundary } from './pages/Error';
 
 function App() {
 
-  useEffectOnDidMountApp()
+  // useEffectOnDidMountApp()
 
   const token = useLocalStorageStore((store) => store.token)
 

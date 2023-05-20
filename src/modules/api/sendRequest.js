@@ -18,7 +18,7 @@ const verificationToken = async (url) => {
         return "ok";
       }else if(res?.data === "no"){
         localStorage.clear()
-        // window.location.reload();
+        window.location.reload();
        }
     } catch {
       message.error("ERROR: Verification Token ")

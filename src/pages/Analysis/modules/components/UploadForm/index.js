@@ -1,4 +1,4 @@
-import { Button, Image, Upload } from "antd";
+import { Button, Image, Spin, Upload } from "antd";
 import React, { memo, useEffect, useState } from "react";
 import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import sendRequest from "../../../../../modules/api/sendRequest";
@@ -9,6 +9,7 @@ const UploadForm = ({ form, selectedRowKey }) => {
 
     const [imageUrl, setImageUrl] = useState();
     const [imagePdfUrl, setImagePdfUrl] = useState();
+    const [isLoading, setIsLoading] = useState(false)
 
     const showImage = (url) => {
         if (url) {
@@ -35,6 +36,7 @@ const UploadForm = ({ form, selectedRowKey }) => {
     }, [selectedRowKey])
 
     const beforeUpload = async (file) => {
+        setIsLoading(true)
         const formData = new FormData();
         formData.append("file", file);
 
@@ -45,6 +47,7 @@ const UploadForm = ({ form, selectedRowKey }) => {
             form.setFieldsValue({ analyzesContentName: file.name });
             form.setFieldsValue({ analyzesContentUrl: res.data });
         }
+        setIsLoading(false)
         return false;
     };
 
@@ -56,6 +59,10 @@ const UploadForm = ({ form, selectedRowKey }) => {
         } catch (error) {
             console.log('%c error', 'background: red; color: dark', error);
         }
+    }
+
+    if(isLoading) {
+        return <Spin />
     }
 
     return (
