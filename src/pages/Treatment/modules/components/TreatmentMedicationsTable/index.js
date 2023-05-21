@@ -12,6 +12,7 @@ function TreatmentMedicationsTable() {
 
     const recipeList = useStore((store) => store.recipeList)
     const setRecipeList = useStore((store) => store.setRecipeList)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
 
     const treatmentMedicationsTableSetting = useLocalStorageStore((store) => store.treatmentMedicationsTableSetting)
@@ -104,6 +105,7 @@ function TreatmentMedicationsTable() {
                 align: 'center',
                 render: (value, row, index) => {
                     const handleDelete = () => {
+                        setIsFieldsChange(true)
                         let newData = recipeList.filter(i => i.Id !== row.Id)
                         setRecipeList(newData)
                     }

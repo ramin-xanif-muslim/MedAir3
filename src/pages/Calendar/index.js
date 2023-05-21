@@ -6,6 +6,7 @@ import moment from 'moment';
 import sendRequest from '../../modules/api/sendRequest';
 import { useStore } from '../../modules/store';
 import { useQuery } from 'react-query';
+import Alert from '../../components/Alert';
 
 function Calendar() {
 
@@ -32,25 +33,29 @@ function Calendar() {
   }
 
   return (
-    <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
+    <>
+      <Alert />
 
-      <Box>
-        <CalendarsCalendarPage
-          refetch={refetch}
-          cellRender={cellRender}
-          onSelect={onSelect}
-          defaultValue={selectedDate}
-        />
-      </Box>
+      <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 
-      <Box>
-        <CalendarsTable
-          isLoadingOnSelectCalendar={isLoading}
-          dataSource={data}
-        />
-      </Box>
+        <Box>
+          <CalendarsCalendarPage
+            refetch={refetch}
+            cellRender={cellRender}
+            onSelect={onSelect}
+            defaultValue={selectedDate}
+          />
+        </Box>
 
-    </Box>
+        <Box>
+          <CalendarsTable
+            isLoadingOnSelectCalendar={isLoading}
+            dataSource={data}
+          />
+        </Box>
+
+      </Box></>
+
   )
 }
 

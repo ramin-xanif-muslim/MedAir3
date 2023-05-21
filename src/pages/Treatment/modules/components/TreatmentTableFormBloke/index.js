@@ -3,7 +3,6 @@ import { Button, DatePicker, Form, Input, InputNumber, Radio, Select, Space } fr
 import { SimpleGrid } from '@chakra-ui/react'
 import { useStore } from '../../../../../modules/store';
 import dayjs from 'dayjs';
-import { PathologistSelectInput } from '../../../../../components/SelectInputs';
 import { fetchPathologistsPlace } from '../../../../../modules/api';
 import { useQuery } from 'react-query';
 
@@ -16,7 +15,10 @@ function TreatmentTableFormBloke(props) {
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
     const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
 
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+
     const onFinish = (values) => {
+        setIsFieldsChange(true)
         try {
             if (selectedRowKey) {
                 let newData = dataSourceTreatmentTable.map((i) => {

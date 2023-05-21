@@ -11,14 +11,18 @@ import {
 import { Button, Form, Input } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { deepCopy } from '../../../../../modules/functions/deepCopy'
+import { useStore } from '../../../../../modules/store'
 
 function ModalFamilyMemberForm(props) {
 
     const { isOpen, onClose, initialRef, finalRef, title, handleEdit, isEdit, handleAdd, form } = props
 
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+
 
 
     const onFinish = () => {
+        setIsFieldsChange(true)
         try {
             const values = form.getFieldsValue()
             const copyValues = deepCopy(values)

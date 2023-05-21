@@ -10,8 +10,10 @@ function DiseaseHistoryFormBloke(props) {
 
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const onFinish = (values) => {
+        setIsFieldsChange(true)
         if (selectedRowKey) {
             let newData = dataSourceDiseaseHistoryTable.map((i) => {
                 if (i.id === values.id) return values

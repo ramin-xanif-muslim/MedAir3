@@ -16,6 +16,7 @@ function TreatmentTable(props) {
 
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
     const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const visible = (dataIndex, defaultVisible = true) => {
         return treatmentTableTableSetting?.find(i => i.dataIndex === dataIndex) ? treatmentTableTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
@@ -215,6 +216,7 @@ function TreatmentTable(props) {
                 align: 'center',
                 render: (value, row, index) => {
                     const handleDelete = () => {
+                        setIsFieldsChange(true)
                         let newData = dataSourceTreatmentTable.filter(i => i.id !== row.id)
                         setDataSourceTreatmentTable(newData)
                     }

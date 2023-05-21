@@ -43,6 +43,8 @@ function VisitsTable(props) {
         form.setFieldsValue(newData)
     }
 
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+
     const columns = useMemo(() => {
         return [
             {
@@ -120,6 +122,7 @@ function VisitsTable(props) {
                 align: 'center',
                 render: (value, row, index) => {
                     const handleDelete = () => {
+                        setIsFieldsChange(true)
                         let newData = dataSourceVisitTable.filter(i => i.id !== row.id)
                         setDataSourceVisitTable(newData)
                     }

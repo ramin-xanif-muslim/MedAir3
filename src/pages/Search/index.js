@@ -6,6 +6,7 @@ import { Box } from "@chakra-ui/react";
 import { useStore } from "../../modules/store";
 import dayjs from "dayjs";
 import { useOnRowTable } from "../../modules/hooks/useOnRowTable";
+import Alert from "../../components/Alert";
 
 const Search = () => {
 
@@ -46,41 +47,45 @@ const Search = () => {
     const { onRowTable, isLoading } = useOnRowTable()
 
     return (
-        <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
+        <>
+            <Alert />
 
-            <Box boxShadow='xl' p='2' bg='pink.50' borderRadius='15px' >
-                <PatientFormCalendar />
+            <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
+
+                <Box boxShadow='xl' p='2' bg='pink.50' borderRadius='15px' >
+                    <PatientFormCalendar />
+                </Box>
+
+
+                <Box mt='2'>
+
+                    <Table
+                        loading={isLoading}
+                        size='small'
+                        bordered
+                        pagination={false}
+                        scroll={{
+                            x: window.innerHeight
+                        }}
+                        locale={{
+                            emptyText: (
+                                <Empty
+                                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                    description="Patient not found..."
+                                />
+                            ),
+                        }}
+                        columns={columns}
+                        dataSource={dataSourceSearchTable}
+                        onRow={(record, index) => ({
+                            onClick: (e) => onRowTable(record, index),
+                        })}
+                    />
+
+                </Box>
+
             </Box>
-
-
-            <Box mt='2'>
-
-                <Table
-                    loading={isLoading}
-                    size='small'
-                    bordered
-                    pagination={false}
-                    scroll={{
-                        x: window.innerHeight
-                    }}
-                    locale={{
-                        emptyText: (
-                            <Empty
-                                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                description="Patient not found..."
-                            />
-                        ),
-                    }}
-                    columns={columns}
-                    dataSource={dataSourceSearchTable}
-                    onRow={(record, index) => ({
-                        onClick: (e) => onRowTable(record, index),
-                    })}
-                />
-
-            </Box>
-
-        </Box>
+        </>
     );
 };
 

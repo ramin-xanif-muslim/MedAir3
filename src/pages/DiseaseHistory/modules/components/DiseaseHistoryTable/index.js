@@ -15,6 +15,7 @@ function DiseaseHistoryTable(props) {
 
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const visible = (dataIndex, defaultVisible = true) => {
         return diseaseHistoryTableSetting?.find(i => i.dataIndex === dataIndex) ? diseaseHistoryTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
@@ -161,6 +162,7 @@ function DiseaseHistoryTable(props) {
                 align: 'center',
                 render: (value, row, index) => {
                     const handleDelete = () => {
+                        setIsFieldsChange(true)
                         let newData = dataSourceDiseaseHistoryTable.filter(i => i.id !== row.id)
                         setDataSourceDiseaseHistoryTable(newData)
                     }

@@ -3,12 +3,16 @@ import { Checkbox, DatePicker, Form, Input, InputNumber, Rate, Select } from "an
 import { SimpleGrid } from '@chakra-ui/react';
 import ProfilePatientForm from '../../components/ProfilePatientForm';
 import { useGlobalContext } from '../../modules/context/index.js';
+import { useStore } from '../../modules/store';
 
 const OPTIONS = ["0-6", "6-12", "12-24", "24+"];
 
 function PersonInfo() {
 
     const { personInfoForm } = useGlobalContext()
+
+    const onFieldsChange = useStore((store) => store.onFieldsChange)
+
 
     return (
         <>
@@ -32,6 +36,7 @@ function PersonInfo() {
                     initialValues={{
                         gender: 'Female',
                     }}
+                    onFieldsChange={onFieldsChange}
                 >
                     <Form.Item label="Birth date" name="birthDate">
                         <DatePicker allowClear />
@@ -110,6 +115,7 @@ function PersonInfo() {
                     style={{
                         maxWidth: 600,
                     }}
+                    onFieldsChange={onFieldsChange}
                 >
 
                     <Form.Item
@@ -179,7 +185,7 @@ function PersonInfo() {
 
                     </Form.Item>
                 </Form>
-            </SimpleGrid >
+            </SimpleGrid>
         </>
     )
 }

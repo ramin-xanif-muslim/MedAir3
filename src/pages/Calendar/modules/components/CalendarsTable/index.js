@@ -207,7 +207,6 @@ function CalendarsTable(props) {
         render: (value, row, index) => {
           const handleDelete = async () => {
             message.loading()
-            console.log('row', row);
             let Id = row.id;
             let res = await sendRequest("visits/" + Id, {}, "delete");
             if (res?.data) {

@@ -1,124 +1,33 @@
-import React, { memo, useState } from 'react'
-import { Button, Form, Space, message, Input, InputNumber } from 'antd'
+import React, { memo } from 'react'
+import { Button, Form, Space, Input, InputNumber } from 'antd'
 import { useGlobalContext } from '../../modules/context/index.js'
-import { useStore } from '../../modules/store'
-import { fetchPatientId, postAnalyses, postMorby, postPersonInfo, postTreatment, postVisit } from '../../modules/api'
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
 import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
-import dayjs from 'dayjs'
+import useResetProfilePatient from '../../modules/hooks/useResetProfilePatient.js'
+import useSavePatient from '../../modules/hooks/useSavePatient.js'
+import { useStore } from '../../modules/store/index.js';
 
 
 function ProfilePatientForm() {
 
-    const [isLoading, setIsLoading] = useState(false)
-
-    const { patientForm,
+    const {
+        patientForm,
         inPatientCollapse,
         setInPatientCollapse,
-        personInfoForm,
-        diseaseHistoryForm,
-        familyMembersList,
-        treatmentHistoryForm,
     } = useGlobalContext()
+
 
     const [isLargerThan600] = useMediaQuery('(min-width: 600px)')
 
+    const { resetProfilePatient } = useResetProfilePatient();
 
-    const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
-    const savedDrawingCanvas = useStore((store) => store.savedDrawingCanvas)
-    const descriptionsCanvas = useStore((store) => store.descriptionsCanvas)
-    const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
-    const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
-    const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
-    const recipeList = useStore((store) => store.recipeList)
-
-    const savePersonInfo = (patientId) => {
-            const {
-                patientName,
-                patientSurName,
-                patientPatronymic,
-            } = patientForm.getFieldsValue()
-
-            let { birthDate, alkogol, smoke } = personInfoForm.getFieldsValue()
-
-
-            const sendObj = {
-                ...personInfoForm.getFieldsValue(),
-                birthDate: dayjs(birthDate).format('YYYY-MM-DD'),
-                alkogol: alkogol ? 1 : 0,
-                smoke: smoke ? 1 : 0,
-                patientName,
-                patientSurName,
-                patientPatronymic,
-                patientId,
-            };
-
-            postPersonInfo(sendObj);
+    const handleClear = () => {
+        resetProfilePatient()
     }
 
-    const saveMorby = (patientId) => {
-            savedDrawingCanvas.deseaseImageDesc =
-                JSON.stringify(descriptionsCanvas);
+    const { handleSave, isLoading } = useSavePatient()
 
-            const sendObj = {
-                ...diseaseHistoryForm.getFieldsValue(),
-                patientId,
-                familyMembersList,
-                deseaseImagesList: savedDrawingCanvas,
-                deseaseHistoryDynamicsList: dataSourceDiseaseHistoryTable,
-            };
-            postMorby(sendObj);
-    }
-
-    const saveVisit = (patientId) => {
-            const sendObj = {
-                patientVisitsList: dataSourceVisitTable,
-                patientId
-            };
-            postVisit(sendObj);
-    }
-
-    const saveAnalyses = (patientId) => {
-            const sendObj = {
-                analyzesMediaList: dataSourceAnalysisTable,
-                patientId
-            };
-            postAnalyses(sendObj);
-    }
-
-    const saveTreatment = (patientId) => {
-            const sendObj = {
-                ...treatmentHistoryForm.getFieldsValue(),
-                patientId,
-                treatmentDynamics: dataSourceTreatmentTable,
-                recipeList,
-            };
-            postTreatment(sendObj);
-    }
-
-    const handleSave = async () => {
-        setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 1000)
-
-        let id = patientForm.getFieldsValue().patientId;
-        let patientId;
-        if (id) {
-            patientId = id;
-        } else {
-            patientId = await fetchPatientId();
-        }
-        if (patientId) {
-            Promise.all([
-                savePersonInfo(patientId),
-                saveMorby(patientId),
-                saveVisit(patientId),
-                saveAnalyses(patientId),
-                saveTreatment(patientId),
-            ])
-        }
-    }
+    const onFieldsChange = useStore((store) => store.onFieldsChange)
 
     return (
         <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
@@ -127,6 +36,7 @@ function ProfilePatientForm() {
                 onFinish={handleSave}
                 form={patientForm}
                 layout={isLargerThan600 ? "inline" : "vertical"}
+                onFieldsChange={onFieldsChange}
             >
                 <Form.Item
                     label="Name"
@@ -162,6 +72,7 @@ function ProfilePatientForm() {
                     <Form
                         form={patientForm}
                         layout={isLargerThan600 ? "inline" : "vertical"}
+                        onFieldsChange={onFieldsChange}
                     >
 
                         <Form.Item key="patientSurName" name="patientSurName" label="Suriname">
@@ -187,7 +98,7 @@ function ProfilePatientForm() {
                             Save
                         </Button>
 
-                        <Button danger>
+                        <Button onClick={handleClear} danger>
                             Clear
                         </Button>
                     </Space>

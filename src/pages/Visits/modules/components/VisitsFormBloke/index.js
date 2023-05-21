@@ -13,8 +13,10 @@ function VisitsFormBloke(props) {
 
     const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
     const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const onFinish = (values) => {
+        setIsFieldsChange(true)
         try {
             if (selectedRowKey) {
                 let newData = dataSourceVisitTable.map((i) => {

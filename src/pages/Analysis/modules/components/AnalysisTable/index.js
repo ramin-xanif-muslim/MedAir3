@@ -16,6 +16,7 @@ function AnalysisTable(props) {
 
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
     const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const visible = (dataIndex, defaultVisible = true) => {
         return analysisTableSetting?.find(i => i.dataIndex === dataIndex) ? analysisTableSetting.find(i => i.dataIndex === dataIndex).isVisible : defaultVisible
@@ -107,6 +108,7 @@ function AnalysisTable(props) {
                 ellipsis: true,
                 render: (value, row, index) => {
                     const handleDelete = () => {
+                        setIsFieldsChange(true)
                         let newData = dataSourceAnalysisTable.filter(i => i.id !== row.id)
                         setDataSourceAnalysisTable(newData)
                     }

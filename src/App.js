@@ -5,7 +5,6 @@ import SideBar from './components/SideBar';
 import { useLocalStorageStore } from './modules/store';
 import Login from './pages/Login';
 import { Layout } from 'antd';
-import { useEffectOnDidMountApp } from './modules/hooks';
 import { ErrorBoundary } from './pages/Error';
 
 function App() {
@@ -33,6 +32,7 @@ function App() {
             position: 'relative',
           }}
         >
+
           <Box p={['1', '4']}>
 
             {/* <Breadcrumb /> */}

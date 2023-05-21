@@ -3,10 +3,13 @@ import { Input, Radio, Select, Form } from 'antd';
 import React, { memo } from 'react'
 import FamilyMembersList from '../FamilyMembersList';
 import { useGlobalContext } from '../../../../../modules/context/index.js';
+import { useStore } from '../../../../../modules/store';
 
 function BlockForm() {
 
     const { diseaseHistoryForm } = useGlobalContext()
+
+    const onFieldsChange = useStore((store) => store.onFieldsChange)
 
     return (
         <SimpleGrid columns={['1', '2']} gap='1' >
@@ -24,6 +27,7 @@ function BlockForm() {
                 style={{
                     maxWidth: 600,
                 }}
+                onFieldsChange={onFieldsChange}
             >
 
                 <Form.Item label="Allergies" name="allergyAvailability">
@@ -96,6 +100,7 @@ function BlockForm() {
                 style={{
                     maxWidth: 600,
                 }}
+                onFieldsChange={onFieldsChange}
             >
 
                 <FamilyMembersList />

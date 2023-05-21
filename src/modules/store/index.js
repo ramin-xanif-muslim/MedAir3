@@ -36,6 +36,12 @@ let store = (set) => ({
     dataSourceSearchTable: [],
     setDataSourceSearchTable: (item) => set(() => ({ dataSourceSearchTable: 
     item })),
+    
+    isFieldsChange: false,
+    setIsFieldsChange: (item) => set(() => ({ isFieldsChange: 
+    item })),
+    onFieldsChange: (item) => set(() => ({ isFieldsChange: 
+    true })),
 
 });
 

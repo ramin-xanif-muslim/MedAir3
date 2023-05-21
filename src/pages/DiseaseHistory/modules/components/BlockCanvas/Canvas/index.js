@@ -70,9 +70,6 @@ function CanvasComponent({ image, imageName }) {
         }
     };
 
-    const onFieldsChange = ([{ name, value }]) => {
-    }
-
     const onChangeCanvas = () => {
         form.setFieldsValue({ description: '' })
         setDisableSaveBtn(false)
@@ -111,12 +108,14 @@ function CanvasComponent({ image, imageName }) {
     }
 
     const handleAdd = () => {
-
-
         setBrushRadius(20);
         setDisableCanvas(false);
     };
+
+    const onFieldsChange = useStore((store) => store.onFieldsChange)
+    
     const handleSave = () => {
+        onFieldsChange()
         setBrushRadius(0);
         setDisableSaveBtn(true);
         setDisableCanvas(true);
@@ -125,6 +124,7 @@ function CanvasComponent({ image, imageName }) {
         savedDrawingCanvas[imageName + 'Desc'] = JSON.stringify(descriptions);
         setSavedDrawingCanvas(savedDrawingCanvas);
     };
+
     const handleClear = () => {
         canvasRef.current.undo();
     };
@@ -143,12 +143,12 @@ function CanvasComponent({ image, imageName }) {
         return () => clearTimeout(timer)
     }, [canvasRef])
 
+
     return (
         <Box bg='pink.100' p='1' borderRadius='10px'>
 
             <Form
                 form={form}
-                onFieldsChange={onFieldsChange}
                 labelAlign='left'
                 style={{ width: '100%' }}
             >
@@ -213,8 +213,6 @@ function CanvasComponent({ image, imageName }) {
                     onChange={onChangeCanvas}
                     disabled={disableCanvas}
                     brushRadius={brushRadius}
-                    // saveData={savedDrawingCanvas ? savedDrawingCanvas[imageName + 'Data'] : ""
-                    // }
 
                 />
             </Box>
