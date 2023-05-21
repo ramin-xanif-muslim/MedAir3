@@ -7,21 +7,33 @@ import { useStore } from '../../../../../../modules/store'
 
 function CanvasComponent({ image, imageName }) {
 
-    const canvasRef = useRef(null);
+    const refCanvas = useRef(null);
 
     const [form] = Form.useForm()
+
 
     const savedDrawingCanvas = useStore(store => store.savedDrawingCanvas)
     const setSavedDrawingCanvas = useStore(store => store.setSavedDrawingCanvas)
 
     const [descriptions, setDescriptions] = useState({})
+    const [canvasData, setCanvasData] = useState();
 
 
     useEffect(() => {
         if (savedDrawingCanvas[imageName + "Desc"]) {
             const str = savedDrawingCanvas[imageName + "Desc"]
             setDescriptions(JSON.parse(str))
+
+            const data = savedDrawingCanvas[imageName + "Data"]
+            setCanvasData()
+            refCanvas.current.loadSaveData(data);
         }
+
+        // if (savedDrawingCanvas[imageName + "Data"]) {
+        //     const data = savedDrawingCanvas[imageName + "Data"]
+        //     console.log('data', JSON.parse(data));
+        //     refCanvas.current.loadSaveData(data)
+        // }
     }, [])
 
     const [colorCanvas, setColorCanvas] = useState('green')
@@ -55,6 +67,7 @@ function CanvasComponent({ image, imageName }) {
                     })
                     let findEl = arrSelectedColors.find(f => f.index === index)
                     const description = descriptions[i.brushColor + findEl.num]
+                    console.log('description', description);
                     form.setFieldsValue({ description })
                     setColorCanvas(i.brushColor)
                 }
@@ -64,8 +77,9 @@ function CanvasComponent({ image, imageName }) {
 
     const onClick = () => {
         if (disableCanvas) {
-            let data = canvasRef.current.getSaveData();
+            let data = refCanvas.current.getSaveData();
             let dataParse = JSON.parse(data)
+            console.log('dataParse', dataParse);
             getDescriptionPointColor(dataParse.lines, X_PositionMouse, Y_PositionMouse)
         }
     };
@@ -97,7 +111,7 @@ function CanvasComponent({ image, imageName }) {
 
     const computationColorNumber = () => {
         let colorNumber = 0
-        let data = canvasRef.current.getSaveData();
+        let data = refCanvas.current.getSaveData();
         data = data ? JSON.parse(data) : ''
         if (data?.lines[0]) {
             data.lines.forEach(i => {
@@ -120,29 +134,14 @@ function CanvasComponent({ image, imageName }) {
         setBrushRadius(0);
         setDisableSaveBtn(true);
         setDisableCanvas(true);
-        let data = canvasRef.current.getSaveData();
+        let data = refCanvas.current.getSaveData();
         savedDrawingCanvas[imageName + 'Data'] = data;
         savedDrawingCanvas[imageName + 'Desc'] = JSON.stringify(descriptions);
         setSavedDrawingCanvas(savedDrawingCanvas);
     };
     const handleClear = () => {
-        canvasRef.current.undo();
+        refCanvas.current.undo();
     };
-
-    const handleRestoreDrawing = () => {
-        let data = savedDrawingCanvas && savedDrawingCanvas[imageName + 'Data'] ? savedDrawingCanvas[imageName + 'Data'] : ""
-
-        if (data) {
-            canvasRef.current.loadSaveData(data);
-            setTimeout(() => setDisableSaveBtn(true), 100)
-            
-        }
-    };
-
-    useEffect(() => {
-        let timer = setTimeout(() => handleRestoreDrawing(), 1000)
-        return () => clearTimeout(timer)
-    }, [canvasRef])
 
     return (
         <Box bg='pink.100' p='1' borderRadius='10px'>
@@ -189,6 +188,7 @@ function CanvasComponent({ image, imageName }) {
 
                 <Form.Item label='Description' name='description'>
                     <Input.TextArea
+                        disabled={disableSaveBtn}
                         showCount
                         maxLength={3000}
                         onChange={onChangeDescription}
@@ -210,13 +210,13 @@ function CanvasComponent({ image, imageName }) {
                     imgSrc={image}
                     className="canvas-draw"
                     brushColor={colorCanvas}
-                    ref={canvasRef}
+                    ref={refCanvas}
                     onChange={onChangeCanvas}
                     disabled={disableCanvas}
                     brushRadius={brushRadius}
                     // saveData={savedDrawingCanvas ? savedDrawingCanvas[imageName + 'Data'] : ""
                     // }
-
+                    saveData={canvasData}
                 />
             </Box>
 

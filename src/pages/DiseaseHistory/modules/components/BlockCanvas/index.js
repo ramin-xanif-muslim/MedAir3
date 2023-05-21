@@ -14,20 +14,20 @@ function BlockCanvas() {
         >
             <GridItem borderRadius='10px' rowSpan={2} colSpan={[5, 5, 5, 3]} >
 
-                <Canvas imageName='deseaseImage1Data' image={image} />
+                <Canvas imageName='deseaseImage1' image={image} />
 
             </GridItem>
 
 
             <GridItem borderRadius='10px' colSpan={[5, 5, 5, 2]} >
 
-                <Canvas imageName='deseaseImage2Data' image={image} />
+                <Canvas imageName='deseaseImage2' image={image} />
 
             </GridItem>
 
             <GridItem borderRadius='10px' colSpan={[5, 5, 5, 2]}>
 
-                <Canvas imageName='deseaseImage3Data' image={image} />
+                <Canvas imageName='deseaseImage3' image={image} />
 
             </GridItem>
 
