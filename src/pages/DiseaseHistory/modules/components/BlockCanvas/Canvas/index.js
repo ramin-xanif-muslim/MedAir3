@@ -135,7 +135,6 @@ function CanvasComponent({ image, imageName }) {
         if (data) {
             canvasRef.current.loadSaveData(data);
             setTimeout(() => setDisableSaveBtn(true), 100)
-            
         }
     };
 

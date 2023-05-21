@@ -6,7 +6,6 @@ import { fetchPatientId, postAnalyses, postMorby, postPersonInfo, postTreatment,
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
 import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
 import dayjs from 'dayjs'
-// import { MaskedInput } from "antd-mask-input";
 
 
 function ProfilePatientForm() {

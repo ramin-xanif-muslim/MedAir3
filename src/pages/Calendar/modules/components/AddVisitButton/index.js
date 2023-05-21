@@ -4,11 +4,10 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import { Form, Input, DatePicker, Select, Modal, Button as AntdButton } from 'antd'
-import { MaskedInput } from "antd-mask-input";
 import dayjs from 'dayjs';
 import { handleAddVisit } from '../../../../../modules/api';
 
-function AddVisitButton({refetch}) {
+function AddVisitButton({ refetch }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -21,7 +20,7 @@ function AddVisitButton({refetch}) {
         sendObj.visitDate =
             dayjs(values.visitDate).format("YYYY-MM-DD HH:mm");
 
-            setIsLoading(false)
+        setIsLoading(false)
         await handleAddVisit({ sendObj })
         form.resetFields()
         refetch()
@@ -90,10 +89,9 @@ function AddVisitButton({refetch}) {
                         />
                     </Form.Item>
                     <Form.Item label="Mobile Number" name="phoneNumber">
-                        <MaskedInput
+                        <Input
+                            type='number'
                             allowClear
-                            style={{ width: "130px" }}
-                            mask={"000 000 00 00"}
                         />
                     </Form.Item>
                     <Form.Item label="Status" name="status">
