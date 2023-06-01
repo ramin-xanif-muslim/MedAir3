@@ -2,7 +2,7 @@ import { Form, Input, Button, message } from "antd";
 import sendRequest from "../modules/api/sendRequest";
 import React, { useState } from "react";
 import { useLocalStorageStore } from "../modules/store";
-import { Box, Center, Image } from "@chakra-ui/react";
+import { Box, Center, Image, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import logo from '../modules/images/MedAir.jpg'
 
@@ -38,59 +38,73 @@ const Login = () => {
     };
 
     return (
-        <Box h='100vh' bg='black'>
+        <Box color="white" bg="pink.100">
 
-            <Center p='8'>
-                <Image
-                    boxSize='250px'
-                    className='circle'
-                    src={logo}
-                    alt='medAir'
-                />
-            </Center>
+            <VStack
+                mx="auto"
+                h="100vh"
+                justifyContent="center"
+                w={{ base: "80%", md: 400 }}
+                >
 
-            <Center >
-                <Box p='4' my='2' boxShadow='xl' bg='pink.100' borderRadius='15px' maxWidth='600px'>
-                    <Form
-                        layout="vertical"
-                        initialValues={{
-                            remember: true,
+                <Form
+                    layout="horizontal"
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 18 }}
+                    onFinish={onFinish}
+                    style={{
+                        color: "white",
+                        width: "100%",
+                    }}
+                >
+                    <Form.Item
+                        wrapperCol={{
+                            xs: { span: 24, offset: 0 },
+                            sm: { span: 18, offset: 6 },
                         }}
-                        onFinish={onFinish}
                     >
-                        <Form.Item
-                            label="Username"
-                            name="userName"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
+                        <Center>
+                            <Image
+                                boxSize='150px'
+                                // className='circle'
+                                borderRadius='15px'
+                                src={logo}
+                                alt='medAir'
+                            />
+                        </Center>
 
-                        <Form.Item
-                            label="Password"
-                            name="userPass"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input.Password />
-                        </Form.Item>
+                    </Form.Item>
 
-                        <Form.Item noStyle
-                        >
-                            <Button block loading={isLoading} type="primary" htmlType="submit">
-                                Sign in
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Box>
-            </Center>
+                    <Form.Item
+                        name="userName"
+                        label="Username"
+                        // label={<span style={{ color: "white" }}>Username</span>}
+                        rules={[{ required: true, message: 'Please input your Username!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="userPass"
+                        label="Password"
+                        // label={<span style={{ color: "white" }}>Password</span>}
+                        rules={[{ required: true, message: 'Please input your Password!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item
+                        wrapperCol={{
+                            xs: { span: 24, offset: 0 },
+                            sm: { span: 18, offset: 6 },
+                        }}
+                    >
+                        <Button block loading={isLoading} type="primary" htmlType="submit">
+                            Sign in
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </VStack>
         </Box>
     );
 };

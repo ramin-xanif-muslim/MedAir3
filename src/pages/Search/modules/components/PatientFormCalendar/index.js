@@ -4,7 +4,7 @@ import React, { memo, useState } from "react";
 import { useGlobalContext } from "../../../../../modules/context/index.js";
 import sendRequest from "../../../../../modules/api/sendRequest";
 import { useStore } from "../../../../../modules/store";
-import { useMediaQuery } from "@chakra-ui/react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
 
 const PatientFormCalendar = () => {
 
@@ -58,7 +58,7 @@ const PatientFormCalendar = () => {
                             name="patientId"
                             noStyle
                         >
-                            <InputNumber addonBefore='№' placeholder="Patient №" />
+                            <InputNumber min={0} addonBefore='№' placeholder="Patient №" />
                         </Form.Item>
 
                     </Space.Compact>

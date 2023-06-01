@@ -30,7 +30,7 @@ function ProfilePatientForm() {
     const onFieldsChange = useStore((store) => store.onFieldsChange)
 
     return (
-        <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
+        <Box position="sticky" top='0' zIndex='1' boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
             <Form
                 id='patientForm'
                 onFinish={handleSave}
