@@ -9,9 +9,6 @@ function useResetProfilePatient() {
 
     const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
 
-
-    const setDescriptionsCanvas = useStore((store) => store.setDescriptionsCanvas)
-
     const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
 
     const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
@@ -30,7 +27,6 @@ function useResetProfilePatient() {
         setFamilyMembersList([])
         setDataSourceDiseaseHistoryTable([])
         setSavedDrawingCanvas({})
-        setDescriptionsCanvas({})
         setDataSourceVisitTable([])
         setDataSourceAnalysisTable([])
         setDataSourceTreatmentTable([])

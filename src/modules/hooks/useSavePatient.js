@@ -20,7 +20,6 @@ function useSavePatient() {
 
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const savedDrawingCanvas = useStore((store) => store.savedDrawingCanvas)
-    const descriptionsCanvas = useStore((store) => store.descriptionsCanvas)
     const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
@@ -51,9 +50,6 @@ function useSavePatient() {
     }
 
     const saveMorby = (patientId) => {
-        savedDrawingCanvas.deseaseImageDesc =
-            JSON.stringify(descriptionsCanvas);
-
         const sendObj = {
             ...diseaseHistoryForm.getFieldsValue(),
             patientId,

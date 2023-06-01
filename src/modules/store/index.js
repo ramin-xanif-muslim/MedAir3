@@ -14,9 +14,6 @@ let store = (set) => ({
     dataSourceDiseaseHistoryTable: [],
     setDataSourceDiseaseHistoryTable: (item) => set(() => ({ dataSourceDiseaseHistoryTable: item })),
 
-    descriptionsCanvas: {},
-    setDescriptionsCanvas: (item) => set(() => ({ descriptionsCanvas: item })),
-
     savedDrawingCanvas: {},
     setSavedDrawingCanvas: (item) => set(() => ({ savedDrawingCanvas: item })),
     

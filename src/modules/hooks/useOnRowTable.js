@@ -29,7 +29,6 @@ export const useOnRowTable = () => {
 
   const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
   const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
-  const setDescriptionsCanvas = useStore((store) => store.setDescriptionsCanvas)
 
   const fetchDiseaseHistory = async (id) => {
     try{
@@ -41,12 +40,6 @@ export const useOnRowTable = () => {
         setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
         setFamilyMembersList(res.data.familyMembersList)
         setSavedDrawingCanvas(res.data?.deseaseImagesList || {})
-        if (res.data.deseaseImagesList?.deseaseImageDesc) {
-          let descCanvas = JSON.parse(
-            res.data.deseaseImagesList.deseaseImageDesc
-          );
-          setDescriptionsCanvas(descCanvas);
-        }
       }
     }catch(error) {
       console.log('%c error','background: red; color: dark', error);
