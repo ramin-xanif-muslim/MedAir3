@@ -59,6 +59,7 @@ function ModalFamilyMemberForm(props) {
 
 
                     <Form
+                        id='ModalFamilyMemberForm'
                         form={form}
                         labelWrap
                         labelAlign="left"
@@ -112,6 +113,8 @@ function ModalFamilyMemberForm(props) {
 
                 <ModalFooter>
                     <Button
+                        form='ModalFamilyMemberForm'
+                        htmlType='submit'
                         type='primary'
                         block
                         icon={<PlusOutlined />}

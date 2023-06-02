@@ -38,7 +38,7 @@ const Login = () => {
     };
 
     return (
-        <Box color="white" bg="pink.100">
+        <Box color="white">
 
             <VStack
                 mx="auto"
@@ -65,7 +65,7 @@ const Login = () => {
                     >
                         <Center>
                             <Image
-                                boxSize='150px'
+                                // boxSize='150px'
                                 // className='circle'
                                 borderRadius='15px'
                                 src={logo}

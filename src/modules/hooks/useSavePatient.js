@@ -24,6 +24,7 @@ function useSavePatient() {
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
     const recipeList = useStore((store) => store.recipeList)
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
 
     const savePersonInfo = (patientId) => {
@@ -93,6 +94,7 @@ function useSavePatient() {
         }, 1000)
 
         let id = patientForm.getFieldsValue().patientId;
+
         let patientId;
         if (id) {
             patientId = id;
@@ -107,6 +109,7 @@ function useSavePatient() {
                 saveAnalyses(patientId),
                 saveTreatment(patientId),
             ])
+            setIsFieldsChange(false)
         }
     }
 

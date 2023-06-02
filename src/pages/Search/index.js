@@ -48,7 +48,7 @@ const Search = () => {
 
     return (
         <>
-            <Alert />
+            {/* <Alert /> */}
 
             <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 

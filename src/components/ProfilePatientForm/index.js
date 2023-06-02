@@ -4,7 +4,7 @@ import { useGlobalContext } from '../../modules/context/index.js'
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
 import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
 import useResetProfilePatient from '../../modules/hooks/useResetProfilePatient.js'
-import useSavePatient from '../../modules/hooks/useSavePatient.js'
+import useSavePatient from '../../modules/hooks/useSavePatient'
 import { useStore } from '../../modules/store/index.js';
 
 

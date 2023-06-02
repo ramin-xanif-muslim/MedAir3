@@ -10,10 +10,10 @@ import { useGlobalContext } from '../../../../../modules/context/index.js'
 const arrSeveralAdd = [
     "Brother",
     "Sister",
-    "Father's-brother",
-    "Mother's-brother",
-    "Father's-sister",
-    "Mother's-sister",
+    "Father's brother",
+    "Mother's brother",
+    "Father's sister",
+    "Mother's sister",
 ];
 
 function HeaderFamilyMembersList() {
@@ -27,11 +27,12 @@ function HeaderFamilyMembersList() {
     const [selectedMember, setSelectedMember] = useState()
     const [countAddedFM, setCountAddedFM] = useState({});
     const [isShowAlert, setIsShowAlert] = useState(false)
+    const [modalTitle, setModalTitle] = useState()
 
     const [form] = Form.useForm();
 
     const handleAdd = (memberData) => {
-        memberData.familyMember = selectedMember
+        memberData.familyMember = modalTitle
         let id = new Date().getTime()
         memberData.Id = id
         setFamilyMembersList(prev => [...prev, memberData])
@@ -54,7 +55,7 @@ function HeaderFamilyMembersList() {
             const findEl = familyMembersList.find((i) => i.familyMember === selectedMember)
 
             if (!findEl) {
-                setSelectedMember(selectedMember)
+                setModalTitle(selectedMember)
                 onOpen()
             } else if (arrSeveralAdd.includes(selectedMember)) {
                 let s = selectedMember;
@@ -62,7 +63,7 @@ function HeaderFamilyMembersList() {
                 let newSelectedMember = s + "_" + count;
                 count += 1;
                 setCountAddedFM({ [selectedMember]: count });
-                setSelectedMember(newSelectedMember)
+                setModalTitle(newSelectedMember)
                 onOpen()
             } else {
                 setIsShowAlert(true)
@@ -77,6 +78,7 @@ function HeaderFamilyMembersList() {
 
             <Form.Item labelAlign='left' label="Family members">
                 <Space.Compact style={{ width: '100%' }}>
+
                     <Select
                         onChange={onChange}
                         allowClear
@@ -88,13 +90,20 @@ function HeaderFamilyMembersList() {
                             )
                         })}
                     </Select>
-                    <Button disabled={!selectedMember} onClick={onClick}><PlusOutlined /></Button>
+
+                    <Button
+                        disabled={!selectedMember}
+                        onClick={onClick}
+                    >
+                        <PlusOutlined />
+                    </Button>
+
                 </Space.Compact>
             </Form.Item>
 
             {isShowAlert && <Alert
                 closable
-                afterClose={handleCloseAlert} 
+                afterClose={handleCloseAlert}
                 message="Selected family member already added" type="info"
 
             />}
@@ -104,7 +113,7 @@ function HeaderFamilyMembersList() {
                 onClose={onClose}
                 initialRef={initialRef}
                 finalRef={finalRef}
-                title={selectedMember}
+                title={modalTitle}
                 handleAdd={handleAdd}
                 form={form}
             />

@@ -21,7 +21,7 @@ function getItem(label, key, icon, children) {
         label,
     };
 }
-const profileSubMenus = ['person_info','disease_history','visits','analysis','treatment']
+const profileSubMenus = ['person_info', 'disease_history', 'visits', 'analysis', 'treatment']
 
 const items = [
     getItem('Calendar', 'calendar', <CalendarOutlined />),
@@ -75,7 +75,7 @@ function SideBar() {
     useEffect(() => {
         const link = location?.pathname.slice(1)
         setSelectedKey(link)
-    },[location?.pathname])
+    }, [location?.pathname])
 
 
     return (
@@ -95,7 +95,8 @@ function SideBar() {
 
             <Menu
                 onSelect={onSelect}
-                theme="dark" mode="inline"
+                theme="dark" 
+                mode="inline"
                 items={items}
                 selectedKeys={[selectedKey]}
             />

@@ -17,7 +17,7 @@ export const useOnRowTable = () => {
     try{
       let res = await sendRequest("vite/" + id, {}, "get")
       if(res?.data) {
-        console.log('res?.fetchPersonInfo',res?.data);
+        // console.log('res?.fetchPersonInfo',res?.data);
         res.data.birthDate = res.data.birthDate ? dayjs(res.data.birthDate) : null
         personInfoForm.setFieldsValue(res.data)
         patientForm.setFieldsValue(res.data)
@@ -34,7 +34,7 @@ export const useOnRowTable = () => {
     try{
       let res = await sendRequest("morby/" + id, {}, "get")
       if(res?.data) {
-        console.log('res?.fetchDiseaseHistory',res?.data);
+        // console.log('res?.fetchDiseaseHistory',res?.data);
         diseaseHistoryForm.setFieldsValue(res.data)
         res?.data.deseaseHistoryDynamicsList.forEach(i => i.id = i.patientsComplaintsId)
         setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
@@ -52,7 +52,7 @@ export const useOnRowTable = () => {
     try{
       let res = await sendRequest("visits/patientId/" + id, {}, "get")
       if(res?.data) {
-        console.log('res?.fetchVisits',res?.data);
+        // console.log('res?.fetchVisits',res?.data);
         res.data.forEach(i => i.id = i.visitId)
         setDataSourceVisitTable(res.data)
       }
@@ -67,7 +67,7 @@ export const useOnRowTable = () => {
     try{
       let res = await sendRequest("analyses/" + id, {}, "get")
       if(res?.data) {
-        console.log('res?.fetchAnalyses',res?.data);
+        // console.log('res?.fetchAnalyses',res?.data);
         res.data.forEach(i => i.id = i.analyzesId)
         setDataSourceAnalysisTable(res.data)
       }
@@ -83,7 +83,7 @@ export const useOnRowTable = () => {
     try{
       let res = await sendRequest("treatment/" + id, {}, "get")
       if(res?.data) {
-        console.log('res?.fetchTreatment',res?.data);
+        // console.log('res?.fetchTreatment',res?.data);
         treatmentHistoryForm.setFieldsValue(res.data)
 
         const { treatmentDynamics, recipeList } = res.data

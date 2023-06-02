@@ -22,16 +22,16 @@ function AlertComponent() {
                 <Alert
                     message={<Box color='red'>You have an unsaved patient!</Box>}
                     onClose={onClose}
-                    // action={
-                    //     <Button
-                    //         onClick={handleSave}
-                    //         loading={isLoading}
-                    //         size="small"
-                    //         type='primary'
-                    //     >
-                    //         Save
-                    //     </Button>
-                    // }
+                    action={
+                        <Button
+                            onClick={handleSave}
+                            loading={isLoading}
+                            size="small"
+                            type='primary'
+                        >
+                            Save
+                        </Button>
+                    }
                     type="warning"
                     showIcon
                     closable

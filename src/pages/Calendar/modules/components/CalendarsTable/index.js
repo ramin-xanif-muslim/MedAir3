@@ -210,7 +210,7 @@ function CalendarsTable(props) {
             let Id = row.id;
             let res = await sendRequest("visits/" + Id, {}, "delete");
             if (res?.data) {
-              message.success()
+              message.success(res.data)
               refetch()
             } else {
               message.warning('Something went wrong')
@@ -245,7 +245,7 @@ function CalendarsTable(props) {
         columns={columns.filter(i => i.isVisible === true)}
         dataSource={dataSource || []}
         rowClassName={(record, index) =>
-          selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+          selectedRowKey === index ? 'ant-table-row-selected' : ''
         }
         onRow={(record, index) => ({
           onClick: (e) => {

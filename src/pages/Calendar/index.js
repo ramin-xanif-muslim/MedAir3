@@ -2,11 +2,11 @@ import React from 'react'
 import { Box } from '@chakra-ui/react'
 import CalendarsTable from './modules/components/CalendarsTable'
 import CalendarsCalendarPage from './modules/components/CalendarsCalendarPage'
-import moment from 'moment';
 import sendRequest from '../../modules/api/sendRequest';
 import { useStore } from '../../modules/store';
 import { useQuery } from 'react-query';
 import Alert from '../../components/Alert';
+import dayjs from 'dayjs';
 
 function Calendar() {
 
@@ -15,7 +15,7 @@ function Calendar() {
 
 
   const fetchDataTable = async () => {
-    const date = selectedDate ? selectedDate.format("YYYY-MM-DD 00:00:00") : moment().format("YYYY-MM-DD 00:00:00")
+    const date = selectedDate ? selectedDate.format("YYYY-MM-DD 00:00:00") : dayjs().format("YYYY-MM-DD 00:00:00")
     let res = await sendRequest("visits/" + date);
     if (res?.data) return res.data
   };
@@ -24,8 +24,12 @@ function Calendar() {
 
 
   const cellRender = (value) => {
-    const hasVisit = data?.some(({ visitDate }) => moment(visitDate).format('YYYY-MM-DD') === value.format('YYYY-MM-DD'));
-    return hasVisit ? <Box borderTop='3px solid black' shadow='dark-lg' /> : null;
+    try{
+      const hasVisit = data?.some(({ visitDate }) => dayjs(visitDate).format('YYYY-MM-DD') === value?.format('YYYY-MM-DD'));
+      return hasVisit ? <Box borderTop='3px solid black' shadow='dark-lg' /> : null;
+    }catch(error){
+      console.log('%c error','background: red; color: dark', error);
+    }
   };
 
   const onSelect = (value) => {
@@ -34,7 +38,7 @@ function Calendar() {
 
   return (
     <>
-      <Alert />
+      {/* <Alert /> */}
 
       <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 
@@ -49,6 +53,7 @@ function Calendar() {
 
         <Box>
           <CalendarsTable
+            refetch={refetch}
             isLoadingOnSelectCalendar={isLoading}
             dataSource={data}
           />
