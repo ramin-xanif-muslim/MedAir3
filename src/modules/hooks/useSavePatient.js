@@ -102,6 +102,7 @@ function useSavePatient() {
             patientId = id;
         } else {
             patientId = await fetchPatientId();
+            patientForm.setFieldsValue({patientId})
         }
         if (patientId) {
             Promise.all([
