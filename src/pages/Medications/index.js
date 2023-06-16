@@ -4,16 +4,8 @@ import { PlusOutlined } from '@ant-design/icons'
 import EditTableComponent from '../../components/EditTableComponent'
 import { Button, Tooltip, message } from 'antd'
 import sendRequest from '../../modules/api/sendRequest'
-import { useQuery } from 'react-query'
 import DeleteTableRow from '../../components/DeleteTableRow'
-
-const fetchManagersTabs = async () => {
-    let res = await sendRequest("managers/tabs");
-    if (res?.data) {
-        res.data.forEach(i => i.Id = i.cureTabId)
-        return res.data
-    }
-};
+import { useQueryContext } from '../../modules/store/QueryContext'
 
 
 function Medications() {
@@ -21,15 +13,19 @@ function Medications() {
     const [disabledShowButton, setDisabledShowButton] = useState(true)
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching, refetch } = useQuery("managers/tabs", fetchManagersTabs)
-
-    const [list, setList] = useState(data || [])
+    const { managersTabs, isFetchingManagersTabs, setIsFetchManagersTabs, refetchManagersTabs } = useQueryContext();
 
     useEffect(() => {
-        if (!isFetching && data) {
-            setList(data)
+      setIsFetchManagersTabs(true)
+    },[])
+
+    const [list, setList] = useState(managersTabs || [])
+
+    useEffect(() => {
+        if (!isFetchingManagersTabs && managersTabs) {
+            setList(managersTabs)
         }
-    }, [isFetching])
+    }, [isFetchingManagersTabs])
 
     const columns = useMemo(() => {
         return [
@@ -95,16 +91,16 @@ function Medications() {
         message.success('Deleted')
     }
     const deletePlace = async (delItem) => {
-        let Id = delItem.visitPlaceId;
+        let Id = delItem.cureTabId;
         if (!Id) {
             return deleteItem(delItem)
         }
-        let res = await sendRequest("managers/places/" + Id, {}, "delete");
+        let res = await sendRequest("managers/tabs/" + Id, {}, "delete");
         if (res?.data === 'success') {
             message.success('Deleted!')
             let newData = list.filter(i => i.Id !== delItem.Id)
             setList(newData)
-            refetch()
+            refetchManagersTabs()
         } else {
             message.warning('Something get wrong')
         }
@@ -120,7 +116,7 @@ function Medications() {
                     content: 'Saved',
                     key: 'save_manager'
                 })
-                refetch()
+                refetchManagersTabs()
             } else {
                 message.error('Error')
             }

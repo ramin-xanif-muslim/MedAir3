@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ErrorBoundary } from "./pages/Error";
 import { AppProvider } from './modules/context/index.js';
+import { QueryContextProvider } from './modules/store/QueryContext';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -25,9 +26,11 @@ root.render(
             <BrowserRouter>
                 <ErrorBoundary>
                     <AppProvider>
-                        <ChakraProvider>
-                            <App />
-                        </ChakraProvider>
+                        <QueryContextProvider>
+                            <ChakraProvider>
+                                <App />
+                            </ChakraProvider>
+                        </QueryContextProvider>
                     </AppProvider>
                 </ErrorBoundary>
             </BrowserRouter>

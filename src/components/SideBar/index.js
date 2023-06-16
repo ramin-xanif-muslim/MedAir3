@@ -7,11 +7,12 @@ import {
     LogoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from 'antd';
-import { Center, Image } from '@chakra-ui/react';
+import { Box, Center, Image } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocalStorageStore, useStore } from '../../modules/store';
 import { correctBreadcrumbItems } from '../../modules/functions';
 import logo from '../../modules/images/MedAir.jpg'
+import Version from '../Version';
 
 function getItem(label, key, icon, children) {
     return {
@@ -21,7 +22,6 @@ function getItem(label, key, icon, children) {
         label,
     };
 }
-const profileSubMenus = ['person_info', 'disease_history', 'visits', 'analysis', 'treatment']
 
 const items = [
     getItem('Calendar', 'calendar', <CalendarOutlined />),
@@ -85,21 +85,25 @@ function SideBar() {
             onCollapse={(value) => setCollapsed(value)}
         >
 
-            <Center>
-                <Image
-                    className='circle'
-                    src={logo}
-                    alt='medAir'
-                />
-            </Center>
+            <Box overflow="auto" maxH="95vh">
+                <Center>
+                    <Image
+                        className='circle'
+                        src={logo}
+                        alt='medAir'
+                    />
+                </Center>
 
-            <Menu
-                onSelect={onSelect}
-                theme="dark" 
-                mode="inline"
-                items={items}
-                selectedKeys={[selectedKey]}
-            />
+                <Menu
+                    onSelect={onSelect}
+                    theme="dark"
+                    mode="inline"
+                    items={items}
+                    selectedKeys={[selectedKey]}
+                />
+
+                <Version />
+            </Box>
 
         </Layout.Sider>
     )

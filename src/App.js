@@ -9,8 +9,6 @@ import { ErrorBoundary } from './pages/Error';
 
 function App() {
 
-  // useEffectOnDidMountApp()
-
   const token = useLocalStorageStore((store) => store.token)
 
   if (!token) return <Login />;

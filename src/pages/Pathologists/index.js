@@ -1,20 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Box } from '@chakra-ui/react'
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
+import { PlusOutlined, } from '@ant-design/icons'
 import EditTableComponent from '../../components/EditTableComponent'
-import { Button, Popconfirm, Tooltip, Typography, message } from 'antd'
+import { Button, Tooltip, message } from 'antd'
 import { useQuery } from 'react-query'
 import sendRequest from '../../modules/api/sendRequest'
 import DeleteTableRow from '../../components/DeleteTableRow'
-
-
-const fetchPathologistsPlace = async () => {
-    let res = await sendRequest("managers/pathologists");
-    if (res?.data) {
-        res.data.forEach(i => i.Id = i.pathologistId)
-        return res.data
-    }
-};
+import { useQueryContext } from '../../modules/store/QueryContext'
 
 
 function Pathologists() {
@@ -22,15 +14,24 @@ function Pathologists() {
     const [disabledShowButton, setDisabledShowButton] = useState(true)
     const [loading, setLoading] = useState(false)
 
-    const { data, isFetching, refetch } = useQuery("managers/pathologists", fetchPathologistsPlace)
-
-    const [list, setList] = useState(data || [])
+    const { 
+        pathologists,
+        refetchPathologists,
+        isFetchingPathologists,
+        setIsFetchPathologists,
+     } = useQueryContext();
 
     useEffect(() => {
-        if (!isFetching && data) {
-            setList(data)
+        setIsFetchPathologists(true)
+    },[])
+
+    const [list, setList] = useState(pathologists || [])
+
+    useEffect(() => {
+        if (!isFetchingPathologists && pathologists) {
+            setList(pathologists)
         }
-    }, [isFetching])
+    }, [isFetchingPathologists])
 
     const columns = useMemo(() => {
         return [
@@ -83,16 +84,16 @@ function Pathologists() {
         message.success('Deleted')
     }
     const deletePlace = async (delItem) => {
-        let Id = delItem.visitPlaceId;
+        let Id = delItem.pathologistId;
         if (!Id) {
             return deleteItem(delItem)
         }
-        let res = await sendRequest("managers/places/" + Id, {}, "delete");
+        let res = await sendRequest("managers/pathologists/" + Id, {}, "delete");
         if (res?.data === 'success') {
             message.success('Deleted!')
             let newData = list.filter(i => i.Id !== delItem.Id)
             setList(newData)
-            refetch()
+            refetchPathologists()
         } else {
             message.warning('Something get wrong')
         }
@@ -102,13 +103,13 @@ function Pathologists() {
         setLoading(true);
         for (let i = 0; i < list.length; i++) {
             let sendObj = { ...list[i] };
-            let res = await sendRequest("managers/places", sendObj, "post");
+            let res = await sendRequest("managers/pathologists", sendObj, "post");
             if (res) {
                 message.success({
                     content: 'Saved',
                     key: 'save_manager'
                 })
-                refetch()
+                refetchPathologists()
             } else {
                 message.error('Error')
             }

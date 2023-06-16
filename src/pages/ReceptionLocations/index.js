@@ -5,32 +5,31 @@ import EditTableComponent from '../../components/EditTableComponent'
 import { Button, Tooltip, message } from 'antd'
 import sendRequest from '../../modules/api/sendRequest'
 import DeleteTableRow from '../../components/DeleteTableRow'
-import { useQuery } from 'react-query'
-
-
-
-const fetchManagersPlace = async () => {
-    let res = await sendRequest("managers/places");
-    if(res?.data) {
-        res.data.forEach(i => i.Id = i.visitPlaceId)
-        return res.data
-    }
-};
+import { useQueryContext } from '../../modules/store/QueryContext'
 
 function ReceptionLocations() {
 
     const [disabledShowButton, setDisabledShowButton] = useState(true)
     const [loading, setLoading] = useState(false)
+
+    const {
+        places,
+        refetchPlaces,
+        isFetchingPlaces,
+        setIsFetchPlaces,
+     } = useQueryContext();
+
+     useEffect(() => {
+        setIsFetchPlaces(true)
+     },[])
     
-    const { data, isFetching, refetch } = useQuery("managers/places",fetchManagersPlace)
-    
-    const [list, setList] = useState(data || [])
+    const [list, setList] = useState(places || [])
 
     useEffect(() => {
-        if(!isFetching && data){
-            setList(data)
+        if(!isFetchingPlaces && places){
+            setList(places)
         }
-    },[isFetching])
+    },[isFetchingPlaces])
 
     const columns = useMemo(() => {
         return [
@@ -106,7 +105,7 @@ function ReceptionLocations() {
             message.success('Deleted!')
             let newData = list.filter(i => i.Id !== delItem.Id)
             setList(newData)
-            refetch()
+            refetchPlaces()
         }else {
             message.warning('Something get wrong')
         }
@@ -122,7 +121,7 @@ function ReceptionLocations() {
                     content: 'Saved',
                     key: 'save_manager'
                 })
-                refetch()
+                refetchPlaces()
             } else {
                 message.error('Error')
             }

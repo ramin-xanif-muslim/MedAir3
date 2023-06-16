@@ -1,26 +1,24 @@
 import { Form, Select } from "antd";
-import React, { memo, useState } from "react";
-import { useQuery } from "react-query";
-import sendRequest from "../../../../modules/api/sendRequest";
+import React, { memo, useEffect } from "react";
+import { useQueryContext } from "../../../../modules/store/QueryContext";
 
 const { Option } = Select;
 
 
-const fetchManagersTabs = async () => {
-  let res = await sendRequest("managers/tabs");
-  if (res?.data) return res.data
-};
-
 const UseTabs = ({ dataIndex, title, inputRef, save }) => {
+
+  console.log('%c UseTabs','background: red; color: dark');
 
   const onBlur = () => {
     let inputType = 'select'
     save(inputType)
   };
 
-  const { data: managersList, isLoading, refetch } = useQuery(["managers/tabs"], fetchManagersTabs,{
-    enabled: false,
-  })
+  const { managersTabs, isFetchingManagersTabs, setIsFetchManagersTabs } = useQueryContext();
+
+  useEffect(() => {
+    setIsFetchManagersTabs(true)
+  },[])
 
   return (
     <Form.Item
@@ -34,10 +32,9 @@ const UseTabs = ({ dataIndex, title, inputRef, save }) => {
         ref={inputRef}
         lazyLoad
         onBlur={onBlur}
-        loading={isLoading}
-        onFocus={refetch}
+        loading={isFetchingManagersTabs}
       >
-        {managersList?.map((c, index) => {
+        {managersTabs?.map((c, index) => {
           return (
             <Option key={c.cureTabId} value={JSON.stringify(c)}>
               {c.cureTabName}

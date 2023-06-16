@@ -3,8 +3,7 @@ import { Button, DatePicker, Form, Input, InputNumber, Radio, Select, Space } fr
 import { SimpleGrid } from '@chakra-ui/react'
 import { useStore } from '../../../../../modules/store';
 import dayjs from 'dayjs';
-import { fetchPathologistsPlace } from '../../../../../modules/api';
-import { useQuery } from 'react-query';
+import PathologistFormItem from '../../../../../components/FormItems/PathologistFormItem';
 
 function TreatmentTableFormBloke(props) {
 
@@ -53,8 +52,6 @@ function TreatmentTableFormBloke(props) {
         const nameFormInput = name && name[0]
         if (nameFormInput === 'treatmentTypeName') setIsBenign(value === 'benign')
     }
-
-    const { data: pathologistsList } = useQuery(["managers/pathologists"], fetchPathologistsPlace)
 
     return (
 
@@ -290,19 +287,10 @@ function TreatmentTableFormBloke(props) {
                     <InputNumber min={0} defaultValue={0} />
                 </Form.Item>
 
-                <Form.Item label="Pathologist" name="pathologist">
-                    <Select
-                        allowClear
-                    >
-                        {pathologistsList?.map((i) => {
-                            return (
-                                <Select.Option key={i.pathologistId} value={i.pathologistName}>
-                                    {i.pathologistName}
-                                </Select.Option>
-                            );
-                        })}
-                    </Select>
-                </Form.Item>
+                <PathologistFormItem
+                    label="Pathologist"
+                    name="pathologist"
+                />
 
 
                 <Form.Item label="Brest type" name="breastType">

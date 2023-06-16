@@ -122,12 +122,34 @@ export const handleAddVisit = async ({ sendObj }) => {
 export const fetchPathologistsPlace = async () => {
     let res = await sendRequest("managers/pathologists");
     if (res?.data) {
+        res.data.forEach(i => {
+            if(!i.Id && i.pathologistId){
+                i.Id = i.pathologistId
+            }
+        })
         return res.data
     }
 };
 export const fetchManagersPlace = async () => {
     let res = await sendRequest("managers/places");
-    if (res?.data) {
+    if(res?.data) {
+        res.data.forEach(i => {
+            if(!i.Id && i.visitPlaceId){
+                i.Id = i.visitPlaceId
+            }
+        })
         return res.data
     }
 };
+
+export const fetchManagersTabs = async () => {
+    let res = await sendRequest("managers/tabs");
+    if (res?.data) {
+        res.data.forEach(i => {
+            if(!i.Id && i.cureTabId){
+                i.Id = i.cureTabId
+            }
+        })
+        return res.data
+    }
+  };
