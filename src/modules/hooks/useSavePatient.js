@@ -10,7 +10,7 @@ function useSavePatient() {
     const [isLoading, setIsLoading] = useState(false)
 
     const {
-         patientForm,
+        patientForm,
         personInfoForm,
         diseaseHistoryForm,
         familyMembersList,
@@ -79,7 +79,9 @@ function useSavePatient() {
 
     const saveTreatment = (patientId) => {
         const sendObj = {
-            ...treatmentHistoryForm.getFieldsValue(),
+            treatmentStatic: {
+                ...treatmentHistoryForm.getFieldsValue(),
+            },
             patientId,
             treatmentDynamics: dataSourceTreatmentTable,
             recipeList,
