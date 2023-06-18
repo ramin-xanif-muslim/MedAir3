@@ -17,7 +17,7 @@ import { deepCopy } from '../../../../modules/functions/deepCopy';
 const CreateNew = (props) => {
 
     const {
-        selectedItem,
+        selectedRowKey,
         setSelectedRowKey,
         form,
         isOpen,
@@ -47,6 +47,7 @@ const CreateNew = (props) => {
 
     const handleClose = () => {
         form.resetFields()
+        setSelectedRowKey(null)
         onClose()
     }
 
@@ -67,7 +68,7 @@ const CreateNew = (props) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{selectedItem ? "Edit Pathologist" : "New Pathologist"}</ModalHeader>
+                    <ModalHeader>{selectedRowKey ? "Edit Pathologist" : "New Pathologist"}</ModalHeader>
                     <ModalCloseButton />
 
                     <ModalBody>
@@ -114,7 +115,7 @@ const CreateNew = (props) => {
                             onClick={onFinish}
                             loading={isLoading}
                         >
-                            {selectedItem ? 'Edit' : 'Add'}
+                            {selectedRowKey ? 'Edit' : 'Add'}
                         </Button>
                     </ModalFooter>
 

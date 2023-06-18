@@ -94,7 +94,6 @@ function Pathologists() {
     };
 
     const [selectedRowKey, setSelectedRowKey] = useState()
-    const [selectedItem, setSelectedItem] = useState()
 
     const [form] = Form.useForm()
 
@@ -102,7 +101,6 @@ function Pathologists() {
 
     const onRowTable = (record, index) => {
         form.setFieldsValue(record)
-        setSelectedItem(record)
         setSelectedRowKey(index)
         onOpen()
     }
@@ -119,7 +117,7 @@ function Pathologists() {
                         onOpen={onOpen}
                         onClose={onClose}
                         form={form}
-                        selectedItem={selectedItem}
+                        selectedRowKey={selectedRowKey}
                         setSelectedRowKey={setSelectedRowKey}
                     />
 
@@ -142,13 +140,6 @@ function Pathologists() {
                         },
                     })}
                 />
-
-                {/* <EditTableComponent
-                    dataSource={list}
-                    setDataSource={setList}
-                    defaultColumns={columns}
-                    onChange={onChange}
-                /> */}
 
             </Box>
 

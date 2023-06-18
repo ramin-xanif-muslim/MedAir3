@@ -101,7 +101,6 @@ function Medications() {
     };
 
     const [selectedRowKey, setSelectedRowKey] = useState()
-    const [selectedItem, setSelectedItem] = useState()
 
     const [form] = Form.useForm()
 
@@ -109,7 +108,6 @@ function Medications() {
 
     const onRowTable = (record, index) => {
         form.setFieldsValue(record)
-        setSelectedItem(record)
         setSelectedRowKey(index)
         onOpen()
     }
@@ -126,7 +124,7 @@ function Medications() {
                         onOpen={onOpen}
                         onClose={onClose}
                         form={form}
-                        selectedItem={selectedItem}
+                        selectedRowKey={selectedRowKey}
                         setSelectedRowKey={setSelectedRowKey}
                     />
 

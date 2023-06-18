@@ -107,7 +107,6 @@ function ReceptionLocations() {
     };
 
     const [selectedRowKey, setSelectedRowKey] = useState()
-    const [selectedItem, setSelectedItem] = useState()
 
     const [form] = Form.useForm()
 
@@ -115,7 +114,6 @@ function ReceptionLocations() {
 
     const onRowTable = (record, index) => {
         form.setFieldsValue(record)
-        setSelectedItem(record)
         setSelectedRowKey(index)
         onOpen()
     }
@@ -132,14 +130,14 @@ function ReceptionLocations() {
                         onOpen={onOpen}
                         onClose={onClose}
                         form={form}
-                        selectedItem={selectedItem}
+                        selectedRowKey={selectedRowKey}
                         setSelectedRowKey={setSelectedRowKey}
                     />
 
                 </Flex>
 
                 <Table
-                loading={isLoadingPlaces}
+                    loading={isLoadingPlaces}
                     size='small'
                     bordered
                     columns={columns}
