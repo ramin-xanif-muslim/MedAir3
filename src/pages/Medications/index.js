@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { PlusOutlined } from '@ant-design/icons'
 import EditTableComponent from '../../components/EditTableComponent'
 import { Button, Tooltip, message } from 'antd'
@@ -16,8 +16,8 @@ function Medications() {
     const { managersTabs, isFetchingManagersTabs, setIsFetchManagersTabs, refetchManagersTabs } = useQueryContext();
 
     useEffect(() => {
-      setIsFetchManagersTabs(true)
-    },[])
+        setIsFetchManagersTabs(true)
+    }, [])
 
     const [list, setList] = useState(managersTabs || [])
 
@@ -34,7 +34,7 @@ function Medications() {
                 dataIndex: "cureTabName",
                 key: "cureTabName",
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -47,7 +47,7 @@ function Medications() {
                 key: "cureTabType",
                 inputType: 'select',
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -59,7 +59,7 @@ function Medications() {
                 dataIndex: "cureTabSize",
                 key: "cureTabSize",
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -141,15 +141,25 @@ function Medications() {
 
             <Box display='flex' flexDirection='column'>
 
-                <Button
-                    disabled={disabledShowButton}
-                    loading={loading}
-                    block
-                    onClick={handleSave}
-                    type='primary'
-                >
-                    Save
-                </Button>
+                <Flex w="100%" mb="2" gap="2">
+
+                    <Button
+                        icon={<PlusOutlined />}
+                        onClick={handleAddNew}
+                    >
+                        New
+                    </Button>
+
+                    <Button
+                        disabled={disabledShowButton}
+                        loading={loading}
+                        onClick={handleSave}
+                        type='primary'
+                    >
+                        Save
+                    </Button>
+
+                </Flex>
 
                 <EditTableComponent
                     dataSource={list}
@@ -157,14 +167,6 @@ function Medications() {
                     defaultColumns={columns}
                     onChange={onChange}
                 />
-
-                <Button
-                    block
-                    icon={<PlusOutlined />}
-                    onClick={handleAddNew}
-                >
-                    New
-                </Button>
 
             </Box>
 

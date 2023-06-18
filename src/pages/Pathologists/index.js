@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { PlusOutlined, } from '@ant-design/icons'
 import EditTableComponent from '../../components/EditTableComponent'
 import { Button, Tooltip, message } from 'antd'
@@ -14,16 +14,16 @@ function Pathologists() {
     const [disabledShowButton, setDisabledShowButton] = useState(true)
     const [loading, setLoading] = useState(false)
 
-    const { 
+    const {
         pathologists,
         refetchPathologists,
         isFetchingPathologists,
         setIsFetchPathologists,
-     } = useQueryContext();
+    } = useQueryContext();
 
     useEffect(() => {
         setIsFetchPathologists(true)
-    },[])
+    }, [])
 
     const [list, setList] = useState(pathologists || [])
 
@@ -40,7 +40,7 @@ function Pathologists() {
                 dataIndex: "pathologistName",
                 key: "pathologistName",
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -52,7 +52,7 @@ function Pathologists() {
                 dataIndex: "pathologistPlace",
                 key: "pathologistPlace",
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -134,15 +134,25 @@ function Pathologists() {
 
             <Box display='flex' flexDirection='column'>
 
-                <Button
-                    disabled={disabledShowButton}
-                    loading={loading}
-                    block
-                    onClick={handleSave}
-                    type='primary'
-                >
-                    Save
-                </Button>
+                <Flex w="100%" mb="2" gap="2">
+
+                    <Button
+                        icon={<PlusOutlined />}
+                        onClick={handleAddNew}
+                    >
+                        New
+                    </Button>
+
+                    <Button
+                        disabled={disabledShowButton}
+                        loading={loading}
+                        onClick={handleSave}
+                        type='primary'
+                    >
+                        Save
+                    </Button>
+
+                </Flex>
 
                 <EditTableComponent
                     dataSource={list}
@@ -150,14 +160,6 @@ function Pathologists() {
                     defaultColumns={columns}
                     onChange={onChange}
                 />
-
-                <Button
-                    block
-                    icon={<PlusOutlined />}
-                    onClick={handleAddNew}
-                >
-                    New
-                </Button>
 
             </Box>
 

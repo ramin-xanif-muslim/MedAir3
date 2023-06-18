@@ -123,7 +123,7 @@ export const fetchPathologistsPlace = async () => {
     let res = await sendRequest("managers/pathologists");
     if (res?.data) {
         res.data.forEach(i => {
-            if(!i.Id && i.pathologistId){
+            if(i.pathologistId){
                 i.Id = i.pathologistId
             }
         })
@@ -134,7 +134,7 @@ export const fetchManagersPlace = async () => {
     let res = await sendRequest("managers/places");
     if(res?.data) {
         res.data.forEach(i => {
-            if(!i.Id && i.visitPlaceId){
+            if(i.visitPlaceId){
                 i.Id = i.visitPlaceId
             }
         })
@@ -146,7 +146,7 @@ export const fetchManagersTabs = async () => {
     let res = await sendRequest("managers/tabs");
     if (res?.data) {
         res.data.forEach(i => {
-            if(!i.Id && i.cureTabId){
+            if(i.cureTabId){
                 i.Id = i.cureTabId
             }
         })

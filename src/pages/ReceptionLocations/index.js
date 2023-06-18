@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box, Flex, Spacer } from '@chakra-ui/react'
 import { PlusOutlined } from '@ant-design/icons'
 import EditTableComponent from '../../components/EditTableComponent'
-import { Button, Tooltip, message } from 'antd'
+import { Button, Space, Tooltip, message } from 'antd'
 import sendRequest from '../../modules/api/sendRequest'
 import DeleteTableRow from '../../components/DeleteTableRow'
 import { useQueryContext } from '../../modules/store/QueryContext'
@@ -17,19 +17,19 @@ function ReceptionLocations() {
         refetchPlaces,
         isFetchingPlaces,
         setIsFetchPlaces,
-     } = useQueryContext();
+    } = useQueryContext();
 
-     useEffect(() => {
+    useEffect(() => {
         setIsFetchPlaces(true)
-     },[])
-    
+    }, [])
+
     const [list, setList] = useState(places || [])
 
     useEffect(() => {
-        if(!isFetchingPlaces && places){
+        if (!isFetchingPlaces && places) {
             setList(places)
         }
-    },[isFetchingPlaces])
+    }, [isFetchingPlaces])
 
     const columns = useMemo(() => {
         return [
@@ -38,7 +38,7 @@ function ReceptionLocations() {
                 dataIndex: "placeName",
                 key: "placeName",
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -51,7 +51,7 @@ function ReceptionLocations() {
                 key: "placeCity",
                 inputType: 'select',
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -64,7 +64,7 @@ function ReceptionLocations() {
                 key: "placeCountry",
                 inputType: 'select',
                 ellipsis: true,
-                editable: true,
+                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -91,22 +91,22 @@ function ReceptionLocations() {
     }, [list]);
 
     const deleteItem = (delItem) => {
-        let newList =  list.filter(i => i.Id !== delItem.Id)
+        let newList = list.filter(i => i.Id !== delItem.Id)
         setList(newList)
         message.success('Deleted')
     }
     const deletePlace = async (delItem) => {
         let Id = delItem.visitPlaceId;
-        if(!Id){
+        if (!Id) {
             return deleteItem(delItem)
         }
         let res = await sendRequest("managers/places/" + Id, {}, "delete");
-        if(res?.data === 'success'){
+        if (res?.data === 'success') {
             message.success('Deleted!')
             let newData = list.filter(i => i.Id !== delItem.Id)
             setList(newData)
             refetchPlaces()
-        }else {
+        } else {
             message.warning('Something get wrong')
         }
     };
@@ -146,15 +146,25 @@ function ReceptionLocations() {
 
             <Box display='flex' flexDirection='column'>
 
-                <Button
-                    disabled={disabledShowButton}
-                    loading={loading}
-                    block
-                    onClick={handleSave}
-                    type='primary'
-                >
-                    Save
-                </Button>
+                <Flex w="100%" mb="2" gap="2">
+
+                    <Button
+                        icon={<PlusOutlined />}
+                        onClick={handleAddNewMedications}
+                    >
+                        New
+                    </Button>
+
+                    <Button
+                        disabled={disabledShowButton}
+                        loading={loading}
+                        onClick={handleSave}
+                        type='primary'
+                    >
+                        Save
+                    </Button>
+
+                </Flex>
 
                 <EditTableComponent
                     dataSource={list}
@@ -162,14 +172,6 @@ function ReceptionLocations() {
                     defaultColumns={columns}
                     onChange={onChange}
                 />
-
-                <Button
-                    block
-                    icon={<PlusOutlined />}
-                    onClick={handleAddNewMedications}
-                >
-                    New medications
-                </Button>
 
             </Box>
 

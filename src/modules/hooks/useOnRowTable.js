@@ -9,20 +9,26 @@ export const useOnRowTable = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const { personInfoForm, diseaseHistoryForm, patientForm, setFamilyMembersList, treatmentHistoryForm } = useGlobalContext()
+  const {
+    personInfoForm,
+    diseaseHistoryForm,
+    patientForm,
+    setFamilyMembersList,
+    treatmentHistoryForm
+  } = useGlobalContext()
 
   const navigate = useNavigate();
 
   const fetchPersonInfo = async (id) => {
-    try{
+    try {
       let res = await sendRequest("vite/" + id, {}, "get")
-      if(res?.data) {
+      if (res?.data) {
         res.data.birthDate = res.data.birthDate ? dayjs(res.data.birthDate) : null
         personInfoForm.setFieldsValue(res.data)
         patientForm.setFieldsValue(res.data)
       }
-    }catch(error) {
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   }
 
@@ -30,45 +36,45 @@ export const useOnRowTable = () => {
   const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
 
   const fetchDiseaseHistory = async (id) => {
-    try{
+    try {
       let res = await sendRequest("morby/" + id, {}, "get")
-      if(res?.data) {
+      if (res?.data) {
         diseaseHistoryForm.setFieldsValue(res.data)
         res?.data.deseaseHistoryDynamicsList.forEach(i => i.id = i.patientsComplaintsId)
         setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
         setFamilyMembersList(res.data.familyMembersList)
         setSavedDrawingCanvas(res.data?.deseaseImagesList || {})
       }
-    }catch(error) {
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   }
 
   const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
 
   const fetchVisits = async (id) => {
-    try{
+    try {
       let res = await sendRequest("visits/patientId/" + id, {}, "get")
-      if(res?.data) {
+      if (res?.data) {
         res.data.forEach(i => i.id = i.visitId)
         setDataSourceVisitTable(res.data)
       }
-    }catch(error) {
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   }
 
   const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
 
   const fetchAnalyses = async (id) => {
-    try{
+    try {
       let res = await sendRequest("analyses/" + id, {}, "get")
-      if(res?.data) {
+      if (res?.data) {
         res.data.forEach(i => i.id = i.analyzesId)
         setDataSourceAnalysisTable(res.data)
       }
-    }catch(error) {
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   }
 
@@ -76,21 +82,21 @@ export const useOnRowTable = () => {
   const setRecipeList = useStore((store) => store.setRecipeList)
 
   const fetchTreatment = async (id) => {
-    try{
+    try {
       let res = await sendRequest("treatment/" + id, {}, "get")
-      if(res?.data) {
+      if (res?.data) {
         const { treatmentDynamics, recipeList, treatmentStatic } = res.data
 
         treatmentHistoryForm.setFieldsValue(treatmentStatic)
 
         treatmentDynamics.forEach(i => i.id = i.treatmentId)
         setDataSourceTreatmentTable(treatmentDynamics)
-        
+
         recipeList.forEach(i => i.id = i.recipeId)
         setRecipeList(recipeList)
       }
-    }catch(error) {
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   }
 
