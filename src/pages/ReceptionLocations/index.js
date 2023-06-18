@@ -1,21 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box, Flex, Spacer } from '@chakra-ui/react'
-import { PlusOutlined } from '@ant-design/icons'
+import { Box, Flex, useDisclosure } from '@chakra-ui/react'
 import EditTableComponent from '../../components/EditTableComponent'
-import { Button, Space, Tooltip, message } from 'antd'
+import { Form, Table, Tooltip, message } from 'antd'
 import sendRequest from '../../modules/api/sendRequest'
 import DeleteTableRow from '../../components/DeleteTableRow'
 import { useQueryContext } from '../../modules/store/QueryContext'
+import CreateNew from './modules/components/CreateNew'
 
 function ReceptionLocations() {
-
-    const [disabledShowButton, setDisabledShowButton] = useState(true)
-    const [loading, setLoading] = useState(false)
 
     const {
         places,
         refetchPlaces,
         isFetchingPlaces,
+        isLoadingPlaces,
         setIsFetchPlaces,
     } = useQueryContext();
 
@@ -38,7 +36,6 @@ function ReceptionLocations() {
                 dataIndex: "placeName",
                 key: "placeName",
                 ellipsis: true,
-                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -51,7 +48,6 @@ function ReceptionLocations() {
                 key: "placeCity",
                 inputType: 'select',
                 ellipsis: true,
-                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -64,7 +60,6 @@ function ReceptionLocations() {
                 key: "placeCountry",
                 inputType: 'select',
                 ellipsis: true,
-                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -111,34 +106,18 @@ function ReceptionLocations() {
         }
     };
 
-    const handleSave = async () => {
-        setLoading(true);
-        for (let i = 0; i < list.length; i++) {
-            let sendObj = { ...list[i] };
-            let res = await sendRequest("managers/places", sendObj, "post");
-            if (res) {
-                message.success({
-                    content: 'Saved',
-                    key: 'save_manager'
-                })
-                refetchPlaces()
-            } else {
-                message.error('Error')
-            }
-        }
-        setLoading(false)
-        setDisabledShowButton(true)
-    };
+    const [selectedRowKey, setSelectedRowKey] = useState()
+    const [selectedItem, setSelectedItem] = useState()
 
-    const handleAddNewMedications = () => {
-        let key = new Date().getTime()
-        let newData = { key, Id: key };
-        setList(prev => [...prev, newData]);
-        setDisabledShowButton(false)
-    }
+    const [form] = Form.useForm()
 
-    const onChange = () => {
-        setDisabledShowButton(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const onRowTable = (record, index) => {
+        form.setFieldsValue(record)
+        setSelectedItem(record)
+        setSelectedRowKey(index)
+        onOpen()
     }
 
     return (
@@ -148,29 +127,33 @@ function ReceptionLocations() {
 
                 <Flex w="100%" mb="2" gap="2">
 
-                    <Button
-                        icon={<PlusOutlined />}
-                        onClick={handleAddNewMedications}
-                    >
-                        New
-                    </Button>
-
-                    <Button
-                        disabled={disabledShowButton}
-                        loading={loading}
-                        onClick={handleSave}
-                        type='primary'
-                    >
-                        Save
-                    </Button>
+                    <CreateNew
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        form={form}
+                        selectedItem={selectedItem}
+                        setSelectedRowKey={setSelectedRowKey}
+                    />
 
                 </Flex>
 
-                <EditTableComponent
+                <Table
+                loading={isLoadingPlaces}
+                    size='small'
+                    bordered
+                    columns={columns}
                     dataSource={list}
-                    setDataSource={setList}
-                    defaultColumns={columns}
-                    onChange={onChange}
+                    pagination={false}
+                    rowClassName={(record, index) =>
+                        selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+                    }
+                    onRow={(record, index) => ({
+                        onClick: (e) => {
+                            onRowTable(record, index)
+                            setSelectedRowKey(index + 1)
+                        },
+                    })}
                 />
 
             </Box>

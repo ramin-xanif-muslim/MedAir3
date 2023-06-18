@@ -1,23 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box, Flex } from '@chakra-ui/react'
-import { PlusOutlined, } from '@ant-design/icons'
-import EditTableComponent from '../../components/EditTableComponent'
-import { Button, Tooltip, message } from 'antd'
-import { useQuery } from 'react-query'
+import { Box, Flex, useDisclosure } from '@chakra-ui/react'
+import { Form, Table, Tooltip, message } from 'antd'
 import sendRequest from '../../modules/api/sendRequest'
 import DeleteTableRow from '../../components/DeleteTableRow'
 import { useQueryContext } from '../../modules/store/QueryContext'
+import CreateNew from './modules/components/CreateNew'
 
 
 function Pathologists() {
-
-    const [disabledShowButton, setDisabledShowButton] = useState(true)
-    const [loading, setLoading] = useState(false)
 
     const {
         pathologists,
         refetchPathologists,
         isFetchingPathologists,
+        isLoadingPathologists,
         setIsFetchPathologists,
     } = useQueryContext();
 
@@ -40,7 +36,6 @@ function Pathologists() {
                 dataIndex: "pathologistName",
                 key: "pathologistName",
                 ellipsis: true,
-                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -52,7 +47,6 @@ function Pathologists() {
                 dataIndex: "pathologistPlace",
                 key: "pathologistPlace",
                 ellipsis: true,
-                // editable: true,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -99,34 +93,18 @@ function Pathologists() {
         }
     };
 
-    const handleSave = async () => {
-        setLoading(true);
-        for (let i = 0; i < list.length; i++) {
-            let sendObj = { ...list[i] };
-            let res = await sendRequest("managers/pathologists", sendObj, "post");
-            if (res) {
-                message.success({
-                    content: 'Saved',
-                    key: 'save_manager'
-                })
-                refetchPathologists()
-            } else {
-                message.error('Error')
-            }
-        }
-        setLoading(false)
-        setDisabledShowButton(true)
-    };
+    const [selectedRowKey, setSelectedRowKey] = useState()
+    const [selectedItem, setSelectedItem] = useState()
 
-    const onChange = () => {
-        setDisabledShowButton(false)
-    }
+    const [form] = Form.useForm()
 
-    const handleAddNew = () => {
-        let key = new Date().getTime()
-        let newData = { key, Id: key };
-        setList(prev => [...prev, newData]);
-        setDisabledShowButton(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const onRowTable = (record, index) => {
+        form.setFieldsValue(record)
+        setSelectedItem(record)
+        setSelectedRowKey(index)
+        onOpen()
     }
 
     return (
@@ -136,30 +114,41 @@ function Pathologists() {
 
                 <Flex w="100%" mb="2" gap="2">
 
-                    <Button
-                        icon={<PlusOutlined />}
-                        onClick={handleAddNew}
-                    >
-                        New
-                    </Button>
-
-                    <Button
-                        disabled={disabledShowButton}
-                        loading={loading}
-                        onClick={handleSave}
-                        type='primary'
-                    >
-                        Save
-                    </Button>
+                    <CreateNew
+                        isOpen={isOpen}
+                        onOpen={onOpen}
+                        onClose={onClose}
+                        form={form}
+                        selectedItem={selectedItem}
+                        setSelectedRowKey={setSelectedRowKey}
+                    />
 
                 </Flex>
 
-                <EditTableComponent
+                <Table
+                    loading={isLoadingPathologists}
+                    size='small'
+                    bordered
+                    columns={columns}
+                    dataSource={list}
+                    pagination={false}
+                    rowClassName={(record, index) =>
+                        selectedRowKey === index + 1 ? 'ant-table-row-selected' : ''
+                    }
+                    onRow={(record, index) => ({
+                        onClick: (e) => {
+                            onRowTable(record, index)
+                            setSelectedRowKey(index + 1)
+                        },
+                    })}
+                />
+
+                {/* <EditTableComponent
                     dataSource={list}
                     setDataSource={setList}
                     defaultColumns={columns}
                     onChange={onChange}
-                />
+                /> */}
 
             </Box>
 

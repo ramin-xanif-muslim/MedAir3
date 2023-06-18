@@ -14,6 +14,7 @@ const QueryContextProvider = ({ children }) => {
         data: managersTabs,
         refetch: refetchManagersTabs,
         isFetching: isFetchingManagersTabs,
+        isLoading: isLoadingManagersTabs,
     } = useQuery(
         'managers/tabs',
         fetchManagersTabs,
@@ -28,6 +29,7 @@ const QueryContextProvider = ({ children }) => {
         data: places,
         refetch: refetchPlaces,
         isFetching: isFetchingPlaces,
+        isLoading: isLoadingPlaces,
     } = useQuery(
         'managers/places',
         fetchManagersPlace,
@@ -42,6 +44,7 @@ const QueryContextProvider = ({ children }) => {
         data: pathologists,
         refetch: refetchPathologists,
         isFetching: isFetchingPathologists,
+        isLoading: isLoadingPathologists,
     } = useQuery(
         'managers/pathologists',
         fetchPathologistsPlace,
@@ -54,16 +57,19 @@ const QueryContextProvider = ({ children }) => {
         pathologists,
         refetchPathologists,
         isFetchingPathologists,
+        isLoadingPathologists,
         setIsFetchPathologists,
 
         places,
         refetchPlaces,
         isFetchingPlaces,
+        isLoadingPlaces,
         setIsFetchPlaces,
 
         managersTabs,
         refetchManagersTabs,
         isFetchingManagersTabs,
+        isLoadingManagersTabs,
         setIsFetchManagersTabs,
     };
 
