@@ -52,7 +52,6 @@ const EditTable = (props) => {
     } = props;
 
     const handleSave = (row) => {
-        console.log('%c handleSave','background: green; color: dark', row);
         const newData = [...dataSource];
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];

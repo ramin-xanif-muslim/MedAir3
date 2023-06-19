@@ -9,7 +9,7 @@ import {
     ModalCloseButton,
     useDisclosure,
 } from '@chakra-ui/react'
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, Select, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import sendRequest from '../../../../modules/api/sendRequest';
 import { useQueryContext } from '../../../../modules/store/QueryContext';
@@ -100,7 +100,14 @@ const CreateNew = (props) => {
                             </Form.Item>
 
                             <Form.Item label="Type" name="cureTabType">
-                                <Input />
+                                <Select
+                                    allowClear
+                                    dropdownStyle={{ zIndex: 2000 }}
+                                >
+                                    <Select.Option value="Tablet">Tablet</Select.Option>
+                                    <Select.Option value="Ampoule">Ampoule</Select.Option>
+                                    <Select.Option value="Drops">Drops</Select.Option>
+                                </Select>
                             </Form.Item>
 
                             <Form.Item label="Mg/Ml" name="cureTabSize">
