@@ -11,6 +11,8 @@ function BlockForm() {
 
     const onFieldsChange = useStore((store) => store.onFieldsChange)
 
+    const initialValuesDiseaseHistory = useStore((store) => store.initialValuesDiseaseHistory)
+
     return (
         <SimpleGrid columns={['1', '2']} gap='1' >
 
@@ -28,6 +30,7 @@ function BlockForm() {
                     maxWidth: 600,
                 }}
                 onFieldsChange={onFieldsChange}
+                initialValues={initialValuesDiseaseHistory}
             >
 
                 <Form.Item label="Allergies" name="allergyAvailability">

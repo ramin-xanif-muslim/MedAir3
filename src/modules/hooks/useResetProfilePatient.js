@@ -17,6 +17,8 @@ function useResetProfilePatient() {
 
     const setRecipeList = useStore((store) => store.setRecipeList)
 
+    const setInitialValuesTreatment = useStore((store) => store.setInitialValuesTreatment)
+
 
     const resetProfilePatient = () => {
         searchPatientForm.resetFields()
@@ -24,6 +26,7 @@ function useResetProfilePatient() {
         personInfoForm.resetFields()
         diseaseHistoryForm.resetFields()
         treatmentHistoryForm.resetFields()
+        setInitialValuesTreatment({})
         setFamilyMembersList([])
         setDataSourceDiseaseHistoryTable([])
         setSavedDrawingCanvas({})

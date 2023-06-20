@@ -13,6 +13,8 @@ function PersonInfo() {
 
     const onFieldsChange = useStore((store) => store.onFieldsChange)
 
+    const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
+
 
     return (
         <>
@@ -33,9 +35,7 @@ function PersonInfo() {
                     style={{
                         maxWidth: 600,
                     }}
-                    initialValues={{
-                        gender: 'Female',
-                    }}
+                    initialValues={initialValuesPersonInfoForm}
                     onFieldsChange={onFieldsChange}
                 >
                     <Form.Item label="Birth date" name="birthDate">
@@ -116,6 +116,7 @@ function PersonInfo() {
                         maxWidth: 600,
                     }}
                     onFieldsChange={onFieldsChange}
+                    initialValues={initialValuesPersonInfoForm}
                 >
 
                     <Form.Item

@@ -11,10 +11,8 @@ function useSavePatient() {
 
     const {
         patientForm,
-        personInfoForm,
         diseaseHistoryForm,
         familyMembersList,
-        treatmentHistoryForm,
     } = useGlobalContext()
 
 
@@ -26,6 +24,9 @@ function useSavePatient() {
     const recipeList = useStore((store) => store.recipeList)
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
+    //initialValuesPersonInfoForm
+
+    const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
 
     const savePersonInfo = (patientId) => {
         const {
@@ -34,10 +35,10 @@ function useSavePatient() {
             patientPatronymic,
         } = patientForm.getFieldsValue()
 
-        let { birthDate, alkogol, smoke } = personInfoForm.getFieldsValue()
+        let { birthDate, alkogol, smoke } = initialValuesPersonInfoForm
 
         const sendObj = {
-            ...personInfoForm.getFieldsValue(),
+            initialValuesPersonInfoForm,
             birthDate: dayjs(birthDate).format('YYYY-MM-DD'),
             alkogol: alkogol ? 1 : 0,
             smoke: smoke ? 1 : 0,
@@ -77,11 +78,11 @@ function useSavePatient() {
         postAnalyses(sendObj);
     }
 
+    const initialValuesTreatment = useStore((store) => store.initialValuesTreatment)
+
     const saveTreatment = (patientId) => {
         const sendObj = {
-            treatmentStatic: {
-                ...treatmentHistoryForm.getFieldsValue(),
-            },
+            treatmentStatic: initialValuesTreatment,
             patientId,
             treatmentDynamics: dataSourceTreatmentTable,
             recipeList,
