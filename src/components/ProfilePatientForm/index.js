@@ -47,6 +47,12 @@ function ProfilePatientForm() {
                             noStyle
                             key="patientName"
                             name="patientName"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please patient name!',
+                                },
+                            ]}
                         >
                             <Input placeholder="Name" />
                         </Form.Item>

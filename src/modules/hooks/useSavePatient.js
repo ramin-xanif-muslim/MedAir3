@@ -38,7 +38,7 @@ function useSavePatient() {
         let { birthDate, alkogol, smoke } = initialValuesPersonInfoForm
 
         const sendObj = {
-            initialValuesPersonInfoForm,
+            ...initialValuesPersonInfoForm,
             birthDate: dayjs(birthDate).format('YYYY-MM-DD'),
             alkogol: alkogol ? 1 : 0,
             smoke: smoke ? 1 : 0,
@@ -51,9 +51,11 @@ function useSavePatient() {
         postPersonInfo(sendObj);
     }
 
+    const initialValuesDiseaseHistory = useStore((store) => store.initialValuesDiseaseHistory)
+
     const saveMorby = (patientId) => {
         const sendObj = {
-            ...diseaseHistoryForm.getFieldsValue(),
+            ...initialValuesDiseaseHistory,
             patientId,
             familyMembersList,
             deseaseImagesList: savedDrawingCanvas,
@@ -91,12 +93,16 @@ function useSavePatient() {
     }
 
     const handleSave = async () => {
+        console.log('handleSave');
         setIsLoading(true)
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
 
         let id = patientForm.getFieldsValue().patientId;
+        let patientName = patientForm.getFieldsValue().patientName;
+
+        if(!patientName) return
 
         let patientId;
         if (id) {

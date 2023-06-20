@@ -26,6 +26,7 @@ export const useOnRowTable = () => {
     try {
       let res = await sendRequest("vite/" + id, {}, "get")
       if (res?.data) {
+        console.log('res.data',res.data);
         res.data.birthDate = res.data.birthDate ? dayjs(res.data.birthDate) : null
         personInfoForm.setFieldsValue(res.data)
         patientForm.setFieldsValue(res.data)
@@ -38,7 +39,7 @@ export const useOnRowTable = () => {
 
   const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
   const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
-  const setInitialValuesDiseaseHistory = useStore((store) => store.setInitialValuessetInitialValuesDiseaseHistory)
+  const setInitialValuesDiseaseHistory = useStore((store) => store.setInitialValuesDiseaseHistory)
 
   const fetchDiseaseHistory = async (id) => {
     try {

@@ -13,6 +13,7 @@ import { useLocalStorageStore, useStore } from '../../modules/store';
 import { correctBreadcrumbItems } from '../../modules/functions';
 import logo from '../../modules/images/MedAir.jpg'
 import Version from '../Version';
+import useSaveOnNavigate from '../../modules/hooks/useSaveOnNavigate';
 
 function getItem(label, key, icon, children) {
     return {
@@ -59,6 +60,8 @@ function SideBar() {
         navigate('/calendar')
     }
 
+    const { handleSaveOnNavigate } = useSaveOnNavigate()
+
     const onSelect = (e) => {
         const { selectedKeys, keyPath } = e
         const navLink = selectedKeys[0]
@@ -67,7 +70,7 @@ function SideBar() {
             return
         }
         setBreadcrumbItems(correctBreadcrumbItems(keyPath))
-        navigate(`/${navLink}`)
+        handleSaveOnNavigate(navLink)
     }
 
     const location = useLocation()
