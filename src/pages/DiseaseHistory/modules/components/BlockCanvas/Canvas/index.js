@@ -1,9 +1,17 @@
-import { Box, Circle } from '@chakra-ui/react'
+import { Box, Circle, Flex } from '@chakra-ui/react'
 import { Button, Form, Input, Select, Space } from 'antd'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import CanvasDraw from 'react-canvas-draw'
 import { useStore } from '../../../../../../modules/store'
 
+
+const optionsSelectColorCanvas = [
+    { value: "green", name: "Benign tumor" },
+    { value: "red", name: "Maligan tumor" },
+    { value: "black", name: "Maligan ?" },
+    { value: "blue", name: "My operation" },
+    { value: "#AA00FF", name: "Operated not by me" },
+]
 
 function CanvasComponent({ image, imageName }) {
 
@@ -113,7 +121,7 @@ function CanvasComponent({ image, imageName }) {
     };
 
     const onFieldsChange = useStore((store) => store.onFieldsChange)
-    
+
     const handleSave = () => {
         onFieldsChange()
         setBrushRadius(0);
@@ -165,11 +173,17 @@ function CanvasComponent({ image, imageName }) {
                                 suffixIcon={<Circle mr='4' size='20px' bg={colorCanvas} />}
                                 style={{ width: "100%" }}
                             >
-                                <Select.Option value="green">Benign tumor</Select.Option>
-                                <Select.Option value="red">Maligan tumor</Select.Option>
-                                <Select.Option value="black">Maligan ?</Select.Option>
-                                <Select.Option value="blue">My operation</Select.Option>
-                                <Select.Option value="#AA00FF">Operated not by me</Select.Option>
+                                {optionsSelectColorCanvas.map(i => {
+                                    const { value, name } = i
+                                    return (
+                                        <Select.Option key={value} value={value}>
+                                            <Flex alignItems="center" justifyContent="space-between">
+                                                <Box>{name}</Box>
+                                                <Circle size='20px' bg={value} />
+                                            </Flex>
+                                        </Select.Option>)
+                                })
+                                }
                             </Select>
                         </Form.Item>
                     </Form.Item>
