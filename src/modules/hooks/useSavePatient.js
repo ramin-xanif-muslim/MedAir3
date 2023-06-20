@@ -11,8 +11,10 @@ function useSavePatient() {
 
     const {
         patientForm,
+        personInfoForm,
         diseaseHistoryForm,
         familyMembersList,
+        treatmentHistoryForm,
     } = useGlobalContext()
 
 
@@ -35,10 +37,13 @@ function useSavePatient() {
             patientPatronymic,
         } = patientForm.getFieldsValue()
 
-        let { birthDate, alkogol, smoke } = initialValuesPersonInfoForm
+        const isdata = !!Object.values(personInfoForm.getFieldsValue())[0]
+        const data = isdata ? personInfoForm.getFieldsValue() : initialValuesPersonInfoForm
+
+        let { birthDate, alkogol, smoke } = data
 
         const sendObj = {
-            ...initialValuesPersonInfoForm,
+            ...data,
             birthDate: dayjs(birthDate).format('YYYY-MM-DD'),
             alkogol: alkogol ? 1 : 0,
             smoke: smoke ? 1 : 0,
@@ -54,8 +59,12 @@ function useSavePatient() {
     const initialValuesDiseaseHistory = useStore((store) => store.initialValuesDiseaseHistory)
 
     const saveMorby = (patientId) => {
+
+        const isdata = !!Object.values(diseaseHistoryForm.getFieldsValue())[0]
+        const data = isdata ? diseaseHistoryForm.getFieldsValue() : initialValuesDiseaseHistory
+
         const sendObj = {
-            ...initialValuesDiseaseHistory,
+            ...data,
             patientId,
             familyMembersList,
             deseaseImagesList: savedDrawingCanvas,
@@ -83,8 +92,12 @@ function useSavePatient() {
     const initialValuesTreatment = useStore((store) => store.initialValuesTreatment)
 
     const saveTreatment = (patientId) => {
+
+        const isdata = !!Object.values(treatmentHistoryForm.getFieldsValue())[0]
+        const data = isdata ? treatmentHistoryForm.getFieldsValue() : initialValuesTreatment
+
         const sendObj = {
-            treatmentStatic: initialValuesTreatment,
+            treatmentStatic: data,
             patientId,
             treatmentDynamics: dataSourceTreatmentTable,
             recipeList,
@@ -102,14 +115,14 @@ function useSavePatient() {
         let id = patientForm.getFieldsValue().patientId;
         let patientName = patientForm.getFieldsValue().patientName;
 
-        if(!patientName) return
+        if (!patientName) return
 
         let patientId;
         if (id) {
             patientId = id;
         } else {
             patientId = await fetchPatientId();
-            patientForm.setFieldsValue({patientId})
+            patientForm.setFieldsValue({ patientId })
         }
         if (patientId) {
             Promise.all([
