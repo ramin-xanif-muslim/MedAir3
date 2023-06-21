@@ -68,7 +68,10 @@ function AnalysisFormBlok(props) {
                 values.id = analyzesId
                 values.key = analyzesId
                 values.date = dayjs().format('YYYY-MM-DD HH:mm:ss')
-                setDataSourceAnalysisTable([...dataSourceAnalysisTable, values])
+                setDataSourceAnalysisTable([
+                    ...dataSourceAnalysisTable,
+                    values,
+                ])
                 setIsLoading(false)
             }
             form.resetFields()

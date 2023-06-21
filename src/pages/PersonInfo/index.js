@@ -13,8 +13,7 @@ function PersonInfo() {
 
     const onFieldsChange = useStore((store) => store.onFieldsChange)
 
-    const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
-
+    // const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
 
     return (
         <>
@@ -30,7 +29,7 @@ function PersonInfo() {
                 wrapperCol={{
                     span: 16,
                 }}
-                initialValues={initialValuesPersonInfoForm}
+                // initialValues={initialValuesPersonInfoForm}
                 onFieldsChange={onFieldsChange}
             >
 

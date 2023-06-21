@@ -22,6 +22,9 @@ const UploadForm = ({ form, selectedRowKey }) => {
                 setImagePdfUrl(null)
                 setImageUrl(url)
             }
+        }else {
+            setImagePdfUrl(null)
+            setImageUrl(null)
         }
     }
 

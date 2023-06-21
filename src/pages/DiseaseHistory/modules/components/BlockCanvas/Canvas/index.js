@@ -191,7 +191,7 @@ function CanvasComponent({ image, imageName }) {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button onClick={handleAdd}>Edit</Button>
+                        <Button onClick={handleAdd}>Add</Button>
                     </Form.Item>
                     <Form.Item>
                         <Button disabled={disableSaveBtn} type='primary' onClick={handleSave}>Save</Button>
