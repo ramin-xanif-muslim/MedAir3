@@ -5,7 +5,6 @@ import CalendarsCalendarPage from './modules/components/CalendarsCalendarPage'
 import sendRequest from '../../modules/api/sendRequest';
 import { useStore } from '../../modules/store';
 import { useQuery } from 'react-query';
-import Alert from '../../components/Alert';
 import dayjs from 'dayjs';
 
 function Calendar() {
@@ -38,7 +37,6 @@ function Calendar() {
 
   return (
     <>
-      {/* <Alert /> */}
 
       <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 

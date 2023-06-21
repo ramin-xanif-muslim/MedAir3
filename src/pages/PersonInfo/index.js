@@ -91,15 +91,15 @@ function PersonInfo() {
                     </Form.Item>
 
                     <Form.Item label="Height" name="height">
-                        <InputNumber min={0} defaultValue={0} />
+                        <InputNumber min={0} />
                     </Form.Item>
 
                     <Form.Item label="Weight" name="weight">
-                        <InputNumber min={0} defaultValue={0} />
+                        <InputNumber min={0} />
                     </Form.Item>
 
                     <Form.Item label="IMT" name="imt">
-                        <InputNumber min={0} defaultValue={0} />
+                        <InputNumber min={0} />
                     </Form.Item>
                 </Form>
                 <Form
@@ -148,7 +148,6 @@ function PersonInfo() {
                                         <InputNumber
                                             min={10}
                                             max={60}
-                                            defaultValue={0}
                                         />
                                     </Form.Item>
 
@@ -156,12 +155,11 @@ function PersonInfo() {
                                         <InputNumber
                                             min={10}
                                             max={60}
-                                            defaultValue={0}
                                         />
                                     </Form.Item>
 
                                     <Form.Item label="Number of abortions" name="abortCount">
-                                        <InputNumber min={0} defaultValue={0} />
+                                        <InputNumber min={0}  />
                                     </Form.Item>
 
                                     <Form.Item label="Breastfeeding period" name="lactationPeriod">
@@ -178,7 +176,7 @@ function PersonInfo() {
                                         label="Number of artificial inseminations"
                                         name="artificialInseminationCount"
                                     >
-                                        <InputNumber min={0} defaultValue={0} />
+                                        <InputNumber min={0}/>
                                     </Form.Item>
                                 </>
                             ) : null

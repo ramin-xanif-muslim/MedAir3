@@ -78,6 +78,10 @@ function VisitsFormBloke(props) {
                 style={{
                     maxWidth: 600,
                 }}
+                initialValues={{
+                    visitDate: dayjs().format("YYYY-MM-DD HH:mm"),
+                    visitType: 'Face to face',
+                }}
             >
 
                 <Form.Item hidden name='id'>
@@ -85,11 +89,7 @@ function VisitsFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label='Date' name="visitDate">
-                    <DatePicker
-                        format="YYYY-MM-DD HH:mm"
-                        defaultValue={dayjs()}
-                        showTime
-                    />
+                    <DatePicker showTime />
                 </Form.Item>
 
                 <Form.Item label="Address" name="placeName" >
@@ -114,10 +114,7 @@ function VisitsFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label={"Reception Type"} name="visitType">
-                    <Select
-                        allowClear
-                        defaultValue='Face to face'
-                    >
+                    <Select allowClear>
                         <Select.Option value="Face to face">Face to face</Select.Option>
                         <Select.Option value="By phone">By phone</Select.Option>
                         <Select.Option value="By chat">By chat</Select.Option>

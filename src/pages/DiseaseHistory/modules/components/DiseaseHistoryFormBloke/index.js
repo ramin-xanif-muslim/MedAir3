@@ -103,6 +103,10 @@ function DiseaseHistoryFormBloke(props) {
                 style={{
                     maxWidth: 600,
                 }}
+                initialValues={{
+                    her2: 0,
+                    K67: 0,
+                }}
             >
 
                 <Form.Item label="ER" >
@@ -160,7 +164,6 @@ function DiseaseHistoryFormBloke(props) {
                         <InputNumber
                             min={0}
                             max={3}
-                            defaultValue={0}
                         />
                     </Form.Item>
                     <Form.Item
@@ -183,7 +186,7 @@ function DiseaseHistoryFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label="K67" name="k67">
-                    <InputNumber min={0} defaultValue={0} />
+                    <InputNumber min={0} />
                 </Form.Item>
 
                 <PathologistFormItem 

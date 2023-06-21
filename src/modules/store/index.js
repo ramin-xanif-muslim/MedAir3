@@ -48,7 +48,16 @@ let store = (set) => ({
             true
     })),
 
-    initialValuesPersonInfoForm: { gender: 'Female' },
+    initialValuesPersonInfoForm: { 
+        gender: 'Female',
+        height: 0,
+        weight: 0,
+        imt: 0,
+        firstChildbirth: 0,
+        lastChildbirth: 0,
+        abortCount: 0,
+        artificialInseminationCount: 0,
+     },
     setInitialValuesPersonInfoForm: (item) => set(() => ({
         initialValuesPersonInfoForm:
             item

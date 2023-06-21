@@ -72,6 +72,15 @@ function TreatmentTableFormBloke(props) {
                 style={{
                     maxWidth: 600,
                 }}
+                initialValues={{
+                    treatmentDate: dayjs().format("YYYY-MM-DD HH:mm"),
+                    slnbReactive: 0,
+                    slnbMts: 0,
+                    axillaDesectionReactive: 0,
+                    axillaDesectionMts: 0,
+                    her2: 0,
+                    k67: 0,
+                }}
             >
 
                 <Form.Item hidden name='id'>
@@ -79,11 +88,7 @@ function TreatmentTableFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label="Date" name="treatmentDate">
-                    <DatePicker
-                        format="YYYY-MM-DD HH:mm"
-                        defaultValue={dayjs()}
-                        showTime
-                    />
+                    <DatePicker showTime />
                 </Form.Item>
 
                 <Form.Item
@@ -129,17 +134,11 @@ function TreatmentTableFormBloke(props) {
                                             label="Reactive"
                                             name="slnbReactive"
                                         >
-                                            <InputNumber
-                                                min={0}
-                                                defaultValue={0}
-                                            />
+                                            <InputNumber min={0}/>
                                         </Form.Item>
 
                                         <Form.Item label="MTS" name="slnbMts">
-                                            <InputNumber
-                                                min={0}
-                                                defaultValue={0}
-                                            />
+                                            <InputNumber min={0}/>
                                         </Form.Item>
                                     </>
                                 ) : ''}
@@ -166,17 +165,11 @@ function TreatmentTableFormBloke(props) {
                                             label="Reactive"
                                             name="axillaDesectionReactive"
                                         >
-                                            <InputNumber
-                                                min={0}
-                                                defaultValue={0}
-                                            />
+                                            <InputNumber min={0}/>
                                         </Form.Item>
 
                                         <Form.Item label="MTS" name="axillaDesectionMts">
-                                            <InputNumber
-                                                min={0}
-                                                defaultValue={0}
-                                            />
+                                            <InputNumber min={0}  />
                                         </Form.Item>
                                     </>
                                 ) : ''}
@@ -260,9 +253,7 @@ function TreatmentTableFormBloke(props) {
                     <Form.Item noStyle name="her2">
                         <InputNumber
                             min={0}
-                            max={3}
-                            defaultValue={0}
-                        />
+                            max={3} />
                     </Form.Item>
                     <Form.Item
                         noStyle
@@ -284,7 +275,7 @@ function TreatmentTableFormBloke(props) {
                 </Form.Item>
 
                 <Form.Item label="K67" name="k67">
-                    <InputNumber min={0} defaultValue={0} />
+                    <InputNumber min={0} />
                 </Form.Item>
 
                 <PathologistFormItem

@@ -106,7 +106,16 @@ function useSavePatient() {
     }
 
     const handleSave = async () => {
-        console.log('handleSave');
+        console.log('personInfoForm',personInfoForm.getFieldsValue());
+        console.log('initialValuesPersonInfoForm',initialValuesPersonInfoForm);
+
+        console.log('diseaseHistoryForm',diseaseHistoryForm.getFieldsValue());
+        console.log('initialValuesDiseaseHistory',initialValuesDiseaseHistory);
+
+        console.log('treatmentHistoryForm',treatmentHistoryForm.getFieldsValue());
+        console.log('initialValuesTreatment',initialValuesTreatment);
+
+        return 
         setIsLoading(true)
         setTimeout(() => {
             setIsLoading(false)

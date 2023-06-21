@@ -67,6 +67,9 @@ function AddVisitButton({ refetch }) {
                     style={{
                         maxWidth: 600,
                     }}
+                    initialValues={{
+                        visitDate: dayjs().format("YYYY-MM-DD HH:mm")
+                    }}
                 >
                     <Form.Item label="Id" name="patientId">
                         <Input type="number" allowClear />
@@ -84,8 +87,6 @@ function AddVisitButton({ refetch }) {
                         <DatePicker
                             showTime
                             allowClear
-                            format={"YYYY-MM-DD HH:mm"}
-                            defaultValue={dayjs()}
                         />
                     </Form.Item>
                     <Form.Item label="Mobile Number" name="phoneNumber">

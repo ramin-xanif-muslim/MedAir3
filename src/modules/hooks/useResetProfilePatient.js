@@ -23,7 +23,16 @@ function useResetProfilePatient() {
 
 
     const resetProfilePatient = () => {
-        setInitialValuesPersonInfoForm({ gender: 'Female' })
+        setInitialValuesPersonInfoForm({
+            gender: 'Female',
+            height: 0,
+            weight: 0,
+            imt: 0,
+            firstChildbirth: 0,
+            lastChildbirth: 0,
+            abortCount: 0,
+            artificialInseminationCount: 0,
+        })
         setInitialValuesDiseaseHistory({})
         setInitialValuesTreatment({})
         searchPatientForm.resetFields()

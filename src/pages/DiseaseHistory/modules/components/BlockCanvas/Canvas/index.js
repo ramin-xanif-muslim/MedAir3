@@ -159,6 +159,9 @@ function CanvasComponent({ image, imageName }) {
                 form={form}
                 labelAlign='left'
                 style={{ width: '100%' }}
+                initialValues={{
+                    colorCanvas: "green"
+                }}
             >
 
                 <Space.Compact width='100%' style={{ width: "100%", alignItems: 'center' }}>
@@ -169,7 +172,6 @@ function CanvasComponent({ image, imageName }) {
                         <Form.Item noStyle name="colorCanvas">
                             <Select
                                 onSelect={(e) => setColorCanvas(e)}
-                                defaultValue='green'
                                 suffixIcon={<Circle mr='4' size='20px' bg={colorCanvas} />}
                                 style={{ width: "100%" }}
                             >
