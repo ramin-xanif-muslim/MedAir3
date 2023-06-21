@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import { Input, Radio, Select, Form } from 'antd';
 import React, { memo } from 'react'
 import FamilyMembersList from '../FamilyMembersList';
@@ -90,25 +90,12 @@ function BlockForm() {
             </Form>
 
 
-            <Form
-                form={diseaseHistoryForm}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-                onFieldsChange={onFieldsChange}
-            >
+            <Box maxW="600px">
 
                 <FamilyMembersList />
 
-            </Form>
+            </Box>
+
 
         </SimpleGrid>
     )

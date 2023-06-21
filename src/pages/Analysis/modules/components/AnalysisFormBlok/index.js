@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react'
 import { Button, DatePicker, Form, Input, Select, Space, message } from 'antd'
-import { SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import UploadForm from '../UploadForm';
 import { useStore } from '../../../../../modules/store';
 import dayjs from 'dayjs';
@@ -30,11 +30,11 @@ const other = [
 ];
 
 const fetchAnalysisId = async () => {
-  let res = await sendRequest('analysid')
-  if (res?.data) {
-    message.success()
-    return res.data
-  } else return 0
+    let res = await sendRequest('analysid')
+    if (res?.data) {
+        message.success()
+        return res.data
+    } else return 0
 }
 
 function AnalysisFormBlok(props) {
@@ -52,10 +52,10 @@ function AnalysisFormBlok(props) {
                 let newData = dataSourceAnalysisTable.map((i) => {
                     if (i.id === values.id) {
                         const { date } = values
-                        return { 
+                        return {
                             ...values,
                             date: dayjs(date).format('YYYY-MM-DD HH:mm:ss'),
-                         }
+                        }
 
                     }
                     else return i
@@ -85,158 +85,143 @@ function AnalysisFormBlok(props) {
 
     return (
 
-        <SimpleGrid columns={['1', '2']} gap='1' >
+        <Form
+            onFinish={onFinish}
+            id='analysisTableFormBlok'
+            form={form}
+            labelWrap
+            labelAlign="right"
+            labelCol={{
+                span: 8,
+            }}
+            wrapperCol={{
+                span: 16,
+            }}
+        >
 
-            <Form
-                onFinish={onFinish}
-                id='analysisTableFormBlok'
-                form={form}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-            >
+            <SimpleGrid columns={['1', '2']} gap='1' >
 
-                <Form.Item hidden name='id'>
-                    <Input />
-                </Form.Item>
+                <Box maxW="600px">
 
-                <Form.Item hidden name='date'>
-                    <DatePicker />
-                </Form.Item>
+                    <Form.Item hidden name='id'>
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item label='Analyzes type' name="analyzesType">
-                    <Select
-                        allowClear
+                    <Form.Item hidden name='date'>
+                        <DatePicker />
+                    </Form.Item>
+
+                    <Form.Item label='Analyzes type' name="analyzesType">
+                        <Select
+                            allowClear
+                        >
+                            <Select.Option value="Breast">Breast</Select.Option>
+                            <Select.Option value="Other analysis">Other analysis</Select.Option>
+                            <Select.Option value="Other healthcare area">
+                                Other healthcare area
+                            </Select.Option>
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item
+                        noStyle
+                        shouldUpdate={(prevValues, currentValues) => prevValues.analyzesType !== currentValues.analyzesType}
                     >
-                        <Select.Option value="Breast">Breast</Select.Option>
-                        <Select.Option value="Other analysis">Other analysis</Select.Option>
-                        <Select.Option value="Other healthcare area">
-                            Other healthcare area
-                        </Select.Option>
-                    </Select>
-                </Form.Item>
+                        {({ getFieldValue }) => {
 
-                <Form.Item
-                    noStyle
-                    shouldUpdate={(prevValues, currentValues) => prevValues.analyzesType !== currentValues.analyzesType}
-                >
-                    {({ getFieldValue }) => {
+                            let selectOptions = []
 
-                        let selectOptions = []
+                            if (getFieldValue('analyzesType') === 'Breast') {
+                                selectOptions = breastSelectOpnions
+                            } else if (getFieldValue('analyzesType') === 'Other analysis') {
+                                selectOptions = other
+                            } else if (getFieldValue('analyzesType') === 'Other healthcare area') {
+                                return ''
+                            }
 
-                        if (getFieldValue('analyzesType') === 'Breast') {
-                            selectOptions = breastSelectOpnions
-                        } else if (getFieldValue('analyzesType') === 'Other analysis') {
-                            selectOptions = other
-                        } else if (getFieldValue('analyzesType') === 'Other healthcare area') {
-                            return ''
+                            return (
+                                <Form.Item label="Analysis sub type" name="analyzesSubType">
+
+                                    <Select allowClear >
+                                        {
+                                            selectOptions.map((i) => (
+                                                <Select.Option key={i} value={i}>
+                                                    {i}
+                                                </Select.Option>
+                                            ))
+                                        }
+                                    </Select>
+
+                                </Form.Item>
+                            )
+                        }
                         }
 
-                        return (
-                            <Form.Item label="Analysis sub type" name="analyzesSubType">
+                    </Form.Item>
 
-                                <Select allowClear >
-                                    {
-                                        selectOptions.map((i) => (
-                                            <Select.Option key={i} value={i}>
-                                                {i}
-                                            </Select.Option>
-                                        ))
-                                    }
-                                </Select>
+                    <Form.Item label="Description" name="analyzesDesc">
+                        <Input.TextArea showCount maxLength={3000} rows={3} />
+                    </Form.Item>
 
-                            </Form.Item>
-                        )
-                    }
-                    }
+                    <Form.Item hidden name="analyzesContentUrl">
+                        <Input />
+                    </Form.Item>
 
-                </Form.Item>
+                    <Form.Item hidden name="analyzesContentName">
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item label="Description" name="analyzesDesc">
-                    <Input.TextArea showCount maxLength={3000} rows={3} />
-                </Form.Item>
+                </Box>
 
-                <Form.Item hidden name="analyzesContentUrl">
-                    <Input />
-                </Form.Item>
+                <Box maxW="600px">
 
-                <Form.Item hidden name="analyzesContentName">
-                    <Input />
-                </Form.Item>
+                    <Form.Item hidden name='analyzesContentName'>
+                        <Input />
+                    </Form.Item>
 
-            </Form>
+                    <Form.Item hidden name='analyzesContentUrl'>
+                        <Input />
+                    </Form.Item>
 
-            <Form
-                onFinish={onFinish}
-                id='analysisTableFormBlok'
-                form={form}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-            >
+                    <Form.Item>
+                        <Space>
+
+                            <Button
+                                form='analysisTableFormBlok'
+                                htmlType='submit'
+                                type="primary"
+                                loading={isLoading}
+                            >
+                                {selectedRowKey ? 'Edit' : 'Add'}
+                            </Button>
+
+                            <Button onClick={handleClear} danger>{selectedRowKey ? "Close" : "Clear"}</Button>
 
 
-                <Form.Item hidden name='analyzesContentName'>
-                    <Input />
-                </Form.Item>
+                        </Space>
+                    </Form.Item>
 
-                <Form.Item hidden name='analyzesContentUrl'>
-                    <Input />
-                </Form.Item>
+                    <Form.Item
+                        noStyle
+                        shouldUpdate={(prevValues, currentValues) => prevValues.analyzesSubType !== currentValues.analyzesSubType}
+                    >
+                        {({ getFieldValue }) => {
+                            let isShow = getFieldValue('analyzesSubType')
 
-                <Form.Item>
-                    <Space>
+                            if (isShow) {
+                                return (
+                                    <UploadForm form={form} selectedRowKey={selectedRowKey} />
+                                )
+                            } else return ''
+                        }
+                        }
+                    </Form.Item>
 
-                        <Button
-                            form='analysisTableFormBlok'
-                            htmlType='submit'
-                            type="primary"
-                            loading={isLoading}
-                        >
-                            {selectedRowKey ? 'Edit' : 'Add'}
-                        </Button>
+                </Box>
 
-                        <Button onClick={handleClear} danger>{selectedRowKey ? "Close" : "Clear"}</Button>
+            </SimpleGrid>
 
-
-                    </Space>
-                </Form.Item>
-
-                <Form.Item
-                    noStyle
-                    shouldUpdate={(prevValues, currentValues) => prevValues.analyzesSubType !== currentValues.analyzesSubType}
-                >
-                    {({ getFieldValue }) => {
-                        let isShow = getFieldValue('analyzesSubType')
-
-                        if (isShow) {
-                            return (
-                                <UploadForm form={form} selectedRowKey={selectedRowKey} />
-                            )
-                        } else return ''
-                    }
-                    }
-                </Form.Item>
-
-            </Form>
-
-        </SimpleGrid>
+        </Form>
     )
 }
 

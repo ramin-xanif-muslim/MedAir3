@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { Form, Input } from 'antd'
-import { SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import { useGlobalContext } from '../../../../../modules/context/index.js'
 import { useStore } from '../../../../../modules/store/index.js'
 
@@ -15,67 +15,53 @@ function TreatmentFormBloke() {
 
     return (
 
-        <SimpleGrid columns={['1', '2']} gap='1' >
+        <Form
+            form={treatmentHistoryForm}
+            labelWrap
+            labelAlign="right"
+            labelCol={{
+                span: 8,
+            }}
+            wrapperCol={{
+                span: 16,
+            }}
+            initialValues={initialValuesTreatment}
+            onFieldsChange={onFieldsChange}
+        >
 
-            <Form
-                form={treatmentHistoryForm}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-                initialValues={initialValuesTreatment}
-                onFieldsChange={onFieldsChange}
-            >
+            <SimpleGrid columns={['1', '2']} gap='1' >
 
-                <Form.Item label="Pre menopause" name="preMenopause">
-                    <Input />
-                </Form.Item>
+                <Box maxW="600px">
 
-                <Form.Item label="Description" name="treatmentDesc">
-                    <Input.TextArea showCount maxLength={3000} rows={3} />
-                </Form.Item>
+                    <Form.Item label="Pre menopause" name="preMenopause">
+                        <Input />
+                    </Form.Item>
 
-            </Form>
+                    <Form.Item label="Description" name="treatmentDesc">
+                        <Input.TextArea showCount maxLength={3000} rows={3} />
+                    </Form.Item>
 
-            <Form
-                form={treatmentHistoryForm}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-                initialValues={initialValuesTreatment}
-                onFieldsChange={onFieldsChange}
-            >
+                </Box>
 
-                <Form.Item label="Menopause" name="menopause">
-                    <Input />
-                </Form.Item>
+                <Box maxW="600px">
 
-                <Form.Item label="Recommendation" name="recommendation">
-                    <Input.TextArea showCount maxLength={3000} />
-                </Form.Item>
+                    <Form.Item label="Menopause" name="menopause">
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item label="Advise" name="advise">
-                    <Input.TextArea showCount maxLength={3000} />
-                </Form.Item>
+                    <Form.Item label="Recommendation" name="recommendation">
+                        <Input.TextArea showCount maxLength={3000} />
+                    </Form.Item>
 
-            </Form>
+                    <Form.Item label="Advise" name="advise">
+                        <Input.TextArea showCount maxLength={3000} />
+                    </Form.Item>
 
-        </SimpleGrid>
+                </Box>
+
+            </SimpleGrid>
+
+        </Form>
     )
 }
 

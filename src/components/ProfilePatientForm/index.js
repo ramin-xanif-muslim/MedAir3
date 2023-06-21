@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import { Button, Form, Space, Input, InputNumber } from 'antd'
 import { useGlobalContext } from '../../modules/context/index.js'
 import { ArrowsAltOutlined, ShrinkOutlined } from "@ant-design/icons";
-import { Box, Collapse, useMediaQuery } from "@chakra-ui/react";
+import { Box, Collapse, Flex, useMediaQuery } from "@chakra-ui/react";
 import useResetProfilePatient from '../../modules/hooks/useResetProfilePatient.js'
 import useSavePatient from '../../modules/hooks/useSavePatient'
 import { useStore } from '../../modules/store/index.js';
@@ -75,11 +75,7 @@ function ProfilePatientForm() {
                 </Form.Item>
 
                 <Collapse in={inPatientCollapse} animateOpacity>
-                    <Form
-                        form={patientForm}
-                        layout={isLargerThan600 ? "inline" : "vertical"}
-                        onFieldsChange={onFieldsChange}
-                    >
+                    <Flex direction={["column","row"]}>
 
                         <Form.Item key="patientSurName" name="patientSurName" label="Suriname">
                             <Input placeholder="Suriname" />
@@ -89,7 +85,7 @@ function ProfilePatientForm() {
                             <Input />
                         </Form.Item>
 
-                    </Form>
+                    </Flex>
                 </Collapse>
 
                 <Form.Item noStyle>
