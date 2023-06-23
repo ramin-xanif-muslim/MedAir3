@@ -25,8 +25,8 @@ function useSavePatient() {
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
     const recipeList = useStore((store) => store.recipeList)
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+    const setIsUnsavedPatient = useStore((store) => store.setIsUnsavedPatient)
 
-    //initialValuesPersonInfoForm
 
     const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
 
@@ -106,6 +106,7 @@ function useSavePatient() {
     }
 
     const handleSave = async () => {
+        setIsUnsavedPatient(false)
         setIsLoading(true)
         setTimeout(() => {
             setIsLoading(false)

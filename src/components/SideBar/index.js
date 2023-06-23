@@ -56,7 +56,6 @@ function SideBar() {
     const logOut = () => {
         setToken(null)
         localStorage.clear()
-        // window.location.reload();
         navigate('/calendar')
     }
 

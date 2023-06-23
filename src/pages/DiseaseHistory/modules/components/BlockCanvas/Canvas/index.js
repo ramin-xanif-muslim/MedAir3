@@ -205,7 +205,7 @@ function CanvasComponent({ image, imageName }) {
                 <Form.Item label='Description' name='description'>
                     <Input.TextArea
                         showCount
-                        maxLength={3000}
+                        maxLength={1500}
                         onChange={onChangeDescription}
                     />
                 </Form.Item>

@@ -20,7 +20,6 @@ function useSaveOnNavigate() {
     const setInitialValuesPersonInfoForm = useStore((store) => store.setInitialValuesPersonInfoForm)
 
     const savePersonInfo = () => {
-        console.log('savePersonInfo',personInfoForm.getFieldsValue());
         setInitialValuesPersonInfoForm(personInfoForm.getFieldsValue())
     }
 
@@ -28,7 +27,6 @@ function useSaveOnNavigate() {
     const setInitialValuesDiseaseHistory = useStore((store) => store.setInitialValuesDiseaseHistory)
 
     const saveMorby = () => {
-        console.log('saveMorby',diseaseHistoryForm.getFieldsValue());
         setInitialValuesDiseaseHistory(diseaseHistoryForm.getFieldsValue())
             
     }
@@ -37,7 +35,6 @@ function useSaveOnNavigate() {
     const setInitialValuesTreatment = useStore((store) => store.setInitialValuesTreatment)
 
     const saveTreatment = () => {
-        console.log('saveTreatment',treatmentHistoryForm.getFieldsValue());
         setInitialValuesTreatment(treatmentHistoryForm.getFieldsValue())
     }
 

@@ -87,7 +87,7 @@ function VisitsTable(props) {
                 ),
             },
             {
-                title: "Reason",
+                title: "Visit reason",
                 dataIndex: "visitReason",
                 key: "visitReason",
                 isVisible: visible('visitReason'),
@@ -138,7 +138,7 @@ function VisitsTable(props) {
         <Box display='flex' flexDirection='column'>
 
             <Box alignSelf='flex-end'>
-                <VisitsTableSetting columns={columns} />
+                {/* <VisitsTableSetting columns={columns} /> */}
             </Box>
 
             <Table

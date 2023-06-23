@@ -120,7 +120,7 @@ function VisitsFormBloke(props) {
                         </Select>
                     </Form.Item>
 
-                    <Form.Item label={"Reception Type"} name="visitType">
+                    <Form.Item label="Visit type" name="visitType">
                         <Select allowClear>
                             <Select.Option value="Face to face">Face to face</Select.Option>
                             <Select.Option value="By phone">By phone</Select.Option>

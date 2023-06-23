@@ -6,17 +6,20 @@ import { Box } from '@chakra-ui/react'
 
 function AlertComponent() {
 
-    const isFieldsChange = useStore((store) => store.isFieldsChange)
+    const isUnsavedPatient = useStore((store) => store.isFieldsChange)
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+    const setIsUnsavedPatient = useStore((store) => store.setIsUnsavedPatient)
+
 
     const { handleSave, isLoading } = useSavePatient()
 
     const onClose = () => {
         setIsFieldsChange(false)
+        setIsUnsavedPatient(false)
     }
 
 
-    if (isFieldsChange) {
+    if (isUnsavedPatient) {
         return (
             <>
                 <Alert

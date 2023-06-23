@@ -38,14 +38,19 @@ let store = (set) => ({
             item
     })),
 
+    isUnsavedPatient: false,
+    setIsUnsavedPatient: (item) => set(() => ({
+        isFieldsChange:
+            item
+    })),
+    
     isFieldsChange: false,
     setIsFieldsChange: (item) => set(() => ({
         isFieldsChange:
             item
     })),
     onFieldsChange: (item) => set(() => ({
-        isFieldsChange:
-            true
+        isFieldsChange: true,
     })),
 
     initialValuesPersonInfoForm: { 

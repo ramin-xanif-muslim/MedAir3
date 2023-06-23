@@ -6,6 +6,7 @@ import sendRequest from '../../modules/api/sendRequest';
 import { useStore } from '../../modules/store';
 import { useQuery } from 'react-query';
 import dayjs from 'dayjs';
+import Alert from '../../components/Alert';
 
 function Calendar() {
 
@@ -23,11 +24,11 @@ function Calendar() {
 
 
   const cellRender = (value) => {
-    try{
+    try {
       const hasVisit = data?.some(({ visitDate }) => dayjs(visitDate).format('YYYY-MM-DD') === value?.format('YYYY-MM-DD'));
       return hasVisit ? <Box borderTop='3px solid black' shadow='dark-lg' /> : null;
-    }catch(error){
-      console.log('%c error','background: red; color: dark', error);
+    } catch (error) {
+      console.log('%c error', 'background: red; color: dark', error);
     }
   };
 
@@ -37,6 +38,7 @@ function Calendar() {
 
   return (
     <>
+      {/* <Alert /> */}
 
       <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
 
