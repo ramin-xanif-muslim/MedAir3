@@ -68,7 +68,7 @@ function AddVisitButton({ refetch }) {
                         maxWidth: 600,
                     }}
                     initialValues={{
-                        visitDate: dayjs().format("YYYY-MM-DD HH:mm")
+                        visitDate: dayjs()
                     }}
                 >
                     <Form.Item label="Id" name="patientId">
@@ -85,6 +85,7 @@ function AddVisitButton({ refetch }) {
                     </Form.Item>
                     <Form.Item label="Date" name="visitDate">
                         <DatePicker
+                            format="YYYY-MM-DD HH:mm"
                             showTime
                             allowClear
                         />

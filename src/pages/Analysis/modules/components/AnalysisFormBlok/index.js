@@ -41,12 +41,18 @@ function AnalysisFormBlok(props) {
 
     const { selectedRowKey, setSelectedRowKey, form } = props
 
+    const [isChangeForm, setIsChangeForm] = useState(false)
+
     const [isLoading, setIsLoading] = useState(false)
 
     const dataSourceAnalysisTable = useStore((store) => store.dataSourceAnalysisTable)
     const setDataSourceAnalysisTable = useStore((store) => store.setDataSourceAnalysisTable)
 
+    const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
+
     const onFinish = async (values) => {
+        setIsChangeForm(false)
+        setIsFieldsChange(true)
         try {
             if (selectedRowKey) {
                 let newData = dataSourceAnalysisTable.map((i) => {
@@ -86,6 +92,10 @@ function AnalysisFormBlok(props) {
         setSelectedRowKey()
     }
 
+    const onFieldsChange = () => {
+        setIsChangeForm(true)
+    }
+
     return (
 
         <Form
@@ -100,6 +110,7 @@ function AnalysisFormBlok(props) {
             wrapperCol={{
                 span: 16,
             }}
+            onFieldsChange={onFieldsChange}
         >
 
             <SimpleGrid columns={['1', '2']} gap='1' >
@@ -194,6 +205,7 @@ function AnalysisFormBlok(props) {
                                 htmlType='submit'
                                 type="primary"
                                 loading={isLoading}
+                                disabled={!isChangeForm}
                             >
                                 {selectedRowKey ? 'Edit' : 'Add'}
                             </Button>

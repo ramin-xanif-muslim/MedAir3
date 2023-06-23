@@ -1,6 +1,6 @@
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import { Button, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useStore } from '../../../../../modules/store';
 import PathologistFormItem from '../../../../../components/FormItems/PathologistFormItem';
 
@@ -8,11 +8,14 @@ function DiseaseHistoryFormBloke(props) {
 
     const { selectedRowKey, setSelectedRowKey, form } = props
 
+    const [isChangeForm, setIsChangeForm] = useState(false)
+
     const dataSourceDiseaseHistoryTable = useStore((store) => store.dataSourceDiseaseHistoryTable)
     const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const onFinish = (values) => {
+        setIsChangeForm(false)
         setIsFieldsChange(true)
         if (selectedRowKey) {
             let newData = dataSourceDiseaseHistoryTable.map((i) => {
@@ -35,6 +38,10 @@ function DiseaseHistoryFormBloke(props) {
         setSelectedRowKey()
     }
 
+    const onFieldsChange = () => {
+        setIsChangeForm(true)
+    }
+
     return (
 
         <Form
@@ -53,6 +60,7 @@ function DiseaseHistoryFormBloke(props) {
                 her2: 0,
                 k67: 0,
             }}
+            onFieldsChange={onFieldsChange}
         >
 
             <SimpleGrid columns={['1', '2']} >
@@ -185,6 +193,7 @@ function DiseaseHistoryFormBloke(props) {
                                 form='diseaseHistoryFormBloke'
                                 htmlType='submit'
                                 type="primary"
+                                disabled={!isChangeForm}
                             >
                                 {selectedRowKey ? 'Edit' : 'Add'}
                             </Button>

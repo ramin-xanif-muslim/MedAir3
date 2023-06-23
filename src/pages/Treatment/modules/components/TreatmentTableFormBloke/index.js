@@ -9,6 +9,8 @@ function TreatmentTableFormBloke(props) {
 
     const { selectedRowKey, setSelectedRowKey, form } = props
 
+    const [isChangeForm, setIsChangeForm] = useState(false)
+
     const [isBenign, setIsBenign] = useState(false)
 
     const dataSourceTreatmentTable = useStore((store) => store.dataSourceTreatmentTable)
@@ -17,6 +19,7 @@ function TreatmentTableFormBloke(props) {
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const onFinish = (values) => {
+        setIsChangeForm(false)
         setIsFieldsChange(true)
         try {
             if (selectedRowKey) {
@@ -49,6 +52,7 @@ function TreatmentTableFormBloke(props) {
     }
 
     const onFieldsChange = ([{ name, value }]) => {
+        setIsChangeForm(true)
         const nameFormInput = name && name[0]
         if (nameFormInput === 'treatmentTypeName') setIsBenign(value === 'benign')
     }
@@ -76,6 +80,7 @@ function TreatmentTableFormBloke(props) {
                 her2: 0,
                 k67: 0,
             }}
+            onFieldsChange={onFieldsChange}
         >
 
             <SimpleGrid columns={['1', '2']} gap='1' >
@@ -392,6 +397,7 @@ function TreatmentTableFormBloke(props) {
                                 form='treatmentTableFormBlok'
                                 htmlType='submit'
                                 type="primary"
+                                disabled={!isChangeForm}
                             >
                                 {selectedRowKey ? 'Edit' : 'Add'}
                             </Button>

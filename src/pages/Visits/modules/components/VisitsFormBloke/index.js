@@ -11,11 +11,14 @@ function VisitsFormBloke(props) {
 
     const { selectedRowKey, setSelectedRowKey, form } = props
 
+    const [isChangeForm, setIsChangeForm] = useState(false)
+
     const dataSourceVisitTable = useStore((store) => store.dataSourceVisitTable)
     const setDataSourceVisitTable = useStore((store) => store.setDataSourceVisitTable)
     const setIsFieldsChange = useStore((store) => store.setIsFieldsChange)
 
     const onFinish = (values) => {
+        setIsChangeForm(false)
         setIsFieldsChange(true)
         try {
             if (selectedRowKey) {
@@ -58,6 +61,10 @@ function VisitsFormBloke(props) {
         }
     }, [isFetching])
 
+    const onFieldsChange = () => {
+        setIsChangeForm(true)
+    }
+
 
     return (
 
@@ -77,6 +84,7 @@ function VisitsFormBloke(props) {
                 visitDate: dayjs(),
                 visitType: 'Face to face',
             }}
+            onFieldsChange={onFieldsChange}
         >
 
             <SimpleGrid columns={['1', '2']} gap='1' >
@@ -233,6 +241,7 @@ function VisitsFormBloke(props) {
                                 form='visitTableFormBlok'
                                 htmlType='submit'
                                 type="primary"
+                                disabled={!isChangeForm}
                             >
                                 {selectedRowKey ? 'Edit' : 'Add'}
                             </Button>
