@@ -119,9 +119,9 @@ function CalendarsTable(props) {
         ellipsis: true,
         width: isLargerThan400 ? false : 150,
         isVisible: visible('visitReason'),
-        render: (value) => (
+        render: (value, row) => (
           <Tooltip placement="topLeft" title={value}>
-            {value}
+          <div className={value?.toLowerCase() === "operation" ? "calendar_table_row_operation" : ''}>{value}</div>
           </Tooltip>
         ),
       },
@@ -245,7 +245,7 @@ function CalendarsTable(props) {
         columns={columns.filter(i => i.isVisible === true)}
         dataSource={dataSource || []}
         rowClassName={(record, index) =>
-          selectedRowKey === index ? 'ant-table-row-selected' : ''
+          record?.visitReason?.toLowerCase() === "operation" ? 'calendar_table_row_operation' : ''
         }
         onRow={(record, index) => ({
           onClick: (e) => {

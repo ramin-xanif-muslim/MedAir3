@@ -81,7 +81,16 @@ function AddVisitButton({ refetch }) {
                         <Input allowClear />
                     </Form.Item>
                     <Form.Item label="Reason" name="visitReason">
-                        <Input allowClear />
+                        <Select
+                            allowClear
+                        >
+                            <Select.Option value="Inspection">Inspection</Select.Option>
+                            <Select.Option value="Treatment">Treatment</Select.Option>
+                            <Select.Option value="Operation">Operation</Select.Option>
+                            <Select.Option value="Control">Control</Select.Option>
+                            <Select.Option value="Aesthetics">Aesthetics</Select.Option>
+                            <Select.Option value="Prophylactic">Prophylactic</Select.Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item label="Date" name="visitDate">
                         <DatePicker

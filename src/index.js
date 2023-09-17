@@ -9,6 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ErrorBoundary } from "./pages/Error";
 import { AppProvider } from './modules/context/index.js';
 import { QueryContextProvider } from './modules/store/QueryContext';
+import { ConfigProvider, theme } from 'antd';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -28,7 +29,19 @@ root.render(
                     <AppProvider>
                         <QueryContextProvider>
                             <ChakraProvider>
-                                <App />
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            // colorPrimary: theme.darkAlgorithm,
+                                            // colorPrimary: 'deeppink',
+                                            // Button: {
+                                            //     colorPrimary: '#00B96B',
+                                            // }
+                                        },
+                                    }}
+                                >
+                                    <App />
+                                </ConfigProvider>
                             </ChakraProvider>
                         </QueryContextProvider>
                     </AppProvider>

@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
-import VisitsTableSetting from '../VisitsTableSetting'
+// import VisitsTableSetting from '../VisitsTableSetting'
 import { useLocalStorageStore, useStore } from '../../../../../modules/store'
 import DeleteVisitsTableRow from '../DeleteVisitsTableRow'
 import dayjs from 'dayjs'

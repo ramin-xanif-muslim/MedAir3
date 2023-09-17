@@ -44,7 +44,6 @@ export const useOnRowTable = () => {
     try {
       let res = await sendRequest("morby/" + id, {}, "get")
       if (res?.data) {
-        console.log('%c res?.data','background: green; color: dark', res?.data);
         diseaseHistoryForm.setFieldsValue(res.data)
         setInitialValuesDiseaseHistory(res.data)
         res?.data.deseaseHistoryDynamicsList.forEach(i => i.id = i.patientsComplaintsId)

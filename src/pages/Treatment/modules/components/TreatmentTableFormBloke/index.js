@@ -1,9 +1,10 @@
 import React, { memo, useState } from 'react'
-import { Button, DatePicker, Form, Input, InputNumber, Radio, Select, Space } from 'antd'
+import { Button, DatePicker, Form, Image, Input, InputNumber, Radio, Select, Space } from 'antd'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import { useStore } from '../../../../../modules/store';
 import dayjs from 'dayjs';
 import PathologistFormItem from '../../../../../components/FormItems/PathologistFormItem';
+import UploadForm from "../UploadForm"
 
 function TreatmentTableFormBloke(props) {
 
@@ -82,6 +83,17 @@ function TreatmentTableFormBloke(props) {
             }}
             onFieldsChange={onFieldsChange}
         >
+
+            <SimpleGrid columns={['1', '2']} gap='1' >
+
+                <Form.Item label="Photo before">
+                    <UploadForm formName="photoBefore" form={form} selectedRowKey={selectedRowKey} setIsChangeForm={setIsChangeForm} />
+                </Form.Item>
+                <Form.Item label="Photo after">
+                    <UploadForm formName="photoAfter" form={form} selectedRowKey={selectedRowKey} setIsChangeForm={setIsChangeForm} />
+                </Form.Item>
+
+            </SimpleGrid>
 
             <SimpleGrid columns={['1', '2']} gap='1' >
 

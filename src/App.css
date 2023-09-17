@@ -1,4 +1,4 @@
-/* @import '~antd/dist/antd.min.css'; */
+/* @import '~antd/dist/antd.less'; */
 :root {
     --brent-color-lite: #fbbacb;
     --brent-color: #ff7fd4;
@@ -36,5 +36,9 @@
     padding: 4px 11px;
     border: 1px solid #d9d9d9;
     border-radius: 5px;
+}
+.calendar_table_row_operation {
+    color: red;
+    font-weight: 700;
 }
 
