@@ -63,9 +63,9 @@ const UploadForm = ({ form, selectedRowKey, formName, setIsChangeForm }) => {
             {
                 imageUrl ? (
 
-                    <Flex gap='1' m='3'>
+                    <Flex gap='1' m='3' width={["100%", "100px"]}>
 
-                        <Image width={200} src={imageUrl} />
+                        <Image alt={formName} src={imageUrl} />
 
                         <Box onClick={handleDeleteImg} _hover={{ color: 'red' }} ml='-1' cursor='pointer' >
                             <CloseCircleOutlined />
