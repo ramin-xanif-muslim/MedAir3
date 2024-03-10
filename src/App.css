@@ -1,4 +1,4 @@
-/* @import '~antd/dist/antd.min.css'; */
+/* @import '~antd/dist/antd.less'; */
 :root {
     --brent-color-lite: #fbbacb;
     --brent-color: #ff7fd4;
@@ -25,7 +25,7 @@
     height: 100%;
 }
 .ant-table-row:hover {
-    cursor: pointer
+    cursor: pointer;
 }
 
 .ant-table-row-selected {
@@ -37,4 +37,19 @@
     border: 1px solid #d9d9d9;
     border-radius: 5px;
 }
+.calendar_table_row_operation {
+    color: red;
+    font-weight: 700;
+}
 
+.calendars-table-wrapper {
+    overflow-x: auto;
+    max-width: 99%;
+    /* width: 100%; */
+}
+
+@media (max-width: 768px) {
+    .calendars-table-wrapper {
+        max-width: 100%;
+    }
+}

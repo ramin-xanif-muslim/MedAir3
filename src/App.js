@@ -1,49 +1,51 @@
-import { Box } from '@chakra-ui/react';
-import './App.css';
-import ReactComponent from './components/RoutComponent';
-import SideBar from './components/SideBar';
-import { useLocalStorageStore } from './modules/store';
-import Login from './pages/Login';
-import { Layout } from 'antd';
-import { ErrorBoundary } from './pages/Error';
+import { Box, useMediaQuery } from "@chakra-ui/react";
+import "./App.css";
+import ReactComponent from "./components/RoutComponent";
+import SideBar from "./components/SideBar";
+import { useLocalStorageStore } from "./modules/store";
+import Login from "./pages/Login";
+import { Layout } from "antd";
+import { ErrorBoundary } from "./pages/Error";
+import BottomBar from "./components/BottomBar/BottomBar";
+import Alert from "./components/Alert";
 
 function App() {
 
-  const token = useLocalStorageStore((store) => store.token)
+    const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
-  if (!token) return <Login />;
+    const token = useLocalStorageStore((store) => store.token);
 
-  return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-      }}
-    >
-      <Layout className='brent-bg-color'>
+    if (!token) return <Login />;
 
-        <SideBar />
-
-        <Layout.Content
-          style={{
-            overflow: 'auto',
-            height: '100vh',
-            position: 'relative',
-          }}
+    return (
+        <Layout
+            style={{
+                minHeight: "100vh",
+                position: "relative",
+            }}
         >
+            <Layout className="brent-bg-color">
+                {isLargerThan800 && <SideBar />}
 
-          <Box p={['1', '4']}>
+                <Layout.Content
+                    style={{
+                        overflow: "auto",
+                        height: "100vh",
+                        position: "relative",
+                    }}
+                >
+                    <Box p={["1", "4"]} mb={[10, null]}>
+                        <Alert />
 
-            {/* <Breadcrumb /> */}
-
-            <ErrorBoundary>
-              <ReactComponent />
-            </ErrorBoundary>
-
-          </Box>
-        </Layout.Content>
-      </Layout>
-    </Layout>
-  );
+                        <ErrorBoundary>
+                            <ReactComponent />
+                        </ErrorBoundary>
+                    </Box>
+                </Layout.Content>
+                {!isLargerThan800 && <BottomBar />}
+            </Layout>
+        </Layout>
+    );
 }
 
 export default App;

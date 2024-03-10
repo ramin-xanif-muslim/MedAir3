@@ -18,6 +18,9 @@ export const useOnRowTable = () => {
   } = useGlobalContext()
 
   const navigate = useNavigate();
+  
+
+  const setInitialValuesPersonInfoForm = useStore((store) => store.setInitialValuesPersonInfoForm)
 
   const fetchPersonInfo = async (id) => {
     try {
@@ -26,6 +29,7 @@ export const useOnRowTable = () => {
         res.data.birthDate = res.data.birthDate ? dayjs(res.data.birthDate) : null
         personInfoForm.setFieldsValue(res.data)
         patientForm.setFieldsValue(res.data)
+        setInitialValuesPersonInfoForm(res.data)
       }
     } catch (error) {
       console.log('%c error', 'background: red; color: dark', error);
@@ -34,14 +38,17 @@ export const useOnRowTable = () => {
 
   const setDataSourceDiseaseHistoryTable = useStore((store) => store.setDataSourceDiseaseHistoryTable)
   const setSavedDrawingCanvas = useStore((store) => store.setSavedDrawingCanvas)
+  const setInitialValuesDiseaseHistory = useStore((store) => store.setInitialValuesDiseaseHistory)
 
   const fetchDiseaseHistory = async (id) => {
     try {
       let res = await sendRequest("morby/" + id, {}, "get")
       if (res?.data) {
         diseaseHistoryForm.setFieldsValue(res.data)
+        setInitialValuesDiseaseHistory(res.data)
         res?.data.deseaseHistoryDynamicsList.forEach(i => i.id = i.patientsComplaintsId)
         setDataSourceDiseaseHistoryTable(res.data.deseaseHistoryDynamicsList)
+        res.data.familyMembersList.forEach(i => i.Id = i.familyMembersId)
         setFamilyMembersList(res.data.familyMembersList)
         setSavedDrawingCanvas(res.data?.deseaseImagesList || {})
       }
@@ -80,6 +87,7 @@ export const useOnRowTable = () => {
 
   const setDataSourceTreatmentTable = useStore((store) => store.setDataSourceTreatmentTable)
   const setRecipeList = useStore((store) => store.setRecipeList)
+  const setInitialValuesTreatment = useStore((store) => store.setInitialValuesTreatment)
 
   const fetchTreatment = async (id) => {
     try {
@@ -88,6 +96,7 @@ export const useOnRowTable = () => {
         const { treatmentDynamics, recipeList, treatmentStatic } = res.data
 
         treatmentHistoryForm.setFieldsValue(treatmentStatic)
+        setInitialValuesTreatment(treatmentStatic)
 
         treatmentDynamics.forEach(i => i.id = i.treatmentId)
         setDataSourceTreatmentTable(treatmentDynamics)
@@ -111,7 +120,7 @@ export const useOnRowTable = () => {
         fetchTreatment(id),
       ]).then(data => {
         setIsLoading(false)
-        navigate("/person_info")
+        navigate("/profile")
       })
     } catch (err) {
     }

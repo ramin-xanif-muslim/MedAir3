@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     Modal,
     ModalOverlay,
@@ -7,57 +7,45 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-} from '@chakra-ui/react'
-import { Button, Form, Input, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'
-import sendRequest from '../../../../modules/api/sendRequest';
-import { useQueryContext } from '../../../../modules/store/QueryContext';
-import { deepCopy } from '../../../../modules/functions/deepCopy';
+} from "@chakra-ui/react";
+import { Button, Form, Input, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import sendRequest from "../../../../modules/api/sendRequest";
+import { useQueryContext } from "../../../../modules/store/QueryContext";
+import { deepCopy } from "../../../../modules/functions/deepCopy";
 
 const CreateNew = (props) => {
+    const { selectedRowKey, setSelectedRowKey, form, isOpen, onOpen, onClose } =
+        props;
 
-    const {
-        selectedRowKey,
-        setSelectedRowKey,
-        form,
-        isOpen,
-        onOpen,
-        onClose
-    } = props
+    const { refetchPlaces } = useQueryContext();
 
-    const { refetchPlaces } = useQueryContext()
+    const initialRef = React.useRef(null);
 
-    const initialRef = React.useRef(null)
-
-    const [isLoading, setIsLoading] = React.useState(false)
-
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const onFinish = async (values) => {
-        setIsLoading(true)
-        const sendObj = deepCopy(values)
+        setIsLoading(true);
+        const sendObj = deepCopy(values);
         let res = await sendRequest("managers/places", sendObj, "post");
         if (res) {
-            refetchPlaces()
-            onClose()
-            setSelectedRowKey(null)
-            message.success("Saved")
+            refetchPlaces();
+            onClose();
+            setSelectedRowKey(null);
+            message.success("Saved");
         }
-        setIsLoading(false)
-    }
+        setIsLoading(false);
+    };
 
     const handleClose = () => {
-        form.resetFields()
-        setSelectedRowKey(null)
-        onClose()
-    }
+        form.resetFields();
+        setSelectedRowKey(null);
+        onClose();
+    };
 
     return (
         <>
-
-            <Button
-                icon={<PlusOutlined />}
-                onClick={onOpen}
-            >
+            <Button icon={<PlusOutlined />} onClick={onOpen}>
                 New
             </Button>
 
@@ -68,14 +56,15 @@ const CreateNew = (props) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{selectedRowKey ? "Edit Place" : "New Place"}</ModalHeader>
+                    <ModalHeader>
+                        {selectedRowKey ? "Edit Place" : "New Place"}
+                    </ModalHeader>
                     <ModalCloseButton />
 
                     <ModalBody>
-
                         <Form
                             form={form}
-                            id='ModalManagersPlaces'
+                            id="ModalManagersPlaces"
                             onFinish={onFinish}
                             labelWrap
                             labelAlign="left"
@@ -89,7 +78,6 @@ const CreateNew = (props) => {
                                 maxWidth: 600,
                             }}
                         >
-
                             <Form.Item hidden name="visitPlaceId">
                                 <Input />
                             </Form.Item>
@@ -105,28 +93,25 @@ const CreateNew = (props) => {
                             <Form.Item label="Country" name="placeCountry">
                                 <Input />
                             </Form.Item>
-
                         </Form>
-
                     </ModalBody>
 
                     <ModalFooter>
                         <Button
-                            form='ModalManagersPlaces'
-                            htmlType='submit'
-                            type='primary'
+                            form="ModalManagersPlaces"
+                            htmlType="submit"
+                            type="primary"
                             block
                             onClick={onFinish}
                             loading={isLoading}
                         >
-                            {selectedRowKey ? 'Edit' : 'Add'}
+                            {selectedRowKey ? "Edit" : "Add"}
                         </Button>
                     </ModalFooter>
-
                 </ModalContent>
             </Modal>
         </>
-    )
+    );
 };
 
 export default CreateNew;

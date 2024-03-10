@@ -5,36 +5,25 @@ import sendRequest from "../../../../../modules/api/sendRequest";
 import { Box, Flex } from "@chakra-ui/react";
 
 
-const UploadForm = ({ form, selectedRowKey }) => {
+const UploadForm = ({ form, selectedRowKey, formName, setIsChangeForm }) => {
 
     const [imageUrl, setImageUrl] = useState();
-    const [imagePdfUrl, setImagePdfUrl] = useState();
     const [isLoading, setIsLoading] = useState(false)
 
     const showImage = (url) => {
         if (url) {
-            const lastDotIndex = url.lastIndexOf(".");
-            const result = url.substring(lastDotIndex + 1);
-            if (result === 'pdf') {
-                setImageUrl(null)
-                setImagePdfUrl(url)
-            } else {
-                setImagePdfUrl(null)
-                setImageUrl(url)
-            }
+            setImageUrl(url)
         }else {
-            setImagePdfUrl(null)
             setImageUrl(null)
         }
     }
 
     useEffect(() => {
         if (selectedRowKey) {
-            const url = form.getFieldsValue().analyzesContentUrl
+            const url = form.getFieldValue(`${formName}Url`)
             showImage(url)
         } else {
             setImageUrl(null)
-            setImagePdfUrl(null)
         }
     }, [selectedRowKey])
 
@@ -43,12 +32,13 @@ const UploadForm = ({ form, selectedRowKey }) => {
         const formData = new FormData();
         formData.append("file", file);
 
-        let res = await sendRequest("analysesImage", formData, "post");
+        let res = await sendRequest("treatmentImage", formData, "post");
         if (res?.data) {
+            setIsChangeForm(true)
             const url = res.data
             showImage(url)
-            form.setFieldsValue({ analyzesContentName: file.name });
-            form.setFieldsValue({ analyzesContentUrl: res.data });
+            form.setFieldsValue({ [`${formName}Name`]: file.name });
+            form.setFieldsValue({ [`${formName}Url`]: file.data });
         }
         setIsLoading(false)
         return false;
@@ -57,8 +47,8 @@ const UploadForm = ({ form, selectedRowKey }) => {
     const handleDeleteImg = () => {
         try {
             setImageUrl(null)
-            setImagePdfUrl(null)
-            form.setFieldsValue({ analyzesContentName: '', analyzesContentUrl: '' })
+            form.setFieldsValue({ [`${formName}Name`]: '', [`${formName}Url`]: '' })
+            setIsChangeForm(true)
         } catch (error) {
             console.log('%c error', 'background: red; color: dark', error);
         }
@@ -73,22 +63,9 @@ const UploadForm = ({ form, selectedRowKey }) => {
             {
                 imageUrl ? (
 
-                    <Flex gap='1' m='3'>
+                    <Flex gap='1' m='3' width={["100%", "100px"]}>
 
-                        <Image width={200} src={imageUrl} />
-
-                        <Box onClick={handleDeleteImg} _hover={{ color: 'red' }} ml='-1' cursor='pointer' >
-                            <CloseCircleOutlined />
-                        </Box>
-
-                    </Flex>
-
-                ) : imagePdfUrl ? (
-
-                    <Flex gap='1' m='3'>
-
-                        <embed src={imagePdfUrl} type="application/pdf" width="100%" height="600px" 
-                        />
+                        <Image alt={formName} src={imageUrl} />
 
                         <Box onClick={handleDeleteImg} _hover={{ color: 'red' }} ml='-1' cursor='pointer' >
                             <CloseCircleOutlined />
@@ -99,7 +76,7 @@ const UploadForm = ({ form, selectedRowKey }) => {
                 ) : (
 
                     <Upload
-                        accept=".png,.pdf,.jpeg,.jpg"
+                        accept=".png,.jpeg,.jpg"
                         listType="picture"
                         beforeUpload={beforeUpload}
                     >

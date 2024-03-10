@@ -6,11 +6,11 @@ import { Box } from "@chakra-ui/react";
 import { useStore } from "../../modules/store";
 import dayjs from "dayjs";
 import { useOnRowTable } from "../../modules/hooks/useOnRowTable";
-import Alert from "../../components/Alert";
 
 const Search = () => {
-
-    const dataSourceSearchTable = useStore((store) => store.dataSourceSearchTable)
+    const dataSourceSearchTable = useStore(
+        (store) => store.dataSourceSearchTable
+    );
 
     const columns = [
         {
@@ -33,7 +33,7 @@ const Search = () => {
             dataIndex: "birthDate",
             key: "birthDate",
             render: (value, row, index) => {
-                if (!value) return ''
+                if (!value) return "";
                 return dayjs(value).format("DD-MM-YYYY");
             },
         },
@@ -44,28 +44,23 @@ const Search = () => {
         },
     ];
 
-    const { onRowTable, isLoading } = useOnRowTable()
+    const { onRowTable, isLoading } = useOnRowTable();
 
     return (
         <>
-            {/* <Alert /> */}
-
-            <Box boxShadow='xl' p='2' bg='pink.100' borderRadius='15px' >
-
-                <Box boxShadow='xl' p='2' bg='pink.50' borderRadius='15px' >
+            <Box boxShadow="xl" p="2" bg="pink.100" borderRadius="15px">
+                <Box boxShadow="xl" p="2" bg="pink.50" borderRadius="15px">
                     <PatientFormCalendar />
                 </Box>
 
-
-                <Box mt='2'>
-
+                <Box mt="2">
                     <Table
                         loading={isLoading}
-                        size='small'
+                        size="small"
                         bordered
                         pagination={false}
                         scroll={{
-                            x: window.innerHeight
+                            x: window.innerHeight,
                         }}
                         locale={{
                             emptyText: (
@@ -81,9 +76,7 @@ const Search = () => {
                             onClick: (e) => onRowTable(record, index),
                         })}
                     />
-
                 </Box>
-
             </Box>
         </>
     );

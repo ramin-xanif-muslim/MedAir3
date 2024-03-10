@@ -18,19 +18,23 @@ const PatientFormCalendar = () => {
 
     const handleSearch = async () => {
         setLoading(true)
-        const form = searchPatientForm.getFieldsValue();
+        const form = searchPatientForm.getFieldsValue()
         const searchObj = { ...form }
         let res = await sendRequest("search", searchObj, "post");
         if (res?.data) {
             setDataSourceSearchTable(res.data)
-        }else {
+        } else {
             message.info({
-                key:'search_patient',
-                content:'Patient not found...',
+                key: 'search_patient',
+                content: 'Patient not found...',
             })
             setDataSourceSearchTable([])
         }
         setLoading(false)
+    }
+
+    const handleClear = () => {
+        searchPatientForm.resetFields()
     }
 
     return (
@@ -51,38 +55,44 @@ const PatientFormCalendar = () => {
                             key="patientName"
                             name="patientName"
                         >
-                            <Input placeholder="Name" />
+                            <Input placeholder="Name" allowClear />
                         </Form.Item>
 
                         <Form.Item
                             name="patientId"
                             noStyle
                         >
-                            <InputNumber min={0} addonBefore='№' placeholder="Patient №" />
+                            <InputNumber min={0} addonBefore='№' placeholder="Patient №" allowClear />
                         </Form.Item>
 
                     </Space.Compact>
                 </Form.Item>
 
                 <Form.Item key="patientSurName" name="patientSurName" label="Suriname">
-                    <Input placeholder="Suriname" />
+                    <Input placeholder="Suriname" allowClear />
                 </Form.Item>
 
                 <Form.Item key="phoneNumber" name="phoneNumber" label="Phone number">
-                    <Input type="number" placeholder="Phone number" />
+                    <Input type="number" placeholder="Phone number" allowClear />
                 </Form.Item>
 
                 <Form.Item >
-                    <Button
-                        onClick={handleSearch}
-                        type='primary'
-                        form='searchPatientForm'
-                        htmlType='submit'
-                        icon={<SearchOutlined />}
-                        loading={loading}
-                    >
-                        Search
-                    </Button>
+                    <Space>
+                        <Button
+                            onClick={handleSearch}
+                            type='primary'
+                            form='searchPatientForm'
+                            htmlType='submit'
+                            icon={<SearchOutlined />}
+                            loading={loading}
+                        >
+                            Search
+                        </Button>
+
+                        <Button onClick={handleClear} danger>
+                            Clear
+                        </Button>
+                    </Space>
                 </Form.Item>
 
 

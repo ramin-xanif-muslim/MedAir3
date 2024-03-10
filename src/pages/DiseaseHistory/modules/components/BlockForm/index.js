@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import { Input, Radio, Select, Form } from 'antd';
 import React, { memo } from 'react'
 import FamilyMembersList from '../FamilyMembersList';
@@ -10,6 +10,8 @@ function BlockForm() {
     const { diseaseHistoryForm } = useGlobalContext()
 
     const onFieldsChange = useStore((store) => store.onFieldsChange)
+
+    const initialValuesDiseaseHistory = useStore((store) => store.initialValuesDiseaseHistory)
 
     return (
         <SimpleGrid columns={['1', '2']} gap='1' >
@@ -28,6 +30,7 @@ function BlockForm() {
                     maxWidth: 600,
                 }}
                 onFieldsChange={onFieldsChange}
+                initialValues={initialValuesDiseaseHistory}
             >
 
                 <Form.Item label="Allergies" name="allergyAvailability">
@@ -87,25 +90,12 @@ function BlockForm() {
             </Form>
 
 
-            <Form
-                form={diseaseHistoryForm}
-                labelWrap
-                labelAlign="right"
-                labelCol={{
-                    span: 8,
-                }}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    maxWidth: 600,
-                }}
-                onFieldsChange={onFieldsChange}
-            >
+            <Box maxW="600px">
 
                 <FamilyMembersList />
 
-            </Form>
+            </Box>
+
 
         </SimpleGrid>
     )

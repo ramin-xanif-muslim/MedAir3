@@ -18,11 +18,10 @@ const verificationToken = async (url) => {
         return "ok";
       }else if(res?.data === "no"){
         localStorage.clear()
-        window.location.reload();
+        // window.location.reload();
        }
     } catch {
       message.error("ERROR: Verification Token ")
-      console.log("err in verificationToken");
     }
   }
 };
@@ -37,7 +36,6 @@ async function sendRequest(url, obj = {}, CRUD = "get") {
     }
   } catch (e) {
     message.error(e.message)
-    console.log('%c error','background: red; color: dark', e);
   }
 }
 

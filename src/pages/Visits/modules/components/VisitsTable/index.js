@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from '@chakra-ui/react'
 import { Table, Tooltip } from 'antd'
 import React, { memo, useMemo } from 'react'
-import VisitsTableSetting from '../VisitsTableSetting'
+// import VisitsTableSetting from '../VisitsTableSetting'
 import { useLocalStorageStore, useStore } from '../../../../../modules/store'
 import DeleteVisitsTableRow from '../DeleteVisitsTableRow'
 import dayjs from 'dayjs'
@@ -87,7 +87,7 @@ function VisitsTable(props) {
                 ),
             },
             {
-                title: "Reason",
+                title: "Visit reason",
                 dataIndex: "visitReason",
                 key: "visitReason",
                 isVisible: visible('visitReason'),
@@ -138,7 +138,7 @@ function VisitsTable(props) {
         <Box display='flex' flexDirection='column'>
 
             <Box alignSelf='flex-end'>
-                <VisitsTableSetting columns={columns} />
+                {/* <VisitsTableSetting columns={columns} /> */}
             </Box>
 
             <Table
