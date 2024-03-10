@@ -67,9 +67,6 @@ function AddVisitButton({ refetch }) {
                     style={{
                         maxWidth: 600,
                     }}
-                    initialValues={{
-                        visitDate: dayjs()
-                    }}
                 >
                     <Form.Item label="Id" name="patientId">
                         <Input type="number" allowClear />
@@ -81,22 +78,14 @@ function AddVisitButton({ refetch }) {
                         <Input allowClear />
                     </Form.Item>
                     <Form.Item label="Reason" name="visitReason">
-                        <Select
-                            allowClear
-                        >
-                            <Select.Option value="Inspection">Inspection</Select.Option>
-                            <Select.Option value="Treatment">Treatment</Select.Option>
-                            <Select.Option value="Operation">Operation</Select.Option>
-                            <Select.Option value="Control">Control</Select.Option>
-                            <Select.Option value="Aesthetics">Aesthetics</Select.Option>
-                            <Select.Option value="Prophylactic">Prophylactic</Select.Option>
-                        </Select>
+                        <Input allowClear />
                     </Form.Item>
                     <Form.Item label="Date" name="visitDate">
                         <DatePicker
-                            format="YYYY-MM-DD HH:mm"
                             showTime
                             allowClear
+                            format={"YYYY-MM-DD HH:mm"}
+                            defaultValue={dayjs()}
                         />
                     </Form.Item>
                     <Form.Item label="Mobile Number" name="phoneNumber">

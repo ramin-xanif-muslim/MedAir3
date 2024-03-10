@@ -120,7 +120,7 @@ export const useOnRowTable = () => {
         fetchTreatment(id),
       ]).then(data => {
         setIsLoading(false)
-        navigate("/person_info")
+        navigate("/profile")
       })
     } catch (err) {
     }

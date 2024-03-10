@@ -1,24 +1,28 @@
-import React, { memo } from 'react'
-import { Checkbox, DatePicker, Form, Input, InputNumber, Rate, Select } from "antd";
-import { Box, SimpleGrid } from '@chakra-ui/react';
-import ProfilePatientForm from '../../components/ProfilePatientForm';
-import { useGlobalContext } from '../../modules/context/index.js';
-import { useStore } from '../../modules/store';
+import React, { memo } from "react";
+import {
+    Checkbox,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Rate,
+    Select,
+} from "antd";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import { useGlobalContext } from "../../modules/context/index.js";
+import { useStore } from "../../modules/store";
 
 const OPTIONS = ["0-6", "6-12", "12-24", "24+"];
 
 function PersonInfo() {
+    const { personInfoForm } = useGlobalContext();
 
-    const { personInfoForm } = useGlobalContext()
-
-    const onFieldsChange = useStore((store) => store.onFieldsChange)
+    const onFieldsChange = useStore((store) => store.onFieldsChange);
 
     // const initialValuesPersonInfoForm = useStore((store) => store.initialValuesPersonInfoForm)
 
     return (
         <>
-            <ProfilePatientForm />
-
             <Form
                 form={personInfoForm}
                 labelWrap
@@ -32,9 +36,14 @@ function PersonInfo() {
                 // initialValues={initialValuesPersonInfoForm}
                 onFieldsChange={onFieldsChange}
             >
-
-                <SimpleGrid columns={['1', '2']} p='2' my='2' boxShadow='xl' bg='pink.50' borderRadius='15px'>
-
+                <SimpleGrid
+                    columns={["1", "2"]}
+                    p="2"
+                    my="2"
+                    boxShadow="xl"
+                    bg="pink.50"
+                    borderRadius="15px"
+                >
                     <Box maxW="600px">
                         <Form.Item label="Birth date" name="birthDate">
                             <DatePicker allowClear />
@@ -45,42 +54,63 @@ function PersonInfo() {
                         </Form.Item>
 
                         <Form.Item name="phoneNumber" label="Phone Number">
-                            <Input type='number' />
+                            <Input type="number" />
                         </Form.Item>
 
                         <Form.Item label="Sex" name="gender">
-                            <Select
-                                allowClear
-                            >
-                                <Select.Option value="Female">Female</Select.Option>
+                            <Select allowClear>
+                                <Select.Option value="Female">
+                                    Female
+                                </Select.Option>
                                 <Select.Option value="Male">Male</Select.Option>
                             </Select>
                         </Form.Item>
 
                         <Form.Item label="Marital status" name="maritalStatus">
                             <Select allowClear>
-                                <Select.Option value="Single">Single</Select.Option>
-                                <Select.Option value="Married">Married</Select.Option>
-                                <Select.Option value="Divorced">Divorced</Select.Option>
+                                <Select.Option value="Single">
+                                    Single
+                                </Select.Option>
+                                <Select.Option value="Married">
+                                    Married
+                                </Select.Option>
+                                <Select.Option value="Divorced">
+                                    Divorced
+                                </Select.Option>
                             </Select>
                         </Form.Item>
 
                         <Form.Item label="Sex status" name="sexStatus">
                             <Select allowClear>
-                                <Select.Option value="Regular">Regular</Select.Option>
-                                <Select.Option value="Irregular">Irregular</Select.Option>
+                                <Select.Option value="Regular">
+                                    Regular
+                                </Select.Option>
+                                <Select.Option value="Irregular">
+                                    Irregular
+                                </Select.Option>
                             </Select>
                         </Form.Item>
 
-                        <Form.Item valuePropName="checked" label="Alcohol" name="alkogol">
+                        <Form.Item
+                            valuePropName="checked"
+                            label="Alcohol"
+                            name="alkogol"
+                        >
                             <Checkbox />
                         </Form.Item>
 
-                        <Form.Item valuePropName="checked" label="Smoking " name="smoke">
+                        <Form.Item
+                            valuePropName="checked"
+                            label="Smoking "
+                            name="smoke"
+                        >
                             <Checkbox />
                         </Form.Item>
 
-                        <Form.Item label="Recommendation person" name="recommendationPerson">
+                        <Form.Item
+                            label="Recommendation person"
+                            name="recommendationPerson"
+                        >
                             <Input allowClear />
                         </Form.Item>
 
@@ -104,23 +134,30 @@ function PersonInfo() {
                     <Box maxW="600px">
                         <Form.Item
                             noStyle
-                            shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
+                            shouldUpdate={(prevValues, currentValues) =>
+                                prevValues.gender !== currentValues.gender
+                            }
                         >
                             {({ getFieldValue }) =>
-                                getFieldValue('gender') === 'Female' ? (
+                                getFieldValue("gender") === "Female" ? (
                                     <>
-
                                         <Form.Item
                                             label="A cure for infertility"
                                             name="cureForInfertility"
                                         >
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item label="Menopause" name="menopause">
+                                        <Form.Item
+                                            label="Menopause"
+                                            name="menopause"
+                                        >
                                             <Input />
                                         </Form.Item>
 
-                                        <Form.Item label="Menarche" name="menarxe">
+                                        <Form.Item
+                                            label="Menarche"
+                                            name="menarxe"
+                                        >
                                             <Input />
                                         </Form.Item>
 
@@ -128,27 +165,33 @@ function PersonInfo() {
                                             label="Age of first childbirth"
                                             name="firstChildbirth"
                                         >
-                                            <InputNumber
-                                                min={10}
-                                                max={60}
-                                            />
+                                            <InputNumber min={10} max={60} />
                                         </Form.Item>
 
-                                        <Form.Item label="Age of last childbirth" name="lastChildbirth">
-                                            <InputNumber
-                                                min={10}
-                                                max={60}
-                                            />
+                                        <Form.Item
+                                            label="Age of last childbirth"
+                                            name="lastChildbirth"
+                                        >
+                                            <InputNumber min={10} max={60} />
                                         </Form.Item>
 
-                                        <Form.Item label="Number of abortions" name="abortCount">
+                                        <Form.Item
+                                            label="Number of abortions"
+                                            name="abortCount"
+                                        >
                                             <InputNumber min={0} />
                                         </Form.Item>
 
-                                        <Form.Item label="Breastfeeding period" name="lactationPeriod">
-                                            <Select allowClear >
+                                        <Form.Item
+                                            label="Breastfeeding period"
+                                            name="lactationPeriod"
+                                        >
+                                            <Select allowClear>
                                                 {OPTIONS.map((option) => (
-                                                    <Select.Option key={option} value={option}>
+                                                    <Select.Option
+                                                        key={option}
+                                                        value={option}
+                                                    >
                                                         {option}
                                                     </Select.Option>
                                                 ))}
@@ -164,15 +207,12 @@ function PersonInfo() {
                                     </>
                                 ) : null
                             }
-
                         </Form.Item>
                     </Box>
-
-
                 </SimpleGrid>
             </Form>
         </>
-    )
+    );
 }
 
-export default memo(PersonInfo)
+export default memo(PersonInfo);

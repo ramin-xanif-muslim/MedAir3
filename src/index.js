@@ -1,15 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ErrorBoundary } from "./pages/Error";
-import { AppProvider } from './modules/context/index.js';
-import { QueryContextProvider } from './modules/store/QueryContext';
-import { ConfigProvider, theme } from 'antd';
+import { AppProvider } from "./modules/context/index.js";
+import { QueryContextProvider } from "./modules/store/QueryContext";
+import { ConfigProvider, theme } from "antd";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
     },
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
@@ -35,8 +35,8 @@ root.render(
                                             // colorPrimary: theme.darkAlgorithm,
                                             // colorPrimary: 'deeppink',
                                             // Button: {
-                                            //     colorPrimary: '#00B96B',
-                                            // }
+                                            //     colorPrimary: "#FFA07A",
+                                            // },
                                         },
                                     }}
                                 >

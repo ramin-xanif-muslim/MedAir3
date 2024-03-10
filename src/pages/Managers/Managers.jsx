@@ -1,8 +1,8 @@
 import { Tabs } from "antd";
 
 import ReceptionLocations from "../ReceptionLocations";
-// import Medications from "../Medications";
-// import Pathologists from "../Pathologists";
+import Medications from "../Medications";
+import Pathologists from "../Pathologists";
 import styles from "./styles.module.css";
 
 const Managers = () => {
@@ -17,16 +17,16 @@ const Managers = () => {
                         key: "ReceptionLocations",
                         children: <ReceptionLocations />,
                     },
-                    // {
-                    //     label: "Medications",
-                    //     key: "Medications",
-                    //     children: <Medications />,
-                    // },
-                    // {
-                    //     label: "Pathologists",
-                    //     key: "Pathologists",
-                    //     children: <Pathologists />,
-                    // },
+                    {
+                        label: "Medications",
+                        key: "Medications",
+                        children: <Medications />,
+                    },
+                    {
+                        label: "Pathologists",
+                        key: "Pathologists",
+                        children: <Pathologists />,
+                    },
                 ]}
             />
         </div>
