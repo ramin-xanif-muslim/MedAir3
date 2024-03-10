@@ -1,7 +1,7 @@
 import { message } from "antd";
 import axios from "axios";
-let API_BASE = "http://localhost:8080/api/"
-// let API_BASE = "http://5.189.181.111:8080/api/"
+// let API_BASE = "http://localhost:8080/api/"
+let API_BASE = "http://5.189.181.111:8080/api/"
 
 const verificationToken = async (url) => {
   if (url !== "login") {
