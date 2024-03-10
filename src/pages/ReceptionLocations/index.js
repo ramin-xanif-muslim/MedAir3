@@ -136,6 +136,7 @@ function ReceptionLocations() {
                 </Flex>
 
                 <Table
+                rowKey="visitPlaceId"
                     loading={isLoadingPlaces}
                     size='small'
                     bordered

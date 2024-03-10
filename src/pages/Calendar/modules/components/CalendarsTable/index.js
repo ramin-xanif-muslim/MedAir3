@@ -254,6 +254,7 @@ function CalendarsTable(props) {
             </Box>
 
             <Table
+                rowKey="id"
                 className="calendars-table-wrapper"
                 loading={isLoading || isLoadingOnSelectCalendar}
                 size="small"
