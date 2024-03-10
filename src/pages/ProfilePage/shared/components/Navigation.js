@@ -49,7 +49,7 @@ const Navigation = ({
             }}
             size="small"
             options={[
-                "Patient",
+                // "Patient",
                 "PersonInfo",
                 "DiseaseHistory",
                 "Visits",
