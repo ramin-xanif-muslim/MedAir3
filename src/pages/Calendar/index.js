@@ -51,6 +51,8 @@ function Calendar() {
           />
         </Box>
 
+        <h1 className='uppercase text-white'>Header</h1>
+
         <Box>
           <CalendarsTable
             refetch={refetch}
