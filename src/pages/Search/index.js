@@ -71,12 +71,12 @@ const Search = () => {
                             ),
                         }}
                         columns={columns}
-                        // pagination={false}
-                        // dataSource={dataSourceSearchTable}
+                        pagination={false}
+                        dataSource={dataSourceSearchTable}
                         onRow={(record, index) => ({
                             onClick: (e) => onRowTable(record, index),
                         })}
-                        dataSource={new Array(200).fill(null)}
+                        // dataSource={new Array(200).fill(null)}
                         // pagination={{
                         //     total: 200,
                         //     defaultPageSize: 100,
