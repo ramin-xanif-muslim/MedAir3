@@ -55,13 +55,13 @@ const Search = () => {
 
                 <Box mt="2">
                     <Table
+                        rowKey="patientId"
                         loading={isLoading}
                         size="small"
                         bordered
-                        pagination={false}
-                        scroll={{
-                            x: window.innerHeight,
-                        }}
+                        // scroll={{
+                        //     x: window.innerHeight,
+                        // }}
                         locale={{
                             emptyText: (
                                 <Empty
@@ -71,10 +71,19 @@ const Search = () => {
                             ),
                         }}
                         columns={columns}
-                        dataSource={dataSourceSearchTable}
+                        // pagination={false}
+                        // dataSource={dataSourceSearchTable}
                         onRow={(record, index) => ({
                             onClick: (e) => onRowTable(record, index),
                         })}
+                        dataSource={new Array(200).fill(null)}
+                        // pagination={{
+                        //     total: 200,
+                        //     defaultPageSize: 100,
+                        //     pageSizeOptions: [100, 200, 300],
+                        //     position: ["bottomLeft"],
+                        // }}
+                        sticky={{ offsetHeader: 0 }}
                     />
                 </Box>
             </Box>
