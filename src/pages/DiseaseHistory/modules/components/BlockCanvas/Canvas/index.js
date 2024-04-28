@@ -65,7 +65,10 @@ function CanvasComponent({ image, imageName }) {
                         (f) => f.index === index
                     );
                     const description = descriptions[i.brushColor + findEl.num];
-                    form.setFieldsValue({ description, colorCanvas: i.brushColor });
+                    form.setFieldsValue({
+                        description,
+                        colorCanvas: i.brushColor,
+                    });
                     setColorCanvas(i.brushColor);
                 }
             });
@@ -82,7 +85,7 @@ function CanvasComponent({ image, imageName }) {
                 Y_PositionMouse
             );
         }
-        textAreaRef.current.focus()
+        textAreaRef.current.focus();
         // form.setFieldsValue
     };
 
@@ -180,13 +183,6 @@ function CanvasComponent({ image, imageName }) {
                         <Form.Item noStyle name="colorCanvas">
                             <Select
                                 onSelect={(e) => setColorCanvas(e)}
-                                // suffixIcon={
-                                //     <Circle
-                                //         mr="4"
-                                //         size="20px"
-                                //         bg={colorCanvas}
-                                //     />
-                                // }
                                 style={{ width: "100%" }}
                             >
                                 {optionsSelectColorCanvas.map((i) => {
