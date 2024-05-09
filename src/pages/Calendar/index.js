@@ -42,7 +42,7 @@ function Calendar() {
     return (
         <>
             <Flex
-                flexDirection={["column", "column", "column", "column", "row"]}
+                flexDirection="column"
                 boxShadow="xl"
                 p="2"
                 bg="pink.100"

@@ -29,18 +29,16 @@ function CalendarsTable(props) {
     const columns = useMemo(() => {
         return [
             {
-                title: "Patient Number",
+                title: "№",
                 dataIndex: "patientId",
+                width: 40,
                 key: "patientId",
-                ellipsis: true,
-                width: isLargerThan400 ? false : 100,
                 isVisible: visible("patientId"),
             },
             {
                 title: "Time",
                 dataIndex: "visitDate",
                 key: "visitDate",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("visitDate"),
                 render: (value) => (
@@ -53,7 +51,6 @@ function CalendarsTable(props) {
                 title: "Name",
                 dataIndex: "patientName",
                 key: "patientName",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("patientName"),
                 render: (value) => (
@@ -66,7 +63,6 @@ function CalendarsTable(props) {
                 title: "Surname",
                 dataIndex: "patientSurName",
                 key: "patientSurName",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("patientSurName"),
                 render: (value) => (
@@ -79,7 +75,6 @@ function CalendarsTable(props) {
                 title: "Patronymic",
                 dataIndex: "patientPatronymic",
                 key: "patientPatronymic",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("patientPatronymic"),
                 render: (value) => (
@@ -92,7 +87,6 @@ function CalendarsTable(props) {
                 title: "Age",
                 dataIndex: "birthDate",
                 key: "birthDate",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("birthDate"),
                 render: (value) => {
@@ -104,7 +98,6 @@ function CalendarsTable(props) {
             },
             {
                 title: "Mobile number",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 dataIndex: "phoneNumber",
                 key: "phoneNumber",
@@ -120,7 +113,6 @@ function CalendarsTable(props) {
                 title: "Reason",
                 dataIndex: "visitReason",
                 key: "visitReason",
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 isVisible: visible("visitReason"),
                 render: (value) => (
@@ -134,8 +126,7 @@ function CalendarsTable(props) {
                 dataIndex: "placeName",
                 key: "placeName",
                 isVisible: visible("placeName"),
-                ellipsis: true,
-                width: isLargerThan400 ? false : 150,
+                width: isLargerThan400 ? 'max-content' : 150,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
                         {value}
@@ -147,7 +138,6 @@ function CalendarsTable(props) {
                 dataIndex: "recommendationPerson",
                 key: "recommendationPerson",
                 isVisible: visible("recommendationPerson"),
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 render: (value) => (
                     <Tooltip placement="topLeft" title={value}>
@@ -160,7 +150,6 @@ function CalendarsTable(props) {
                 dataIndex: "status",
                 key: "status",
                 isVisible: visible("status"),
-                ellipsis: true,
                 width: isLargerThan400 ? false : 150,
                 render: (value, row, index) => {
                     const onSelect = async (val) => {
@@ -214,11 +203,11 @@ function CalendarsTable(props) {
             },
             {
                 title: "Delete",
+                ellipsis: true,
                 dataIndex: "delete",
                 width: 50,
                 key: "delete",
                 isVisible: visible("delete"),
-                ellipsis: true,
                 align: "center",
                 render: (value, row, index) => {
                     const handleDelete = async () => {
@@ -255,16 +244,15 @@ function CalendarsTable(props) {
 
             <Table
                 rowKey="id"
-                className="calendars-table-wrapper"
                 loading={isLoading || isLoadingOnSelectCalendar}
                 size="small"
                 bordered
                 scroll={{
-                    y: window.innerHeight - 120,
                     x: window.innerHeight,
                 }}
                 pagination={false}
                 columns={columns.filter((i) => i.isVisible === true)}
+                sticky={{ offsetHeader: 0 }}
                 dataSource={dataSource || []}
                 // dataSource={Array(100)
                 //     .fill(null)

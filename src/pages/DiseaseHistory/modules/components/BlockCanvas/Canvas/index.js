@@ -15,6 +15,24 @@ const optionsSelectColorCanvas = [
 function CanvasComponent({ image, imageName }) {
     const canvasRef = useRef(null);
     const textAreaRef = useRef(null);
+    
+    const isDisabledClear = () => {
+        let data = canvasRef.current.getSaveData();
+        data = data ? JSON.parse(data) : "";
+        return !data.lines[0];
+    }
+
+    const [disabledClear, setDisabledClear] = useState(false);
+
+    useEffect(() => {
+        if(canvasRef.current) {
+            setDisabledClear(isDisabledClear())
+        }
+    
+        return () => {
+            setDisabledClear(false)
+        }
+    }, []);
 
     const [form] = Form.useForm();
 
@@ -86,12 +104,15 @@ function CanvasComponent({ image, imageName }) {
             );
         }
         textAreaRef.current.focus();
-        // form.setFieldsValue
     };
 
+
     const onChangeCanvas = () => {
+        setDisabledClear(isDisabledClear());
         form.setFieldsValue({ description: "" });
         setDisableSaveBtn(false);
+        setBrushRadius(0);
+        setDisableCanvas(true);
     };
 
     useEffect(() => {
@@ -109,6 +130,7 @@ function CanvasComponent({ image, imageName }) {
         let param = colorCanvas + colorNumber;
         descriptions[param] = e.target.value;
         setDescriptions(descriptions);
+        setDisableSaveBtn(false);
     };
 
     const computationColorNumber = () => {
@@ -210,7 +232,8 @@ function CanvasComponent({ image, imageName }) {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button onClick={handleAdd}>Add</Button>
+                        <Button 
+                            disabled={!disableSaveBtn} onClick={handleAdd}>Add</Button>
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -222,7 +245,7 @@ function CanvasComponent({ image, imageName }) {
                         </Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button onClick={handleClear}>Clear</Button>
+                        <Button disabled={disabledClear} onClick={handleClear}>Clear</Button>
                     </Form.Item>
                 </Space.Compact>
 

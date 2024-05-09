@@ -21,7 +21,7 @@ function AlertComponent() {
             <>
                 <Alert
                     message={
-                        <Box color="red">You have an unsaved patient!</Box>
+                        <Box fontWeight='bold' fontSize='1xl' letterSpacing='wide' color="red.700">You have an unsaved patient!</Box>
                     }
                     onClose={onClose}
                     // action={
