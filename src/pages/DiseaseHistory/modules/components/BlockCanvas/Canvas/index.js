@@ -15,24 +15,25 @@ const optionsSelectColorCanvas = [
 function CanvasComponent({ image, imageName }) {
     const canvasRef = useRef(null);
     const textAreaRef = useRef(null);
-    
+
     const isDisabledClear = () => {
         let data = canvasRef.current.getSaveData();
         data = data ? JSON.parse(data) : "";
         return !data.lines[0];
-    }
+    };
 
     const [disabledClear, setDisabledClear] = useState(false);
     const [selectedLineIndex, setSelectedLineIndex] = useState(null);
+    const [findElNumber, setFindElNumber] = useState(null);
 
     useEffect(() => {
-        if(canvasRef.current) {
-            setDisabledClear(isDisabledClear())
+        if (canvasRef.current) {
+            setDisabledClear(isDisabledClear());
         }
-    
+
         return () => {
-            setDisabledClear(false)
-        }
+            setDisabledClear(false);
+        };
     }, []);
 
     const [form] = Form.useForm();
@@ -65,6 +66,8 @@ function CanvasComponent({ image, imageName }) {
     };
 
     const getDescriptionPointColor = (arr, x, y) => {
+        if (!disableCanvas) return;
+
         arr.forEach((i, index) => {
             let isIf = false;
             i.points.forEach((c) => {
@@ -90,6 +93,7 @@ function CanvasComponent({ image, imageName }) {
                     });
                     setColorCanvas(i.brushColor);
                     setSelectedLineIndex(index); // Save the selected line index
+                    setFindElNumber(findEl.num);
                 }
             });
         });
@@ -127,7 +131,12 @@ function CanvasComponent({ image, imageName }) {
     }, [colorCanvas]);
 
     const onChangeDescription = (e) => {
-        let colorNumber = computationColorNumber();
+        let colorNumber;
+        if (findElNumber !== null) {
+            colorNumber = findElNumber;
+        } else {
+            colorNumber = computationColorNumber();
+        }
         let param = colorCanvas + colorNumber;
         descriptions[param] = e.target.value;
         setDescriptions({ ...descriptions });
@@ -152,6 +161,7 @@ function CanvasComponent({ image, imageName }) {
     const handleAdd = () => {
         setBrushRadius(20);
         setDisableCanvas(false);
+        setFindElNumber(null);
     };
 
     const onFieldsChange = useStore((store) => store.onFieldsChange);
@@ -171,27 +181,65 @@ function CanvasComponent({ image, imageName }) {
         if (selectedLineIndex !== null) {
             let data = canvasRef.current.getSaveData();
             let dataParse = JSON.parse(data);
+
             const deletedLine = dataParse.lines[selectedLineIndex];
             const color = deletedLine.brushColor;
-            let colorNumber = 0;
 
-            dataParse.lines.forEach((line, index) => {
-                if (line.brushColor === color) {
-                    colorNumber += 1;
-                }
-                if (index === selectedLineIndex) {
-                    colorNumber -= 1; // adjust colorNumber for the deleted line
-                }
-            });
+            const colorNumber = countLinesWithColor(
+                dataParse.lines,
+                color,
+                selectedLineIndex
+            );
 
-            let param = color + (colorNumber ? colorNumber + 1 : 1);
-            delete descriptions[param];
-            setDescriptions({ ...descriptions });
+            let param = color + (colorNumber ? colorNumber : 1);
+            let updatedDescriptions = deleteDescriptionByKey(
+                param,
+                descriptions
+            );
+
+            updatedDescriptions = reindexDescriptions(
+                updatedDescriptions,
+                color
+            );
+
+            setDescriptions(updatedDescriptions);
 
             dataParse.lines.splice(selectedLineIndex, 1);
             canvasRef.current.loadSaveData(JSON.stringify(dataParse));
             setSelectedLineIndex(null); // Clear the selected line index
         }
+    };
+
+    const countLinesWithColor = (lines, color, selectedLineIndex) => {
+        return lines.reduce((count, line, index) => {
+            if (line.brushColor === color) {
+                count += 1;
+            }
+            if (index === selectedLineIndex) {
+                count -= 1; // adjust colorNumber for the deleted line
+            }
+            return count;
+        }, 0);
+    };
+
+    const deleteDescriptionByKey = (key, descriptions) => {
+        const updatedDescriptions = { ...descriptions };
+        delete updatedDescriptions[key];
+        return updatedDescriptions;
+    };
+
+    const reindexDescriptions = (descriptions, color) => {
+        const copyDesc = { ...descriptions };
+        const filteredEntries = Object.entries(copyDesc).filter(([key]) =>
+            key.includes(color)
+        );
+
+        filteredEntries.forEach(([key, value], index) => {
+            delete copyDesc[key];
+            copyDesc[color + (index + 1)] = value;
+        });
+
+        return copyDesc;
     };
 
     const handleClear = () => {
@@ -260,8 +308,9 @@ function CanvasComponent({ image, imageName }) {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button 
-                            disabled={!disableSaveBtn} onClick={handleAdd}>Add</Button>
+                        <Button disabled={!disableSaveBtn} onClick={handleAdd}>
+                            Add
+                        </Button>
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -273,7 +322,9 @@ function CanvasComponent({ image, imageName }) {
                         </Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button disabled={disabledClear} onClick={handleClear}>Clear</Button>
+                        <Button disabled={disabledClear} onClick={handleClear}>
+                            Clear
+                        </Button>
                     </Form.Item>
                 </Space.Compact>
 
