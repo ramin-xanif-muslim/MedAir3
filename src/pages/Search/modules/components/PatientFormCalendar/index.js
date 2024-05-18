@@ -48,20 +48,20 @@ const PatientFormCalendar = () => {
                 // layout={isLargerThan600 ? "inline" : "vertical"}
             >
                 <Flex flexWrap="wrap" alignItems="end" gap={[1, 2, 3]}>
-                    <Form.Item
-                        label="Name"
-                        key="patientName"
-                        name="patientName"
-                    >
-                        <Input placeholder="Name" allowClear />
-                    </Form.Item>
-
                     <Form.Item name="patientId" label="№">
                         <InputNumber
                             min={0}
                             placeholder="Patient №"
                             allowClear
                         />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Name"
+                        key="patientName"
+                        name="patientName"
+                    >
+                        <Input placeholder="Name" allowClear />
                     </Form.Item>
 
                     <Form.Item

@@ -1,5 +1,5 @@
 import { Box, Flex, useMediaQuery } from "@chakra-ui/react";
-import { Button } from "antd";
+import { Button, Popconfirm } from "antd";
 import React from "react";
 import useSavePatient from "../../../../modules/hooks/useSavePatient";
 import useResetProfilePatient from "../../../../modules/hooks/useResetProfilePatient";
@@ -57,13 +57,20 @@ const Buttons = () => {
                         Save
                     </Button>
 
-                    <Button
-                        onClick={handleClear}
-                        danger
-                        size={isLargerThan600 ? "middle" : "small"}
+                    <Popconfirm
+                        title="Are you sure you want to clear the date?"
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={handleClear}
                     >
-                        Clear
-                    </Button>
+                        <Button
+                            // onClick={handleClear}
+                            danger
+                            size={isLargerThan600 ? "middle" : "small"}
+                        >
+                            Clear
+                        </Button>
+                    </Popconfirm>
                 </Flex>
             </Flex>
         </>

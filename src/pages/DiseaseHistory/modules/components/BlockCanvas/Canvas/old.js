@@ -23,7 +23,6 @@ function CanvasComponent({ image, imageName }) {
     }
 
     const [disabledClear, setDisabledClear] = useState(false);
-    const [selectedLineIndex, setSelectedLineIndex] = useState(null);
 
     useEffect(() => {
         if(canvasRef.current) {
@@ -89,7 +88,6 @@ function CanvasComponent({ image, imageName }) {
                         colorCanvas: i.brushColor,
                     });
                     setColorCanvas(i.brushColor);
-                    setSelectedLineIndex(index); // Save the selected line index
                 }
             });
         });
@@ -107,6 +105,7 @@ function CanvasComponent({ image, imageName }) {
         }
         textAreaRef.current.focus();
     };
+
 
     const onChangeCanvas = () => {
         setDisabledClear(isDisabledClear());
@@ -130,7 +129,7 @@ function CanvasComponent({ image, imageName }) {
         let colorNumber = computationColorNumber();
         let param = colorCanvas + colorNumber;
         descriptions[param] = e.target.value;
-        setDescriptions({ ...descriptions });
+        setDescriptions(descriptions);
         setDisableSaveBtn(false);
     };
 
@@ -167,35 +166,8 @@ function CanvasComponent({ image, imageName }) {
         setSavedDrawingCanvas(savedDrawingCanvas);
     };
 
-    const deleteSelectedLine = () => {
-        if (selectedLineIndex !== null) {
-            let data = canvasRef.current.getSaveData();
-            let dataParse = JSON.parse(data);
-            const deletedLine = dataParse.lines[selectedLineIndex];
-            const color = deletedLine.brushColor;
-            let colorNumber = 0;
-
-            dataParse.lines.forEach((line, index) => {
-                if (line.brushColor === color) {
-                    colorNumber += 1;
-                }
-                if (index === selectedLineIndex) {
-                    colorNumber -= 1; // adjust colorNumber for the deleted line
-                }
-            });
-
-            let param = color + (colorNumber ? colorNumber + 1 : 1);
-            delete descriptions[param];
-            setDescriptions({ ...descriptions });
-
-            dataParse.lines.splice(selectedLineIndex, 1);
-            canvasRef.current.loadSaveData(JSON.stringify(dataParse));
-            setSelectedLineIndex(null); // Clear the selected line index
-        }
-    };
-
     const handleClear = () => {
-        deleteSelectedLine();
+        canvasRef.current.undo();
     };
 
     const handleRestoreDrawing = () => {

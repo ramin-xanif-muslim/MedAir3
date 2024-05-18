@@ -78,6 +78,25 @@ function TreatmentTableFormBloke(props) {
             setIsBenign(value === "benign");
         }
     };
+    // Функция для проверки ввода значений от 1 до 8 или плюса
+    const handleKeyDown = (event) => {
+        const { key } = event;
+        if (!/[1-8+]/.test(key) && key !== "Backspace") {
+            event.preventDefault();
+        }
+    };
+    const onBeforeInput_erN = (event) => {
+        if (event.data === "+") {
+            event.preventDefault();
+            form.setFieldsValue({ erN: "+" });
+        }
+    };
+    const onBeforeInput_prN = (event) => {
+        if (event.data === "+") {
+            event.preventDefault();
+            form.setFieldsValue({ prN: "+" });
+        }
+    };
 
     return (
         <Form
@@ -265,10 +284,19 @@ function TreatmentTableFormBloke(props) {
                             {({ getFieldValue }) => {
                                 if (getFieldValue("ihkEr") === 1) {
                                     if (!getFieldValue("erN"))
-                                        form.setFieldsValue?.({ erN: "0" });
+                                        form.setFieldsValue?.({ erN: "1" });
                                     return (
                                         <Form.Item noStyle name="erN">
-                                            <InputNumber defaultValue={0} />
+                                            <InputNumber
+                                                autoFocus
+                                                min={1}
+                                                max={8}
+                                                defaultValue={1}
+                                                onKeyDown={handleKeyDown}
+                                                onBeforeInput={
+                                                    onBeforeInput_erN
+                                                }
+                                            />
                                         </Form.Item>
                                     );
                                 } else return "";
@@ -294,10 +322,19 @@ function TreatmentTableFormBloke(props) {
                             {({ getFieldValue }) => {
                                 if (getFieldValue("ihkPr") === 1) {
                                     if (!getFieldValue("prN"))
-                                        form.setFieldsValue?.({ prN: "0" });
+                                        form.setFieldsValue?.({ prN: "1" });
                                     return (
                                         <Form.Item noStyle name="prN">
-                                            <InputNumber defaultValue={0} />
+                                            <InputNumber
+                                                autoFocus
+                                                min={1}
+                                                max={8}
+                                                defaultValue={1}
+                                                onKeyDown={handleKeyDown}
+                                                onBeforeInput={
+                                                    onBeforeInput_prN
+                                                }
+                                            />
                                         </Form.Item>
                                     );
                                 } else return "";
@@ -501,6 +538,9 @@ function TreatmentTableFormBloke(props) {
                                             </Select.Option>
                                             <Select.Option value="expander">
                                                 Expander
+                                            </Select.Option>
+                                            <Select.Option value="reconstruction">
+                                                Reconstruction
                                             </Select.Option>
                                         </Select>
                                     </Form.Item>

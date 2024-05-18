@@ -15,24 +15,25 @@ const optionsSelectColorCanvas = [
 function CanvasComponent({ image, imageName }) {
     const canvasRef = useRef(null);
     const textAreaRef = useRef(null);
-    
+
     const isDisabledClear = () => {
         let data = canvasRef.current.getSaveData();
         data = data ? JSON.parse(data) : "";
         return !data.lines[0];
-    }
+    };
 
     const [disabledClear, setDisabledClear] = useState(false);
     const [selectedLineIndex, setSelectedLineIndex] = useState(null);
+    const [lineIdentifiers, setLineIdentifiers] = useState({});
 
     useEffect(() => {
-        if(canvasRef.current) {
-            setDisabledClear(isDisabledClear())
+        if (canvasRef.current) {
+            setDisabledClear(isDisabledClear());
         }
-    
+
         return () => {
-            setDisabledClear(false)
-        }
+            setDisabledClear(false);
+        };
     }, []);
 
     const [form] = Form.useForm();
@@ -65,6 +66,7 @@ function CanvasComponent({ image, imageName }) {
     };
 
     const getDescriptionPointColor = (arr, x, y) => {
+        const selectedLineIndices = []; // Список индексов выбранных линий
         arr.forEach((i, index) => {
             let isIf = false;
             i.points.forEach((c) => {
@@ -89,21 +91,26 @@ function CanvasComponent({ image, imageName }) {
                         colorCanvas: i.brushColor,
                     });
                     setColorCanvas(i.brushColor);
-                    setSelectedLineIndex(index); // Save the selected line index
+                    setSelectedLineIndex(
+                        `${X_PositionMouse}-${Y_PositionMouse}`
+                    ); // Save the selected line identifier
+                    selectedLineIndices.push(index); // Сохраняем индекс выбранной линии
                 }
             });
         });
+        return selectedLineIndices;
     };
 
     const onClick = () => {
         if (disableCanvas) {
             let data = canvasRef.current.getSaveData();
             let dataParse = JSON.parse(data);
-            getDescriptionPointColor(
+            const selectedLineIndices = getDescriptionPointColor(
                 dataParse.lines,
                 X_PositionMouse,
                 Y_PositionMouse
             );
+            deleteSelectedLine(selectedLineIndices);
         }
         textAreaRef.current.focus();
     };
@@ -167,19 +174,19 @@ function CanvasComponent({ image, imageName }) {
         setSavedDrawingCanvas(savedDrawingCanvas);
     };
 
-    const deleteSelectedLine = () => {
-        if (selectedLineIndex !== null) {
+    const deleteSelectedLine = (selectedLineIndices) => {
+        selectedLineIndices.forEach((index) => {
             let data = canvasRef.current.getSaveData();
             let dataParse = JSON.parse(data);
-            const deletedLine = dataParse.lines[selectedLineIndex];
+            const deletedLine = dataParse.lines[index];
             const color = deletedLine.brushColor;
             let colorNumber = 0;
 
-            dataParse.lines.forEach((line, index) => {
+            dataParse.lines.forEach((line, lineIndex) => {
                 if (line.brushColor === color) {
                     colorNumber += 1;
                 }
-                if (index === selectedLineIndex) {
+                if (lineIndex === index) {
                     colorNumber -= 1; // adjust colorNumber for the deleted line
                 }
             });
@@ -188,10 +195,10 @@ function CanvasComponent({ image, imageName }) {
             delete descriptions[param];
             setDescriptions({ ...descriptions });
 
-            dataParse.lines.splice(selectedLineIndex, 1);
+            dataParse.lines.splice(index, 1);
             canvasRef.current.loadSaveData(JSON.stringify(dataParse));
-            setSelectedLineIndex(null); // Clear the selected line index
-        }
+        });
+        setSelectedLineIndex(null); // Clear the selected line index
     };
 
     const handleClear = () => {
@@ -213,6 +220,20 @@ function CanvasComponent({ image, imageName }) {
     useEffect(() => {
         let timer = setTimeout(() => handleRestoreDrawing(), 1000);
         return () => clearTimeout(timer);
+    }, [canvasRef]);
+
+    // В конце функции CanvasComponent:
+    useEffect(() => {
+        if (canvasRef.current) {
+            const data = canvasRef.current.getSaveData();
+            const parsedData = JSON.parse(data);
+            const identifiers = {};
+            parsedData.lines.forEach((line) => {
+                const identifier = `${line.points[0].x}-${line.points[0].y}`;
+                identifiers[identifier] = line;
+            });
+            setLineIdentifiers(identifiers);
+        }
     }, [canvasRef]);
 
     return (
@@ -260,8 +281,9 @@ function CanvasComponent({ image, imageName }) {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button 
-                            disabled={!disableSaveBtn} onClick={handleAdd}>Add</Button>
+                        <Button disabled={!disableSaveBtn} onClick={handleAdd}>
+                            Add
+                        </Button>
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -273,7 +295,9 @@ function CanvasComponent({ image, imageName }) {
                         </Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button disabled={disabledClear} onClick={handleClear}>Clear</Button>
+                        <Button disabled={disabledClear} onClick={handleClear}>
+                            Clear
+                        </Button>
                     </Form.Item>
                 </Space.Compact>
 

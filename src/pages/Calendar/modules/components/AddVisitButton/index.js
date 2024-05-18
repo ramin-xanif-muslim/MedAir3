@@ -69,6 +69,9 @@ function AddVisitButton({ refetch }) {
                     style={{
                         maxWidth: 600,
                     }}
+                    initialValues={{
+                        status: 'unsolved'
+                    }}
                 >
                     <Form.Item label="Id" name="patientId">
                         <Input type="number" allowClear />
