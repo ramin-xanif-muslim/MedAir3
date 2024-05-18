@@ -1,63 +1,65 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState } from "react";
+import { Button, useDisclosure } from "@chakra-ui/react";
 import {
-    Button,
-    useDisclosure,
-} from '@chakra-ui/react'
-import { Form, Input, DatePicker, Select, Modal, Button as AntdButton } from 'antd'
-import dayjs from 'dayjs';
-import { handleAddVisit } from '../../../../../modules/api';
+    Form,
+    Input,
+    DatePicker,
+    Select,
+    Modal,
+    Button as AntdButton,
+} from "antd";
+import dayjs from "dayjs";
+import { handleAddVisit } from "../../../../../modules/api";
 
 function AddVisitButton({ refetch }) {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     const [form] = Form.useForm();
 
     const onFinish = async (values) => {
-        setIsLoading(true)
-        const sendObj = values
-        sendObj.visitDate =
-            dayjs(values.visitDate).format("YYYY-MM-DD HH:mm");
+        setIsLoading(true);
+        const sendObj = values;
+        sendObj.visitDate = dayjs(values.visitDate).format("YYYY-MM-DD HH:mm");
 
-        setIsLoading(false)
-        await handleAddVisit({ sendObj })
-        form.resetFields()
-        refetch()
-        onClose()
-    }
+        setIsLoading(false);
+        await handleAddVisit({ sendObj });
+        form.resetFields();
+        refetch();
+        onClose();
+    };
 
     return (
         <>
-            <Button
-                size='sm'
-                colorScheme='blue'
-                onClick={onOpen}
-            >
+            <Button size="sm" colorScheme="blue" onClick={onOpen}>
                 Add visit
             </Button>
 
             <Modal
                 footer={[
-                    <AntdButton key='1' onClick={onClose}>Cancel</AntdButton>,
+                    <AntdButton key="1" onClick={onClose}>
+                        Cancel
+                    </AntdButton>,
                     <AntdButton
-                        key='2'
+                        key="2"
                         type="primary"
                         htmlType="submit"
                         form="visitModalForm"
                         loading={isLoading}
                     >
                         Add
-                    </AntdButton>
+                    </AntdButton>,
                 ]}
                 closable={false}
-                open={isOpen} onCancel={onClose}>
-
+                open={isOpen}
+                onCancel={onClose}
+            >
                 <Form
                     form={form}
                     onFinish={onFinish}
                     id="visitModalForm"
-                    labelAlign='left'
+                    labelAlign="left"
                     labelCol={{
                         span: 8,
                     }}
@@ -71,10 +73,26 @@ function AddVisitButton({ refetch }) {
                     <Form.Item label="Id" name="patientId">
                         <Input type="number" allowClear />
                     </Form.Item>
-                    <Form.Item label="Name" name="patientName">
+                    <Form.Item
+                        label="Name"
+                        name="patientName"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
                         <Input allowClear />
                     </Form.Item>
-                    <Form.Item label="Surname" name="patientSurName">
+                    <Form.Item
+                        label="Surname"
+                        name="patientSurName"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
                         <Input allowClear />
                     </Form.Item>
                     <Form.Item label="Reason" name="visitReason">
@@ -89,21 +107,22 @@ function AddVisitButton({ refetch }) {
                         />
                     </Form.Item>
                     <Form.Item label="Mobile Number" name="phoneNumber">
-                        <Input
-                            type='number'
-                            allowClear
-                        />
+                        <Input type="number" allowClear />
                     </Form.Item>
                     <Form.Item label="Status" name="status">
-                        <Select allowClear >
-                            <Select.Option value="unsolved">Unsolved</Select.Option>
-                            <Select.Option value="approved">Approved</Select.Option>
+                        <Select allowClear>
+                            <Select.Option value="unsolved">
+                                Unsolved
+                            </Select.Option>
+                            <Select.Option value="approved">
+                                Approved
+                            </Select.Option>
                         </Select>
                     </Form.Item>
                 </Form>
             </Modal>
         </>
-    )
+    );
 }
 
-export default memo(AddVisitButton)
+export default memo(AddVisitButton);
