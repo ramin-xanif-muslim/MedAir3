@@ -116,9 +116,11 @@ function DiseaseHistoryFormBloke(props) {
                         >
                             {({ getFieldValue }) => {
                                 if (getFieldValue('ihkEr') === 1) {
+                                    if (!getFieldValue("erN"))
+                                        form.setFieldsValue?.({ erN: "0" });
                                     return (
                                         <Form.Item noStyle name="erN">
-                                            <InputNumber />
+                                            <InputNumber defaultValue={0} />
                                         </Form.Item>
                                     )
                                 } else return ''
@@ -141,9 +143,11 @@ function DiseaseHistoryFormBloke(props) {
                         >
                             {({ getFieldValue }) => {
                                 if (getFieldValue('ihkPr') === 1) {
+                                    if (!getFieldValue("prN"))
+                                        form.setFieldsValue?.({ prN: "0" });
                                     return (
                                         <Form.Item noStyle name="prN">
-                                            <InputNumber />
+                                            <InputNumber defaultValue={0} />
                                         </Form.Item>
                                     )
                                 } else return ''

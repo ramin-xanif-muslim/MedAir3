@@ -52,7 +52,7 @@ function ProfilePatientForm() {
                     <Form.Item
                         key="patientSurName"
                         name="patientSurName"
-                        label="Suriname"
+                        label="Surname"
                     >
                         <Input />
                     </Form.Item>

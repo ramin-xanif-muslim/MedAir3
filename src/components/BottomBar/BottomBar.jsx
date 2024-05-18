@@ -10,7 +10,7 @@ import {
 import styles from "./styles.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
-import { useLocalStorageStore } from "../../modules/store";
+import { useLocalStorageStore, useStore } from "../../modules/store";
 
 function getItem(label, key, icon, children) {
     return {
@@ -34,6 +34,12 @@ const BottomBar = () => {
     const navigate = useNavigate();
 
     const setToken = useLocalStorageStore((store) => store.setToken);
+    const { isFieldsChange, setIsOpenAlertModal, setSelectedNavLink } =
+        useStore((store) => ({
+            isFieldsChange: store.isFieldsChange,
+            setIsOpenAlertModal: store.setIsOpenAlertModal,
+            setSelectedNavLink: store.setSelectedNavLink,
+        }));
 
     const logOut = () => {
         setToken(null);
@@ -44,6 +50,11 @@ const BottomBar = () => {
     const onSelect = (item) => {
         if (item.key === "logout") {
             logOut();
+            return;
+        }
+        if (isFieldsChange) {
+            setIsOpenAlertModal(true);
+            setSelectedNavLink(item.key);
             return;
         }
         setSelectedKey(item.key);

@@ -79,6 +79,10 @@ let store = (set) => ({
         initialValuesTreatment:
             item
     })),
+    isOpenAlertModal: false,
+    setIsOpenAlertModal: (val) => set(() => ({isOpenAlertModal: val})),
+    selectedNavLink: null,
+    setSelectedNavLink: (val) => set(() => ({selectedNavLink: val})),
 
 });
 

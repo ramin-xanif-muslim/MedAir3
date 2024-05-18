@@ -67,9 +67,9 @@ const PatientFormCalendar = () => {
                     <Form.Item
                         key="patientSurName"
                         name="patientSurName"
-                        label="Suriname"
+                        label="Surname"
                     >
-                        <Input placeholder="Suriname" allowClear />
+                        <Input placeholder="Surname" allowClear />
                     </Form.Item>
 
                     <Form.Item

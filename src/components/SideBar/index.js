@@ -21,30 +21,11 @@ function getItem(label, key, icon, children) {
         label,
     };
 }
-const profileSubMenus = [
-    "person_info",
-    "disease_history",
-    "visits",
-    "analysis",
-    "treatment",
-];
 
 const items = [
     getItem("Calendar", "calendar", <CalendarOutlined />),
     getItem("Search", "search", <FileSearchOutlined />),
     getItem("Profile", "profile", <ProfileOutlined />),
-    // getItem('Profile', 'profile', <ProfileOutlined />, [
-    //     getItem('Person info', 'person_info'),
-    //     getItem('Disease history', 'disease_history'),
-    //     getItem('Visits', 'visits'),
-    //     getItem('Analysis', 'analysis'),
-    //     getItem('Treatment', 'treatment'),
-    // ]),
-    // getItem('Managers', 'managers', <UserOutlined />, [
-    //     getItem('Reception locations', 'reception_locations'),
-    //     getItem('Medications', 'medications'),
-    //     getItem('Pathologists', 'pathologists'),
-    // ]),
     getItem("Managers", "managers", <UserOutlined />),
     getItem("Log Out", "logout", <LogoutOutlined />),
 ];
@@ -54,14 +35,21 @@ function SideBar() {
     const [selectedKey, setSelectedKey] = useState(null);
 
     const navigate = useNavigate();
+    const { setBreadcrumbItems, isFieldsChange, setIsOpenAlertModal, setSelectedNavLink } =
+        useStore((store) => ({
+            setBreadcrumbItems: store.setBreadcrumbItems,
+            isFieldsChange: store.isFieldsChange,
+            setIsOpenAlertModal: store.setIsOpenAlertModal,
+            setSelectedNavLink: store.setSelectedNavLink,
+        }));
 
-    const setToken = useLocalStorageStore((store) => store.setToken);
-    const setBreadcrumbItems = useStore((store) => store.setBreadcrumbItems);
+    const { setToken } = useLocalStorageStore((store) => ({
+        setToken: store.setToken,
+    }));
 
     const logOut = () => {
         setToken(null);
         localStorage.clear();
-        // window.location.reload();
         navigate("/calendar");
     };
 
@@ -70,6 +58,11 @@ function SideBar() {
         const navLink = selectedKeys[0];
         if (navLink === "logout") {
             logOut();
+            return;
+        }
+        if (isFieldsChange) {
+            setIsOpenAlertModal(true);
+            setSelectedNavLink(navLink);
             return;
         }
         setBreadcrumbItems(correctBreadcrumbItems(keyPath));

@@ -4,6 +4,7 @@ import React from "react";
 import useSavePatient from "../../../../modules/hooks/useSavePatient";
 import useResetProfilePatient from "../../../../modules/hooks/useResetProfilePatient";
 import { useGlobalContext } from "../../../../modules/context/index.js";
+import AlertModal from "./AlertModal.jsx";
 
 const Buttons = () => {
     const { handleSave, isLoading } = useSavePatient();
@@ -20,49 +21,52 @@ const Buttons = () => {
         patientForm.getFieldsValue();
 
     return (
-        <Flex
-            style={{
-                position: "sticky",
-                top: 25,
-                zIndex: 60,
-            }}
-            w="full"
-            bg="pink.200"
-            pb="1"
-        >
+        <>
+            <AlertModal isLoading={isLoading} handleSave={handleSave} />
             <Flex
-                gap="2"
-                color="white"
-                textTransform="uppercase"
-                alignItems="center"
-                fontWeight="semibold"
-                letterSpacing="5px"
+                style={{
+                    position: "sticky",
+                    top: 25,
+                    zIndex: 60,
+                }}
+                w="full"
+                bg="pink.200"
+                pb="1"
             >
-                <Box>{patientName}</Box>
-                <Box>{patientSurName}</Box>
-                <Box>№{patientId}</Box>
-            </Flex>
-            <Flex gap="2" ml="auto">
-                <Button
-                    onClick={handleSave}
-                    form="patientForm"
-                    type="primary"
-                    htmlType="submit"
-                    loading={isLoading}
-                    size={isLargerThan600 ? "middle" : "small"}
+                <Flex
+                    gap="2"
+                    color="white"
+                    textTransform="uppercase"
+                    alignItems="center"
+                    fontWeight="semibold"
+                    letterSpacing="5px"
                 >
-                    Save
-                </Button>
+                    <Box>{patientName}</Box>
+                    <Box>{patientSurName}</Box>
+                    <Box>№{patientId}</Box>
+                </Flex>
+                <Flex gap="2" ml="auto">
+                    <Button
+                        onClick={handleSave}
+                        form="patientForm"
+                        type="primary"
+                        htmlType="submit"
+                        loading={isLoading}
+                        size={isLargerThan600 ? "middle" : "small"}
+                    >
+                        Save
+                    </Button>
 
-                <Button
-                    onClick={handleClear}
-                    danger
-                    size={isLargerThan600 ? "middle" : "small"}
-                >
-                    Clear
-                </Button>
+                    <Button
+                        onClick={handleClear}
+                        danger
+                        size={isLargerThan600 ? "middle" : "small"}
+                    >
+                        Clear
+                    </Button>
+                </Flex>
             </Flex>
-        </Flex>
+        </>
     );
 };
 
