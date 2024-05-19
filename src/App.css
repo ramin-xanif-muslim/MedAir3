@@ -53,3 +53,6 @@
         max-width: 100%;
     }
 }
+.ant-segmented-item {
+    border-radius: 6px !important; /* Adjust the value as needed */
+}

@@ -1,6 +1,5 @@
 import { memo, useEffect, useState } from "react";
 import { Segmented } from "antd";
-import "./Navigation.css"; // Import the CSS file
 
 const Navigation = ({
     inViewPatient,
