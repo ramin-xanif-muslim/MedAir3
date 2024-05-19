@@ -4,7 +4,6 @@ import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import sendRequest from "../../../../../modules/api/sendRequest";
 import { Box, Flex } from "@chakra-ui/react";
 
-
 const UploadForm = ({ form, selectedRowKey }) => {
 
     const [imageUrl, setImageUrl] = useState();
