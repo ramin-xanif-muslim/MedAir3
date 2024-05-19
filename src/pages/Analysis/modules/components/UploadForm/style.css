@@ -1,0 +1,12 @@
+.close-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translate(10px, 10px); /* Начальная позиция вне видимой области */
+}
+
+.image-container:hover .close-btn {
+    opacity: 1;
+    color: red;
+    cursor: pointer;
+    transform: translate(0, 0); /* Позиция внутри контейнера при наведении */
+}

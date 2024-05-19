@@ -233,6 +233,7 @@ function AnalysisFormBlok(props) {
                             if (isShow) {
                                 return (
                                     <UploadForm
+                                        setIsChangeForm={setIsChangeForm}
                                         form={form}
                                         selectedRowKey={selectedRowKey}
                                     />
