@@ -1,14 +1,22 @@
-import { Button, Image, Spin, Upload } from "antd";
+import { Image, Spin, Upload } from "antd";
 import React, { memo, useEffect, useState } from "react";
-import { UploadOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import {
+    CloseCircleOutlined,
+    LoadingOutlined,
+    PlusOutlined,
+} from "@ant-design/icons";
 import sendRequest from "../../../../../modules/api/sendRequest";
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex, useMediaQuery } from "@chakra-ui/react";
 import "./style.css";
+
+const imgHeightWidth = 150;
 
 const UploadForm = ({ form, selectedRowKey, setIsChangeForm }) => {
     const [imageUrl, setImageUrl] = useState([]);
     const [imagePdfUrl, setImagePdfUrl] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [isLargerThan400] = useMediaQuery("(min-width: 400px)");
 
     const showImage = (urlsArr) => {
         if (urlsArr) {
@@ -61,15 +69,24 @@ const UploadForm = ({ form, selectedRowKey, setIsChangeForm }) => {
     const handleDeleteImg = (urlToDelete) => {
         try {
             setIsChangeForm(true);
-            const updatedImageUrl = imageUrl.filter((url) => url !== urlToDelete);
-            const updatedImagePdfUrl = imagePdfUrl.filter((url) => url !== urlToDelete);
+            const updatedImageUrl = imageUrl.filter(
+                (url) => url !== urlToDelete
+            );
+            const updatedImagePdfUrl = imagePdfUrl.filter(
+                (url) => url !== urlToDelete
+            );
             setImageUrl(updatedImageUrl);
             setImagePdfUrl(updatedImagePdfUrl);
 
-            const updatedContentUrl = [...updatedImageUrl, ...updatedImagePdfUrl].join(",");
+            const updatedContentUrl = [
+                ...updatedImageUrl,
+                ...updatedImagePdfUrl,
+            ].join(",");
             form.setFieldsValue({
                 analyzesContentUrl: updatedContentUrl,
-                analyzesContentName: updatedContentUrl ? form.getFieldsValue().analyzesContentName : "",
+                analyzesContentName: updatedContentUrl
+                    ? form.getFieldsValue().analyzesContentName
+                    : "",
             });
         } catch (error) {
             console.log("%c error", "background: red; color: dark", error);
@@ -79,77 +96,93 @@ const UploadForm = ({ form, selectedRowKey, setIsChangeForm }) => {
     return (
         <>
             <Spin spinning={isLoading}>
-                <Flex flexWrap="wrap" gap="3" m="3">
+                <Flex flexWrap="wrap" gap="3" m="3" w="full">
                     {imageUrl?.map((url, index) => (
-                        <Flex
-                            key={index}
-                            direction="column"
-                            alignItems="center"
-                            border="1px solid #e0e0e0"
-                            borderRadius="8px"
-                            p="2"
-                            boxShadow="sm"
-                            position="relative"
-                            className="image-container"
-                        >
+                        <div key={index} className="image-container">
                             <Image
-                                width={200}
-                                height={200}
+                                width={isLargerThan400 ? imgHeightWidth : null}
+                                height={isLargerThan400 ? imgHeightWidth : null}
                                 objectFit="cover"
                                 src={url}
                                 borderRadius="8px"
                             />
                             <div
-                                className="close-btn"
+                                className={
+                                    isLargerThan400
+                                        ? "close-btn"
+                                        : "mob-close-btn"
+                                }
                                 onClick={() => handleDeleteImg(url)}
                             >
                                 <CloseCircleOutlined />
                             </div>
-                        </Flex>
+                        </div>
                     ))}
 
                     {imagePdfUrl?.map((url, index) => (
-                        <Flex
-                            key={index}
-                            direction="column"
-                            alignItems="center"
-                            border="1px solid #e0e0e0"
-                            borderRadius="8px"
-                            p="2"
-                            boxShadow="sm"
-                            position="relative"
+                        <div
+                            className="image-container"
+                            style={{
+                                width: isLargerThan400
+                                    ? imgHeightWidth
+                                    : "100%",
+                                height: isLargerThan400
+                                    ? imgHeightWidth
+                                    : "100%",
+                                borderRadius: "8px",
+                                overflow: "hidden",
+                            }}
                         >
-                            <embed
+                            <iframe
+                                title="PDF"
                                 src={url}
                                 type="application/pdf"
-                                width="200"
-                                height="200"
-                                style={{ borderRadius: "8px" }}
+                                width="100%"
+                                height="100%"
+                                style={{ border: "none", borderRadius: "8px" }}
                             />
                             <div
-                                className="close-btn"
+                                className={
+                                    isLargerThan400
+                                        ? "close-btn"
+                                        : "mob-close-btn"
+                                }
                                 onClick={() => handleDeleteImg(url)}
                             >
                                 <CloseCircleOutlined />
                             </div>
-                        </Flex>
+                        </div>
                     ))}
+                    <div style={{ width: `${imgHeightWidth}px` }}>
+                        <Upload
+                            accept=".png,.pdf,.jpeg,.jpg"
+                            // listType="picture"
+                            // listType="picture-circle"
+                            listType="picture-card"
+                            beforeUpload={beforeUpload}
+                            showUploadList={false}
+                        >
+                            <button
+                                style={{ border: 0, background: "none" }}
+                                type="button"
+                            >
+                                {isLoading ? (
+                                    <LoadingOutlined />
+                                ) : (
+                                    <PlusOutlined />
+                                )}
+                                <div style={{ marginTop: 8 }}>Upload</div>
+                            </button>
+                            {/* <Button
+                            icon={<UploadOutlined />}
+                            style={{ marginTop: "20px" }}
+                            shape="circle"
+                            size="large"
+                        /> */}
+                        </Upload>
+                    </div>
                 </Flex>
             </Spin>
-
-            <Upload
-                accept=".png,.pdf,.jpeg,.jpg"
-                listType="picture"
-                beforeUpload={beforeUpload}
-                showUploadList={false}
-            >
-                <Button
-                    icon={<UploadOutlined />}
-                    style={{ marginTop: "20px", borderRadius: "8px" }}
-                >
-                    Upload
-                </Button>
-            </Upload>
         </>
     );
 };

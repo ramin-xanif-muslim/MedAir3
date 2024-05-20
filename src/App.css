@@ -5,6 +5,12 @@
     --brent-color-bark: #f7427b;
 }
 
+/* * {
+    outline: 1px solid red;
+    outline-offset: -1px;
+} */
+
+
 .brent-bg-color {
     background: var(--brent-color-lite);
 }

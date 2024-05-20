@@ -1,7 +1,19 @@
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+}
+
 .close-btn {
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transform: translate(10px, 10px); /* Начальная позиция вне видимой области */
+    transform: translate(
+        10px,
+        10px
+    ); /* Начальная позиция вне видимой области */
 }
 
 .image-container:hover .close-btn {
@@ -9,4 +21,9 @@
     color: red;
     cursor: pointer;
     transform: translate(0, 0); /* Позиция внутри контейнера при наведении */
+}
+
+.mob-close-btn {
+    opacity: 1;
+    color: red;
 }

@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid, useMediaQuery } from "@chakra-ui/react";
 import { Button, Form, Input, InputNumber, Radio, Select, Space } from "antd";
 import React, { memo, useState } from "react";
 import { useStore } from "../../../../../modules/store";
@@ -6,6 +6,8 @@ import PathologistFormItem from "../../../../../components/FormItems/Pathologist
 
 function DiseaseHistoryFormBloke(props) {
     const { selectedRowKey, setSelectedRowKey, form } = props;
+
+    const [isLargerThan400] = useMediaQuery("(min-width: 400px)");
 
     const [isChangeForm, setIsChangeForm] = useState(false);
 
@@ -241,7 +243,7 @@ function DiseaseHistoryFormBloke(props) {
                         name="pathologist"
                     />
 
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Form.Item wrapperCol={isLargerThan400 ?{ offset: 8, span: 16 } : { span: 24 }}>
                         <Space>
                             <Button
                                 form="diseaseHistoryFormBloke"
